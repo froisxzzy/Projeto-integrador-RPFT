@@ -126,7 +126,7 @@ section{padding:5.5rem 0}
 .stat b{font-family:var(--f-mono);font-size:1.35rem;color:var(--orange);display:block}
 .stat span{font-size:.8rem;color:var(--ink2)}
 
-/* ================= 02 LABORATÓRIO DE ÓPTICA (FUSÃO) ================= */
+/* ================= 02 LABORATÓRIO DE ÓPTICA ================= */
 #optica{background:var(--bg)}
 .opt-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem;border-bottom:2px solid var(--line);padding-bottom:.5rem}
 .opt-tab{font-family:var(--f-mono);font-size:.8rem;padding:.6rem 1rem;border-radius:8px 8px 0 0;cursor:pointer;color:var(--ink2);border:2px solid transparent;border-bottom:none;transition:all .2s}
@@ -166,22 +166,18 @@ input[type=range].plain{background:var(--paper)}
   background:linear-gradient(90deg,transparent,#ff4d3d 20%,#ffe14d 40%,#3ddc84 60%,#38a3ff 80%,#b06bff);
   filter:blur(1.5px) drop-shadow(0 0 8px #fff);opacity:.85}
 
-/* Quiz/Challenge Box */
-.qbox{margin-top:1.6rem;padding:1.2rem;border:1px dashed var(--line);border-radius:12px;background:rgba(11,20,43,.5)}
-.qbox p{font-weight:700;margin-bottom:.8rem;font-size:1.05rem}
-.qbox .row{display:flex;gap:.7rem;flex-wrap:wrap}
-.fb{margin-top:1rem;padding:1rem;border:1px solid var(--line);border-left:4px solid var(--aqua);border-radius:8px;background:var(--paper);font-size:.95rem}
-.fb.ok{border-left-color:var(--teal);background:rgba(61,220,132,.08)}
-.fb.err{border-left-color:#ff4d3d;background:rgba(255,77,61,.08);animation:shake .4s}
-@keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}
-
-.seq-slots{display:flex;gap:.6rem;flex-wrap:wrap;margin:1rem 0}
-.slot{min-width:100px;padding:.8rem;border:2px dashed var(--line);border-radius:8px;font-family:var(--f-mono);font-size:.75rem;text-align:center;color:var(--ink2)}
-.slot.filled{border-style:solid;border-color:var(--teal);color:var(--ink);background:rgba(61,220,132,.1)}
-.pool-btns{display:flex;gap:.6rem;flex-wrap:wrap}
-.pool-btns button{font-family:var(--f-mono);font-size:.75rem;padding:.7rem 1rem;border:1px solid var(--aqua);border-radius:8px;background:rgba(56,163,255,.08);color:var(--ink);cursor:pointer}
-.pool-btns button.used{opacity:.25;pointer-events:none}
-.pool-btns button.err{animation:shake .4s;border-color:#ff4d3d}
+/* Estilos específicos para a nova Aba 5 (Detalhada) */
+.concept-grid{display:grid;grid-template-columns:1fr;gap:1.5rem;margin-top:1rem}
+@media(min-width: 768px){.concept-grid{grid-template-columns:1fr 1fr}}
+.concept-card{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:10px;padding:1.4rem;transition:transform .2s}
+.concept-card:hover{transform:translateY(-4px);border-color:var(--aqua)}
+.concept-card h4{font-family:var(--f-disp);color:var(--amber);font-size:1.1rem;margin-bottom:.6rem;display:flex;align-items:center;gap:.5rem}
+.concept-card p{font-size:.95rem;color:var(--ink2);line-height:1.7;margin-bottom:.8rem}
+.concept-card ul{list-style:none;padding-left:0}
+.concept-card ul li{position:relative;padding-left:1.5rem;margin-bottom:.5rem;font-size:.9rem;color:var(--ink)}
+.concept-card ul li::before{content:"▹";position:absolute;left:0;color:var(--teal)}
+.synthesis-box{grid-column:1/-1;background:linear-gradient(135deg,rgba(255,159,28,.1),rgba(56,163,255,.1));border:1px solid var(--orange);border-radius:12px;padding:1.5rem;margin-top:1rem}
+.synthesis-box h4{color:var(--orange);font-family:var(--f-disp);margin-bottom:.8rem}
 
 /* ================= 03 ROBÓTICA ================= */
 .bento{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-bottom:3rem}
@@ -334,7 +330,7 @@ footer nav a:hover{color:var(--amber)}
   </div>
 </section>
 
-<!-- ================= 02 LABORATÓRIO DE ÓPTICA (FUSÃO) ================= -->
+<!-- ================= 02 LABORATÓRIO DE ÓPTICA ================= -->
 <section id="optica">
   <div class="wrap">
     <div class="sec-head rv">
@@ -349,13 +345,13 @@ footer nav a:hover{color:var(--amber)}
         <button class="opt-tab" role="tab" aria-selected="false" data-tab="tab2">2. Dispersão</button>
         <button class="opt-tab" role="tab" aria-selected="false" data-tab="tab3">3. Difração</button>
         <button class="opt-tab" role="tab" aria-selected="false" data-tab="tab4">4. O Encontro (CD)</button>
-        <button class="opt-tab" role="tab" aria-selected="false" data-tab="tab5">5. Desafio da Piscina</button>
+        <button class="opt-tab" role="tab" aria-selected="false" data-tab="tab5">5. A Solução HÉLIOS</button>
       </div>
 
       <!-- TAB 1: ESPECTRO -->
       <div id="tab1" class="opt-content active">
         <h3>De onde vêm as cores (e o calor)?</h3>
-        <p>A luz branca é uma ilusão. Ela carrega todo o espectro, incluindo o <strong>infravermelho</strong> (calor invisível). Arraste para ver:</p>
+        <p>A luz branca é uma ilusão. Ela carrega todo o espectro eletromagnético visível, e logo além dele, o <strong>infravermelho</strong> (calor invisível). Arraste para ver:</p>
         <div class="lab-stage">
           <span class="hint">ARRASTE</span>
           <svg class="scene" viewBox="0 0 900 150" role="img" aria-label="Feixe de luz mudando de cor">
@@ -365,13 +361,12 @@ footer nav a:hover{color:var(--amber)}
           <input type="range" id="wlSlider" min="380" max="750" value="700" step="1">
           <p class="mono" id="wlRead" style="font-size:.9rem;text-align:center">λ = 700 nm · 🔴 Vermelho (próximo ao Infravermelho térmico)</p>
         </div>
-        <p style="margin-top:1rem;color:var(--ink2)"><strong>A ponte com o projeto:</strong> Para aquecer a piscina, não queremos separar essas cores. Queremos um material que as <em>absorva todas</em>, especialmente as de maior comprimento de onda (vermelho/infravermelho), convertendo-as em energia térmica.</p>
       </div>
 
       <!-- TAB 2: DISPERSÃO -->
       <div id="tab2" class="opt-content">
         <h3>Dispersão: A Chave que Revela o Espectro</h3>
-        <p>O prisma separa a luz porque cada cor (comprimento de onda) desvia em um ângulo diferente. Arraste o prisma e ative a dispersão:</p>
+        <p>O prisma separa a luz porque cada cor (comprimento de onda) possui um <strong>índice de refração</strong> diferente no material, desviando em ângulos distintos. Arraste o prisma e ative a dispersão:</p>
         <div class="lab-stage">
           <span class="hint">⠿ ARRASTE O PRISMA</span>
           <svg class="scene" id="prismSvg" viewBox="0 0 900 300" role="img" aria-label="Prisma separando a luz">
@@ -390,7 +385,7 @@ footer nav a:hover{color:var(--amber)}
       <!-- TAB 3: DIFRAÇÃO -->
       <div id="tab3" class="opt-content">
         <h3>Difração: A Luz Contorna Obstáculos</h3>
-        <p>Quando a luz passa por uma fenda pequena, ela se espalha como uma onda. Controle o tamanho da fenda:</p>
+        <p>Quando a luz passa por uma fenda pequena ou encontra um obstáculo, ela se espalha como uma onda, em vez de seguir apenas em linha reta. Controle o tamanho da fenda:</p>
         <div class="lab-stage">
           <span class="hint">FENDA ↕</span>
           <canvas id="slitCanvas" height="250" aria-label="Simulação de difração em fenda única"></canvas>
@@ -398,13 +393,12 @@ footer nav a:hover{color:var(--amber)}
           <input type="range" class="plain" id="slitSlider" min="8" max="150" value="60">
           <p class="mono" id="slitRead" style="font-size:.85rem;text-align:center;margin-top:.5rem">Fenda média — espalhamento moderado.</p>
         </div>
-        <p style="margin-top:1rem;color:var(--ink2)"><strong>A ponte com o projeto:</strong> Em microescala, as superfícies dos coletores solares podem ter texturas que usam a difração para "aprisionar" a luz, fazendo-a ricochetear internamente até ser totalmente absorvida, em vez de refletida.</p>
       </div>
 
       <!-- TAB 4: CD -->
       <div id="tab4" class="opt-content">
         <h3>O Encontro dos Fenômenos: O CD</h3>
-        <p>Aqui, difração e dispersão trabalham juntas! Arraste o sol ☀️ e clique no CD:</p>
+        <p>Aqui, difração e dispersão trabalham juntas! Arraste o sol ☀️ e clique no CD para ver a explicação:</p>
         <div class="lab-stage">
           <span class="hint">⠿ ARRASTE O ☀️</span>
           <div id="cdArea">
@@ -417,15 +411,39 @@ footer nav a:hover{color:var(--amber)}
         </div>
       </div>
 
-      <!-- TAB 5: DESAFIO -->
+      <!-- TAB 5: A SOLUÇÃO HÉLIOS (DETALHADA, SEM TAREFA) -->
       <div id="tab5" class="opt-content">
-        <h3>Desafio Final: A Solução HÉLIOS</h3>
-        <p>Monte a sequência lógica de como o conhecimento da óptica resolve o aquecimento da piscina:</p>
-        <div class="lab-stage">
-          <p style="font-weight:700;margin-bottom:1rem">Como transformamos a luz em calor para a piscina?</p>
-          <div class="seq-slots" id="seqSlots"></div>
-          <div class="pool-btns" id="seqPool"></div>
-          <div class="fb" id="seqFb" style="display:none"></div>
+        <h3>A Física Aplicada: Da Teoria à Piscina Quente</h3>
+        <p style="margin-bottom:1.5rem;color:var(--ink2)">Não basta saber que a luz existe. O projeto HÉLIOS usa os princípios da óptica para <strong>aprisionar fótons</strong> e convertê-los em energia térmica com eficiência máxima. Entenda cada conceito:</p>
+        
+        <div class="concept-grid">
+          <div class="concept-card">
+            <h4>🔺 O que é a Dispersão?</h4>
+            <p>É o fenômeno onde a luz policromática (branca) se separa em suas cores constituintes ao passar de um meio para outro (como do ar para o vidro do prisma).</p>
+            <ul>
+              <li><strong>Como ocorre:</strong> O índice de refração do material varia conforme o comprimento de onda. O violeta (onda curta) desvia mais que o vermelho (onda longa).</li>
+              <li><strong>Aplicação na Piscina:</strong> A dispersão nos <em>ensina</em> que a luz solar carrega o infravermelho. Sabendo disso, escolhemos materiais que não refletem essa faixa específica, mas a absorvem totalmente.</li>
+            </ul>
+          </div>
+
+          <div class="concept-card">
+            <h4>🌊 O que é a Difração?</h4>
+            <p>É o espalhamento ou curvatura de uma onda quando ela encontra um obstáculo ou passa por uma abertura com dimensões comparáveis ao seu comprimento de onda.</p>
+            <ul>
+              <li><strong>Como ocorre:</strong> Pelo <em>Princípio de Huygens</em>, cada ponto de uma frente de onda que atinge a fenda atua como uma nova fonte de ondas secundárias, que se espalham em todas as direções.</li>
+              <li><strong>Aplicação na Piscina:</strong> As placas absorvedoras dos coletores não são perfeitamente lisas. Elas possuem <strong>microestruturas</strong> que causam difração/espalhamento da luz que incide sobre elas. Isso faz com que o fóton "quique" várias vezes dentro da microtextura, aumentando drasticamente a chance de ser absorvido em vez de refletido para fora (armadilha de fótons).</li>
+            </ul>
+          </div>
+
+          <div class="synthesis-box">
+            <h4>☀️ A Síntese HÉLIOS: O Coletor Solar Perfeito</h4>
+            <p>Combinamos os fenômenos em um único dispositivo:</p>
+            <ol style="margin-left:1.2rem;line-height:1.8;color:var(--ink)">
+              <li><strong>Tampa de Vidro:</strong> Usa a <em>refração</em> para deixar a luz visível entrar, mas é opaca ao infravermelho de onda longa, criando o <strong>efeito estufa</strong> (o calor entra, mas não sai).</li>
+              <li><strong>Placa Seletiva Preta:</strong> Usa o conhecimento da <em>dispersão</em> para ser projetada com tintas que absorvem quase 100% de todo o espectro visível e infravermelho.</li>
+              <li><strong>Microtextura Superficial:</strong> Usa a <em>difração</em> para espalhar a luz que tenta refletir, forçando-a a penetrar no material e se converter em calor para a água que passa pelos tubos.</li>
+            </ol>
+          </div>
         </div>
       </div>
 
@@ -765,34 +783,6 @@ function cdWhy(){
 $('#cdDisc').addEventListener('click',cdWhy);
 $('#btnCdWhy').addEventListener('click',cdWhy);
 setTimeout(()=>{const r=cdArea.getBoundingClientRect();cdPos(r.width*.12,r.height*.18)},100);
-
-/* ================= 5. DESAFIO SEQUENCIAL ================= */
-const seqItems=['LUZ BRANCA DO SOL','CONHECER O ESPECTRO (DISPERSÃO)','ABSORVER TODAS AS CORES','GERAR CALOR','AQUECER A PISCINA'];
-let seqProg=0;
-function initSeq(){
-  const slots=$('#seqSlots'),pool=$('#seqPool');
-  slots.innerHTML='';pool.innerHTML='';
-  seqItems.forEach(()=>{const s=document.createElement('div');s.className='slot';s.textContent='· · ·';slots.appendChild(s);});
-  let shuffled=[...seqItems].sort(()=>Math.random()-.5);
-  shuffled.forEach(txt=>{
-    const b=document.createElement('button');b.textContent=txt;
-    b.addEventListener('click',()=>{
-      if(txt===seqItems[seqProg]){
-        b.classList.add('used');
-        slots.children[seqProg].textContent=txt;slots.children[seqProg].classList.add('filled');
-        seqProg++;
-        if(seqProg===seqItems.length){
-          $('#seqFb').style.display='block';$('#seqFb').className='fb ok';
-          $('#seqFb').innerHTML='✅ <strong>PERFEITO!</strong> Ao entender que a luz branca contém todo o espectro (graças à dispersão), projetamos coletores que fazem o inverso do prisma: em vez de separar, eles <em>absorvem</em> todas as cores, convertendo a energia luminosa total em calor para a piscina!';
-        }
-      }else{
-        b.classList.add('err');setTimeout(()=>b.classList.remove('err'),450);
-      }
-    });
-    pool.appendChild(b);
-  });
-}
-initSeq();
 
 /* ================= BANCADA DE LÓGICA ================= */
 let pumpBench=true;
