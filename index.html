@@ -3,72 +3,62 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="HÉLIOS·CEP — Projeto Integrador: sistema autônomo de aquecimento solar para a piscina térmica do CEP, integrando óptica, robótica, programação e acessibilidade digital.">
-<title>HÉLIOS·CEP — Aquecimento Solar Inteligente da Piscina Térmica | Projeto Integrador</title>
+<meta name="description" content="HÉLIOS·CEP — Projeto Integrador: sistema autônomo de aquecimento solar, integrando óptica (dispersão/difração), robótica e acessibilidade digital.">
+<title>HÉLIOS·CEP · Aquecimento Solar Inteligente & Óptica Aplicada</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☀️</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-/* ============ VARIÁVEIS E BASE ============ */
+/* ================= VARIÁVEIS E BASE ================= */
 :root{
-  --bg:#f5efe2; --bg2:#ece3cf; --paper:#fffdf6; --ink:#14262c; --ink2:#3c545c;
-  --teal:#0d7d8c; --teal-dk:#0a5561; --aqua:#7fd3e0; --orange:#e97e1e; --amber:#f5a71c;
-  --line:#14262c; --shadow:8px 8px 0 rgba(20,38,44,.9);
-  --f-disp:'Unbounded',sans-serif; --f-body:'Atkinson Hyperlegible',sans-serif; --f-mono:'Space Mono',monospace;
+  --bg:#04070f; --bg2:#0a1226; --paper:#0f172a; --ink:#eaf2ff; --ink2:#93a4c3;
+  --teal:#3ddc84; --teal-dk:#2a9d5c; --aqua:#38a3ff; --orange:#ff9f1c; --amber:#ffe14d;
+  --line:rgba(147,164,195,.28); --shadow:0 10px 40px rgba(0,0,0,.4);
+  --f-disp:'Unbounded',sans-serif; --f-body:'Space Grotesk',sans-serif; --f-mono:'Space Mono',monospace;
 }
 body.hc{
   --bg:#000; --bg2:#000; --paper:#000; --ink:#fff; --ink2:#ffd23f;
   --teal:#ffd23f; --teal-dk:#ffd23f; --aqua:#ffd23f; --orange:#ffd23f; --amber:#ffd23f;
-  --line:#fff; --shadow:6px 6px 0 rgba(255,210,63,.55);
+  --line:#fff; --shadow:4px 4px 0 rgba(255,210,63,.8);
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:1.06rem;line-height:1.65;overflow-x:hidden}
-body.nomotion *,body.nomotion *::before,body.nomotion *::after{animation-play-state:paused!important}
-@media (prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation:none!important;transition:none!important}
-  html{scroll-behavior:auto}
-}
-img{max-width:100%;display:block}
-a{color:var(--teal)}
+body.nomotion *,body.nomotion *::before,body.nomotion *::after{animation-play-state:paused!important;transition:none!important}
+@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+img,svg,canvas{max-width:100%;display:block}
+a{color:var(--aqua);text-decoration:none}
 :focus-visible{outline:3px solid var(--orange);outline-offset:3px;border-radius:4px}
-::selection{background:var(--amber);color:var(--ink)}
+::selection{background:var(--amber);color:#000}
 .wrap{width:min(1180px,92%);margin:0 auto}
 .mono{font-family:var(--f-mono)}
 h1,h2,h3{font-family:var(--f-disp);line-height:1.12;letter-spacing:-.01em}
-.skip{position:absolute;left:-999px;top:0;background:var(--ink);color:#fff;padding:.8rem 1.2rem;z-index:300;font-family:var(--f-mono)}
+.skip{position:absolute;left:-999px;top:0;background:var(--ink);color:#000;padding:.8rem 1.2rem;z-index:300;font-family:var(--f-mono);font-weight:700}
 .skip:focus{left:12px;top:12px}
 
-/* ============ UTILITÁRIOS / MOVIMENTO ============ */
-.noise{position:fixed;inset:0;pointer-events:none;z-index:120;opacity:.05;
+/* ================= UTILITÁRIOS ================= */
+.noise{position:fixed;inset:0;pointer-events:none;z-index:120;opacity:.04;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
 .progress{position:fixed;top:0;left:0;right:0;height:4px;background:transparent;z-index:210}
 .progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--amber),var(--orange))}
-#sunDot{position:fixed;top:74px;left:6%;width:16px;height:16px;border-radius:50%;background:var(--amber);
-  box-shadow:0 0 0 4px rgba(245,167,28,.25),0 0 22px 6px rgba(245,167,28,.5);z-index:130;pointer-events:none}
-@media(max-width:900px){#sunDot{display:none}}
 .rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
 .rv.in{opacity:1;transform:none}
 .lm{overflow:hidden;display:block}
 .lm>span{display:block;transform:translateY(112%);transition:transform .8s cubic-bezier(.2,.7,.2,1)}
 .in .lm>span,.lm.in>span{transform:none}
-.kb{overflow:hidden;border:2px solid var(--line);box-shadow:var(--shadow)}
-.kb img{width:100%;height:100%;object-fit:cover;animation:kburns 18s ease-in-out infinite alternate}
-@keyframes kburns{from{transform:scale(1.06)}to{transform:scale(1.16) translate(-2%,2%)}}
 
-/* ============ CABEÇALHO ============ */
+/* ================= CABEÇALHO ================= */
 .topbar{position:sticky;top:0;z-index:200;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
-  padding:.7rem 4%;background:var(--bg);border-bottom:2px solid var(--line)}
-.brand{font-family:var(--f-disp);font-weight:900;font-size:1.15rem;color:var(--ink);text-decoration:none;display:flex;align-items:center;gap:.5rem}
+  padding:.7rem 4%;background:rgba(4,7,15,.92);backdrop-filter:blur(12px);border-bottom:2px solid var(--line)}
+.brand{font-family:var(--f-disp);font-weight:900;font-size:1.15rem;color:var(--ink);display:flex;align-items:center;gap:.5rem}
 .brand-sun{width:20px;height:20px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--ink);animation:pulse 3s ease-in-out infinite}
 @keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
-.brand em{font-style:normal;color:var(--teal)}
+.brand em{font-style:normal;color:var(--aqua)}
 .topbar nav{display:flex;gap:.2rem;flex-wrap:wrap;margin-inline:auto}
-.topbar nav a{font-family:var(--f-mono);font-size:.72rem;text-transform:uppercase;letter-spacing:.06em;
-  color:var(--ink);text-decoration:none;padding:.45rem .6rem;border-radius:6px;transition:background .2s}
-.topbar nav a:hover{background:var(--bg2)}
-.topbar nav a.active{background:var(--ink);color:var(--bg)}
+.topbar nav a{font-family:var(--f-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--ink2);padding:.45rem .6rem;border-radius:6px;transition:all .2s}
+.topbar nav a:hover,.topbar nav a.active{background:var(--ink);color:var(--bg)}
 body.hc .topbar nav a.active{background:var(--amber);color:#000}
 .a11y-tools{display:flex;gap:.35rem;align-items:center}
 .a11y-tools button{font-family:var(--f-mono);font-size:.75rem;font-weight:700;min-width:38px;min-height:38px;
@@ -77,59 +67,46 @@ body.hc .topbar nav a.active{background:var(--amber);color:#000}
 .a11y-tools button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
 body.hc .a11y-tools button[aria-pressed="true"]{background:var(--amber);color:#000}
 .hamb{display:none;font-family:var(--f-mono);background:var(--paper);border:2px solid var(--line);border-radius:8px;padding:.5rem .8rem;cursor:pointer;color:var(--ink)}
-@media(max-width:1020px){
-  .hamb{display:block}
-  .topbar nav{display:none;width:100%;flex-direction:column;border-top:2px dashed var(--line);padding-top:.6rem}
-  .topbar nav.open{display:flex}
-}
+@media(max-width:1020px){.hamb{display:block}.topbar nav{display:none;width:100%;flex-direction:column;border-top:2px dashed var(--line);padding-top:.6rem}.topbar nav.open{display:flex}}
 
-/* ============ HERO / PAINEL DE CONTROLE ============ */
-.hero{padding:4.5rem 0 3.5rem;background:
-  radial-gradient(circle at 82% 8%,rgba(245,167,28,.22),transparent 42%),
-  radial-gradient(circle at 10% 90%,rgba(13,125,140,.12),transparent 45%)}
+/* ================= HERO / PAINEL ================= */
+.hero{padding:4.5rem 0 3.5rem;background:radial-gradient(circle at 82% 8%,rgba(255,159,28,.15),transparent 42%),radial-gradient(circle at 10% 90%,rgba(56,163,255,.12),transparent 45%)}
 .hero-grid{display:grid;grid-template-columns:1.1fr .95fr;gap:3rem;align-items:center}
 .kicker{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:.8rem;color:var(--ink2)}
 .kicker::after{content:"";height:2px;width:70px;background:var(--line)}
-.hero h1{font-size:clamp(2.6rem,6.5vw,4.6rem);font-weight:900;margin:.9rem 0 .4rem}
+.hero h1{font-size:clamp(2.4rem,6vw,4.2rem);font-weight:900;margin:.9rem 0 .4rem}
 .hero h1 .sol{color:var(--orange)}
-.hero .tagline{font-size:1.2rem;max-width:34rem;color:var(--ink2)}
+.hero .tagline{font-size:1.15rem;max-width:34rem;color:var(--ink2)}
 .chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.4rem 0 1.8rem}
 .chip{font-family:var(--f-mono);font-size:.72rem;padding:.4rem .75rem;border:2px solid var(--line);border-radius:99px;background:var(--paper)}
 .btn{display:inline-block;font-family:var(--f-mono);font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;
-  padding:.85rem 1.4rem;border:2px solid var(--line);border-radius:10px;text-decoration:none;cursor:pointer;
-  background:var(--amber);color:var(--ink);box-shadow:4px 4px 0 var(--line);transition:transform .15s,box-shadow .15s}
+  padding:.85rem 1.4rem;border:2px solid var(--line);border-radius:10px;cursor:pointer;
+  background:var(--amber);color:#000;box-shadow:4px 4px 0 var(--line);transition:transform .15s,box-shadow .15s}
 .btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--line)}
 .btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--line)}
-.btn.ghost{background:var(--paper)}
-/* painel */
-.panel{background:var(--ink);color:#dff3ee;border:2px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
-body.hc .panel{background:#000;border-color:var(--amber);color:var(--amber)}
-.panel-head{display:flex;align-items:center;gap:.6rem;padding:.8rem 1.1rem;border-bottom:1px dashed rgba(223,243,238,.3);font-family:var(--f-mono);font-size:.72rem;letter-spacing:.12em}
-.led{width:10px;height:10px;border-radius:50%;background:#3fe07c;box-shadow:0 0 8px #3fe07c;animation:blink 1.6s infinite}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--ink2)}
+.btn.ghost:hover{background:var(--paper);color:var(--ink)}
+
+.panel{background:var(--paper);color:var(--ink);border:2px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
+.panel-head{display:flex;align-items:center;gap:.6rem;padding:.8rem 1.1rem;border-bottom:1px dashed var(--line);font-family:var(--f-mono);font-size:.72rem;letter-spacing:.12em}
+.led{width:10px;height:10px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal);animation:blink 1.6s infinite}
 body.hc .led{background:var(--amber);box-shadow:0 0 8px var(--amber)}
 @keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
 .panel-body{padding:1rem 1.1rem 1.2rem}
 .reads{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
-.read{background:rgba(255,255,255,.06);border:1px solid rgba(223,243,238,.18);border-radius:8px;padding:.55rem .7rem}
+.read{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:8px;padding:.55rem .7rem}
 .read small{display:block;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.14em;opacity:.75}
 .read strong{font-family:var(--f-mono);font-size:1.35rem;color:var(--amber)}
-body.hc .read strong{color:#fff}
 .pump-row{display:flex;align-items:center;justify-content:space-between;margin:.9rem 0 .6rem;font-family:var(--f-mono);font-size:.8rem}
 .fan{display:inline-block;font-size:1.2rem;color:var(--amber)}
 .fan.on{animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.panel canvas{width:100%;height:56px;display:block;margin-top:.5rem;border:1px dashed rgba(223,243,238,.25);border-radius:6px}
+.panel canvas{width:100%;height:56px;display:block;margin-top:.5rem;border:1px dashed var(--line);border-radius:6px}
 .panel-btns{display:flex;gap:.5rem;margin-top:.9rem;flex-wrap:wrap}
-.panel-btns button{font-family:var(--f-mono);font-size:.7rem;padding:.5rem .8rem;background:transparent;border:1.5px solid rgba(223,243,238,.5);color:#dff3ee;border-radius:7px;cursor:pointer}
+.panel-btns button{font-family:var(--f-mono);font-size:.7rem;padding:.5rem .8rem;background:transparent;border:1.5px solid var(--line);color:var(--ink);border-radius:7px;cursor:pointer}
 .panel-btns button:hover{border-color:var(--amber);color:var(--amber)}
-.panel-note{font-family:var(--f-mono);font-size:.62rem;opacity:.6;margin-top:.8rem}
-/* ticker */
-.ticker{border-block:2px solid var(--line);background:var(--amber);overflow:hidden;padding:.55rem 0}
-.ticker-track{display:flex;gap:2.5rem;width:max-content;animation:tick 30s linear infinite;font-family:var(--f-mono);font-weight:700;font-size:.8rem;letter-spacing:.12em;text-transform:uppercase;color:var(--ink)}
-.ticker:hover .ticker-track{animation-play-state:paused}
-@keyframes tick{to{transform:translateX(-50%)}}
 
-/* ============ SEÇÕES GERAIS ============ */
+/* ================= SEÇÕES GERAIS ================= */
 section{padding:5.5rem 0}
 .sec-head{margin-bottom:2.6rem}
 .sec-num{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.2em;color:var(--orange);display:flex;align-items:center;gap:.8rem;margin-bottom:.7rem}
@@ -138,201 +115,141 @@ section{padding:5.5rem 0}
 .sec-head p.lead{margin-top:.9rem;max-width:56ch;color:var(--ink2);font-size:1.1rem}
 .card{background:var(--paper);border:2px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:1.5rem}
 
-/* ===== 01 DESAFIO ===== */
+/* ================= 01 DESAFIO ================= */
 #desafio{background:var(--bg2)}
 .desafio-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.6rem;align-items:start}
 .desafio-left{position:sticky;top:96px}
-.bigstat{font-family:var(--f-disp);font-weight:900;font-size:clamp(3rem,7vw,5.2rem);color:var(--teal);line-height:1}
+.bigstat{font-family:var(--f-disp);font-weight:900;font-size:clamp(3rem,7vw,5.2rem);color:var(--aqua);line-height:1}
 .bigstat small{display:block;font-family:var(--f-mono);font-size:.78rem;font-weight:400;color:var(--ink2);letter-spacing:.08em;margin-top:.6rem;text-transform:uppercase}
-.desafio-left .quote{border-left:6px solid var(--orange);padding-left:1.1rem;margin-top:2rem;font-size:1.15rem;font-style:italic;color:var(--ink2)}
 .stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.6rem}
 .stat{background:var(--paper);border:2px solid var(--line);border-radius:10px;padding:1rem;box-shadow:4px 4px 0 var(--line)}
 .stat b{font-family:var(--f-mono);font-size:1.35rem;color:var(--orange);display:block}
 .stat span{font-size:.8rem;color:var(--ink2)}
-.desafio-right p{margin-bottom:1.1rem}
-.desafio-right .kb{margin-top:1.4rem;aspect-ratio:3/2}
 
-/* ===== 02 SOLUÇÃO / DIAGRAMA ===== */
-.sol-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:2rem;align-items:start}
-.diagram-box{background:var(--paper);border:2px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:1rem}
-.diagram-box svg{width:100%;height:auto;display:block}
-.dnode{cursor:pointer}
-.dnode:hover .dshape,.dnode:focus .dshape{stroke:var(--orange);stroke-width:3.5}
-.dnode.sel .dshape{stroke:var(--orange);stroke-width:3.5;fill:rgba(245,167,28,.18)}
-.pipe{stroke:var(--ink);stroke-width:5;fill:none;stroke-dasharray:10 8;animation:dash .9s linear infinite}
-body.hc .pipe{stroke:var(--amber)}
-@keyframes dash{to{stroke-dashoffset:-18}}
-.dinfo h3{font-size:1.15rem;margin-bottom:.5rem;color:var(--teal)}
-.steps-list{margin-top:1.4rem;list-style:none;counter-reset:st}
-.steps-list li{counter-increment:st;position:relative;padding:.7rem 0 .7rem 3rem;border-bottom:1px dashed var(--line)}
-.steps-list li::before{content:counter(st,decimal-leading-zero);position:absolute;left:0;top:.75rem;font-family:var(--f-mono);font-weight:700;color:var(--orange)}
+/* ================= 02 LABORATÓRIO DE ÓPTICA (FUSÃO) ================= */
+#optica{background:var(--bg)}
+.opt-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem;border-bottom:2px solid var(--line);padding-bottom:.5rem}
+.opt-tab{font-family:var(--f-mono);font-size:.8rem;padding:.6rem 1rem;border-radius:8px 8px 0 0;cursor:pointer;color:var(--ink2);border:2px solid transparent;border-bottom:none;transition:all .2s}
+.opt-tab.active{background:var(--paper);color:var(--ink);border-color:var(--line);border-bottom-color:var(--paper);font-weight:700}
+.opt-content{display:none;animation:stageIn .5s ease}
+.opt-content.active{display:block}
+@keyframes stageIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
-/* ===== 03 ÓPTICA (sticky + blocos) ===== */
-#optica{background:var(--bg2)}
-.opt-grid{display:grid;grid-template-columns:330px 1fr;gap:3rem;align-items:start}
-.opt-side{position:sticky;top:96px}
-.opt-side nav{margin-top:1.4rem;display:flex;flex-direction:column;gap:.3rem}
-.opt-side nav a{font-family:var(--f-mono);font-size:.78rem;text-decoration:none;color:var(--ink2);padding:.5rem .8rem;border-left:3px solid transparent;border-radius:0 8px 8px 0;transition:all .2s}
-.opt-side nav a.on{border-left-color:var(--orange);background:var(--paper);color:var(--ink);font-weight:700}
-.opt-block{margin-bottom:3.2rem;scroll-margin-top:110px}
-.opt-block h3{font-size:1.4rem;margin-bottom:.8rem}
-.opt-block h3 .tag{font-family:var(--f-mono);font-size:.65rem;vertical-align:middle;background:var(--ink);color:var(--bg);padding:.2rem .5rem;border-radius:5px;margin-left:.6rem;letter-spacing:.1em}
-body.hc .opt-block h3 .tag{background:var(--amber);color:#000}
-.mat-chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:1rem 0}
-.mat-chips button{font-family:var(--f-mono);font-size:.72rem;padding:.5rem .8rem;border:2px solid var(--line);background:var(--paper);border-radius:99px;cursor:pointer;color:var(--ink)}
-.mat-chips button[aria-pressed="true"]{background:var(--teal);color:#fff;border-color:var(--teal-dk)}
-body.hc .mat-chips button[aria-pressed="true"]{background:var(--amber);color:#000}
-.bar{height:26px;border:2px solid var(--line);border-radius:7px;overflow:hidden;background:var(--bg2);margin:.3rem 0 .8rem}
-.bar i{display:block;height:100%;width:0;transition:width .8s cubic-bezier(.2,.7,.2,1)}
-.bar .b-abs{background:repeating-linear-gradient(-45deg,var(--orange) 0 10px,var(--amber) 10px 20px)}
-.bar .b-ref{background:repeating-linear-gradient(-45deg,var(--teal) 0 10px,var(--aqua) 10px 20px)}
-.verdict{font-family:var(--f-mono);font-size:.82rem;padding:.7rem .9rem;border:2px dashed var(--line);border-radius:8px;margin-top:.8rem}
-/* disco de Newton */
-.newton-lab{display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:center}
-.disk-stage{position:relative;width:230px;height:230px}
-.disk{width:100%;height:100%;border-radius:50%;border:3px solid var(--line);
-  background:conic-gradient(from -90deg,#e23b33 0 51.4deg,#f07f13 51.4deg 102.9deg,#f7c531 102.9deg 154.3deg,#3fa34d 154.3deg 205.7deg,#2e6fb7 205.7deg 257.1deg,#4b3f9e 257.1deg 308.6deg,#9b4fb0 308.6deg 360deg)}
-.disk-hub{position:absolute;left:50%;top:50%;width:34px;height:34px;transform:translate(-50%,-50%);background:var(--paper);border:3px solid var(--line);border-radius:50%}
-.disk-blend{position:absolute;inset:0;border-radius:50%;background:#f4f1ea;opacity:0;pointer-events:none;transition:opacity .3s}
-.range-row{display:flex;align-items:center;gap:.8rem;margin:.9rem 0}
-input[type=range]{appearance:none;width:100%;max-width:320px;height:8px;border-radius:99px;background:var(--bg2);border:2px solid var(--line);cursor:pointer}
-input[type=range]::-webkit-slider-thumb{appearance:none;width:24px;height:24px;border-radius:50%;background:var(--orange);border:3px solid var(--line)}
-input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--orange);border:3px solid var(--line)}
-/* câmara escura */
-.cam-stage{background:var(--paper);border:2px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:1rem}
-.cam-stage svg{width:100%;height:auto;display:block}
-.formula{font-family:var(--f-mono);font-size:.85rem;background:var(--ink);color:var(--amber);padding:.7rem 1rem;border-radius:8px;display:inline-block;margin-top:.8rem}
-body.hc .formula{background:#000;border:2px solid var(--amber)}
+.lab-stage{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:1.6rem;margin-top:1rem;position:relative}
+.lab-stage .hint{position:absolute;top:.8rem;right:1.2rem;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.18em;color:var(--ink2);background:var(--paper);padding:.3rem .6rem;border-radius:4px}
+.scene{width:100%;height:auto}
+.rayline{filter:drop-shadow(0 0 6px currentColor);transition:all .3s}
+.draggable{cursor:grab}
+.draggable:active{cursor:grabbing}
 
-/* ===== 04 ROBÓTICA ===== */
-.bento{display:grid;grid-template-columns:repeat(4,1fr);grid-auto-rows:auto;gap:1rem;margin-bottom:3rem}
+/* Prism */
+#prismSvg{max-height:300px}
+.hitline{stroke:transparent;stroke-width:22;cursor:pointer}
+
+/* Slit */
+#slitCanvas{width:100%;height:250px;border-radius:8px;background:#000}
+input[type=range]{appearance:none;width:100%;height:10px;border-radius:99px;border:1px solid var(--line);
+  background:linear-gradient(90deg,var(--teal),var(--aqua),var(--amber),var(--orange));cursor:pointer;margin:.8rem 0}
+input[type=range]::-webkit-slider-thumb{appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid #000}
+input[type=range].plain{background:var(--paper)}
+
+/* CD */
+#cdArea{position:relative;height:320px;border-radius:14px;overflow:hidden;background:radial-gradient(400px 200px at 50% 60%,rgba(56,163,255,.1),transparent),var(--bg2);border:1px solid var(--line)}
+#cdDisc{position:absolute;left:50%;top:52%;width:200px;height:200px;transform:translate(-50%,-50%);border-radius:50%;cursor:pointer;
+  background:conic-gradient(from var(--sheen,0deg),#ff4d3d,#ff9f1c,#ffe14d,#3ddc84,#38a3ff,#b06bff,#ff4d3d);
+  box-shadow:0 0 30px rgba(255,255,255,.15),inset 0 0 40px rgba(0,0,0,.6);animation:cdspin 20s linear infinite}
+#cdDisc::before{content:"";position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle,transparent 0 3px,rgba(255,255,255,.14) 3px 4px)}
+#cdDisc::after{content:"";position:absolute;left:50%;top:50%;width:50px;height:50px;transform:translate(-50%,-50%);border-radius:50%;background:var(--bg2);border:5px solid rgba(255,255,255,.35)}
+@keyframes cdspin{to{transform:translate(-50%,-50%) rotate(360deg)}}
+#cdLight{position:absolute;left:12%;top:18%;font-size:2rem;cursor:grab;filter:drop-shadow(0 0 16px #ffe14d);user-select:none;touch-action:none;z-index:2}
+#cdRays{position:absolute;left:50%;top:52%;width:280px;height:6px;transform-origin:0 50%;pointer-events:none;
+  background:linear-gradient(90deg,transparent,#ff4d3d 20%,#ffe14d 40%,#3ddc84 60%,#38a3ff 80%,#b06bff);
+  filter:blur(1.5px) drop-shadow(0 0 8px #fff);opacity:.85}
+
+/* Quiz/Challenge Box */
+.qbox{margin-top:1.6rem;padding:1.2rem;border:1px dashed var(--line);border-radius:12px;background:rgba(11,20,43,.5)}
+.qbox p{font-weight:700;margin-bottom:.8rem;font-size:1.05rem}
+.qbox .row{display:flex;gap:.7rem;flex-wrap:wrap}
+.fb{margin-top:1rem;padding:1rem;border:1px solid var(--line);border-left:4px solid var(--aqua);border-radius:8px;background:var(--paper);font-size:.95rem}
+.fb.ok{border-left-color:var(--teal);background:rgba(61,220,132,.08)}
+.fb.err{border-left-color:#ff4d3d;background:rgba(255,77,61,.08);animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-6px)}50%{transform:translateX(6px)}75%{transform:translateX(-3px)}}
+
+.seq-slots{display:flex;gap:.6rem;flex-wrap:wrap;margin:1rem 0}
+.slot{min-width:100px;padding:.8rem;border:2px dashed var(--line);border-radius:8px;font-family:var(--f-mono);font-size:.75rem;text-align:center;color:var(--ink2)}
+.slot.filled{border-style:solid;border-color:var(--teal);color:var(--ink);background:rgba(61,220,132,.1)}
+.pool-btns{display:flex;gap:.6rem;flex-wrap:wrap}
+.pool-btns button{font-family:var(--f-mono);font-size:.75rem;padding:.7rem 1rem;border:1px solid var(--aqua);border-radius:8px;background:rgba(56,163,255,.08);color:var(--ink);cursor:pointer}
+.pool-btns button.used{opacity:.25;pointer-events:none}
+.pool-btns button.err{animation:shake .4s;border-color:#ff4d3d}
+
+/* ================= 03 ROBÓTICA ================= */
+.bento{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-bottom:3rem}
 .hw{border:2px solid var(--line);border-radius:12px;background:var(--paper);box-shadow:4px 4px 0 var(--line);padding:1.1rem;transition:transform .2s}
 .hw:hover{transform:translateY(-5px)}
-.hw .hw-tag{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.15em;padding:.2rem .5rem;border-radius:5px;background:var(--teal);color:#fff}
-.hw.act .hw-tag{background:var(--orange);color:var(--ink)}
-body.hc .hw .hw-tag,body.hc .hw.act .hw-tag{background:var(--amber);color:#000}
+.hw .hw-tag{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.15em;padding:.2rem .5rem;border-radius:5px;background:var(--aqua);color:#000}
 .hw h3{font-size:1rem;margin:.7rem 0 .3rem}
 .hw p{font-size:.85rem;color:var(--ink2)}
-.hw svg{width:34px;height:34px;margin-bottom:.4rem;color:var(--teal)}
-.hw:nth-child(1){grid-column:span 2}
-.hw:nth-child(4){grid-row:span 2}
-.hw:nth-child(6){grid-column:span 2}
-@media(max-width:840px){.bento{grid-template-columns:1fr 1fr}.hw:nth-child(n){grid-column:auto;grid-row:auto}}
-/* fluxograma */
-.flow-wrap{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:start}
-.flow{display:flex;flex-direction:column;align-items:center;gap:0}
-.fstep{font-family:var(--f-mono);font-size:.78rem;text-align:center;background:var(--paper);border:2px solid var(--line);border-radius:9px;padding:.7rem 1rem;width:min(300px,88%);position:relative;transition:all .25s}
-.fstep.decision{transform:none;border-radius:4px;background:var(--amber);font-weight:700;border-style:dashed}
-.fstep.now{background:var(--ink);color:var(--amber);border-color:var(--ink);transform:scale(1.05)}
-body.hc .fstep.now{background:var(--amber);color:#000}
-.farrow{font-size:1rem;line-height:1;padding:.35rem 0;color:var(--ink2)}
-.fbranch{display:flex;gap:1.4rem;width:100%;justify-content:center}
-.fbranch .fstep{width:min(200px,44%)}
-.fbranch-label{font-family:var(--f-mono);font-size:.65rem;color:var(--orange);font-weight:700;display:block;margin-bottom:.2rem}
-pre.code{background:var(--ink);color:#cfeee6;border:2px solid var(--line);border-radius:12px;box-shadow:var(--shadow);
-  padding:1.3rem 1.5rem;font-family:var(--f-mono);font-size:.82rem;line-height:1.7;overflow-x:auto}
-pre.code .kw{color:var(--amber);font-weight:700}
-pre.code .cm{color:#6fa99b;font-style:italic}
-/* bancada */
-.bench{margin-top:2.6rem;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center}
+.bench{margin-top:2rem;display:grid;grid-template-columns:1fr auto;gap:2rem;align-items:center}
 .lamp{font-family:var(--f-mono);font-weight:700;font-size:1rem;padding:1rem 1.6rem;border:3px solid var(--line);border-radius:12px;text-align:center;min-width:220px;transition:background .3s}
-.lamp.on{background:#2f9e5f;color:#fff}
+.lamp.on{background:var(--teal);color:#000}
 .lamp.off{background:var(--bg2);color:var(--ink2)}
-body.hc .lamp.on{background:var(--amber);color:#000}
-.visually-hidden{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
 
-/* ===== 05 SIMULADOR ===== */
-#simulador{background:var(--teal-dk);color:#eaf7f4}
-#simulador .sec-num{color:var(--amber)}
-#simulador .sec-head p.lead{color:#bfe4de}
+/* ================= 04 SIMULADOR ================= */
+#simulador{background:var(--bg2)}
 .sim-grid{display:grid;grid-template-columns:340px 1fr;gap:2rem;align-items:start}
 .sim-controls{background:var(--paper);color:var(--ink);border:2px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:1.4rem}
 .sim-controls label{display:block;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;margin:1rem 0 .3rem;color:var(--ink2)}
 .sim-controls output{font-family:var(--f-mono);font-weight:700;color:var(--orange);float:right}
 .check-row{display:flex;align-items:center;gap:.6rem;margin:1rem 0;font-family:var(--f-mono);font-size:.78rem}
 .check-row input{width:20px;height:20px;accent-color:var(--orange)}
-.sim-btns{display:flex;gap:.6rem;margin-top:1.2rem;flex-wrap:wrap}
-.sim-stage{border:2px solid rgba(255,255,255,.35);border-radius:14px;background:rgba(0,0,0,.22);padding:1.4rem}
-body.hc .sim-stage{border-color:var(--amber)}
+.sim-stage{border:2px solid var(--line);border-radius:14px;background:var(--paper);padding:1.4rem}
 .sim-top{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;margin-bottom:1rem}
-.sim-temp{font-family:var(--f-mono);font-weight:700;font-size:clamp(2.4rem,5vw,3.6rem);color:var(--amber)}
-.sim-clock{font-family:var(--f-mono);font-size:.85rem;opacity:.9}
-.sim-state{font-family:var(--f-mono);font-size:.72rem;padding:.3rem .7rem;border:1.5px solid var(--amber);border-radius:99px;color:var(--amber)}
-#simChart{width:100%;height:170px;border:1px dashed rgba(255,255,255,.3);border-radius:8px;margin-top:1.2rem}
+.sim-temp{font-family:var(--f-disp);font-weight:900;font-size:clamp(2.4rem,5vw,3.6rem);color:var(--amber)}
+.sim-clock{font-family:var(--f-mono);font-size:.85rem;color:var(--ink2)}
+.sim-state{font-family:var(--f-mono);font-size:.72rem;padding:.3rem .7rem;border:1.5px solid var(--teal);border-radius:99px;color:var(--teal)}
+#simChart{width:100%;height:170px;border:1px dashed var(--line);border-radius:8px;margin-top:1.2rem;background:var(--bg2)}
 .sim-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;margin-top:1.2rem}
-.sim-stats div{border:1.5px solid rgba(255,255,255,.3);border-radius:9px;padding:.7rem;text-align:center}
+.sim-stats div{border:1.5px solid var(--line);border-radius:9px;padding:.7rem;text-align:center}
 .sim-stats b{font-family:var(--f-mono);font-size:1.15rem;color:var(--amber);display:block}
-.sim-stats span{font-size:.72rem;opacity:.85}
-@media(max-width:900px){.sim-grid{grid-template-columns:1fr}}
+.sim-stats span{font-size:.72rem;color:var(--ink2)}
 
-/* ===== 06 ACESSIBILIDADE ===== */
-.acess-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:2.5rem;align-items:start}
+/* ================= 05 ACESSIBILIDADE & IMPACTO ================= */
 .check-list{list-style:none;margin-top:1.2rem}
 .check-list li{padding:.75rem 0 .75rem 2.4rem;border-bottom:1px dashed var(--line);position:relative}
 .check-list li::before{content:"✔";position:absolute;left:0;top:.7rem;font-family:var(--f-mono);font-weight:700;color:var(--teal);font-size:1.1rem}
-body.hc .check-list li::before{color:var(--amber)}
-.demo-box{margin-top:1.4rem;padding:1.4rem;border-radius:12px;border:2px solid var(--line);transition:all .3s;font-family:var(--f-mono);font-size:.95rem}
-.demo-box.bad{background:#dfe6df;color:#b6c4b6;border-color:#b6c4b6}
-.demo-box.good{background:#14262c;color:#ffd23f}
-
-/* ===== 07 IMPACTO ===== */
-#impacto{background:var(--bg2)}
-.counters{display:grid;grid-template-columns:repeat(4,1fr);gap:1.2rem;margin:2.4rem 0}
+.counters{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:1.2rem;margin:2.4rem 0}
 .counter{background:var(--paper);border:2px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:1.4rem;text-align:left}
-.counter b{font-family:var(--f-disp);font-weight:900;font-size:clamp(1.7rem,3.4vw,2.6rem);color:var(--teal);display:block;font-variant-numeric:tabular-nums}
+.counter b{font-family:var(--f-disp);font-weight:900;font-size:clamp(1.7rem,3.4vw,2.6rem);color:var(--aqua);display:block;font-variant-numeric:tabular-nums}
 .counter span{font-family:var(--f-mono);font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;color:var(--ink2)}
-.ods{display:flex;gap:.8rem;flex-wrap:wrap;margin-top:1.6rem}
-.ods li{list-style:none;font-family:var(--f-mono);font-size:.75rem;font-weight:700;padding:.6rem 1rem;border-radius:9px;color:#fff}
-.ods li:nth-child(1){background:#c51212}.ods li:nth-child(2){background:#dd9a06;color:var(--ink)}.ods li:nth-child(3){background:#dd1367}.ods li:nth-child(4){background:#3f7e44}
-.impact-cols{display:grid;grid-template-columns:1fr 1fr;gap:2rem;margin-top:1.5rem}
 
-/* ===== 08 EQUIPE ===== */
+/* ================= EQUIPE & RODAPÉ ================= */
 .team{display:flex;flex-wrap:wrap;gap:1.6rem;justify-content:center;margin:2.2rem 0 3.5rem}
-.member{background:var(--paper);border:2px solid var(--line);box-shadow:var(--shadow);padding:.9rem .9rem 1.1rem;width:196px;transition:transform .3s}
-.member:nth-child(odd){transform:rotate(-2.4deg)}
+.member{background:var(--paper);border:2px solid var(--line);box-shadow:var(--shadow);padding:.9rem;width:196px;transition:transform .3s;text-align:center}
+.member:nth-child(odd){transform:rotate(-2deg)}
 .member:nth-child(even){transform:rotate(2deg)}
 .member:hover{transform:rotate(0) translateY(-8px)}
 .member img{width:100%;aspect-ratio:1;object-fit:cover;border:2px solid var(--line);filter:saturate(.85)}
 .member h3{font-size:.95rem;margin-top:.7rem}
 .member p{font-family:var(--f-mono);font-size:.66rem;color:var(--orange);letter-spacing:.08em;text-transform:uppercase}
-.timeline{position:relative;margin:2rem 0 3rem;padding-left:2rem;border-left:3px solid var(--line)}
-.timeline li{list-style:none;position:relative;padding:0 0 1.8rem 1.2rem}
-.timeline li::before{content:"";position:absolute;left:-2.62rem;top:.35rem;width:14px;height:14px;border-radius:50%;background:var(--amber);border:3px solid var(--line)}
-.timeline b{font-family:var(--f-mono);font-size:.78rem;color:var(--orange);display:block;letter-spacing:.1em;text-transform:uppercase}
-.refs{font-size:.85rem;color:var(--ink2);columns:2;column-gap:2.5rem}
-.refs li{margin-bottom:.5rem;break-inside:avoid}
-@media(max-width:700px){.refs{columns:1}}
 
-/* ===== RODAPÉ ===== */
-footer{background:var(--ink);color:#cfe8e2;padding:3rem 0 2.5rem}
-body.hc footer{background:#000;color:var(--amber);border-top:2px solid var(--amber)}
+footer{background:var(--paper);color:var(--ink2);padding:3rem 0 2.5rem;border-top:2px solid var(--line)}
 .foot-grid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap;align-items:flex-start}
-footer .brand{color:#fff}
+footer .brand{color:var(--ink)}
 footer nav{display:flex;flex-direction:column;gap:.35rem}
-footer nav a{color:#9fc9c0;text-decoration:none;font-family:var(--f-mono);font-size:.75rem}
+footer nav a{color:var(--ink2);font-family:var(--f-mono);font-size:.75rem}
 footer nav a:hover{color:var(--amber)}
-.foot-fim{margin-top:2.4rem;padding-top:1.2rem;border-top:1px dashed rgba(207,232,226,.3);font-family:var(--f-mono);font-size:.68rem;opacity:.75;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.foot-fim{margin-top:2.4rem;padding-top:1.2rem;border-top:1px dashed var(--line);font-family:var(--f-mono);font-size:.68rem;opacity:.75;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
 
-/* ===== RESPONSIVO GERAL ===== */
 @media(max-width:980px){
-  .hero-grid,.desafio-grid,.sol-grid,.opt-grid,.flow-wrap,.acess-grid,.impact-cols{grid-template-columns:1fr}
-  .opt-side,.desafio-left{position:static}
-  .counters{grid-template-columns:1fr 1fr}
-  .newton-lab{grid-template-columns:1fr;justify-items:center;text-align:center}
-  .bench{grid-template-columns:1fr}
-  .reads{grid-template-columns:1fr 1fr}
-}
-@media(max-width:560px){
-  section{padding:3.6rem 0}
-  .counters{grid-template-columns:1fr}
-  .sim-stats{grid-template-columns:1fr}
+  .hero-grid,.desafio-grid,.sim-grid,.bench{grid-template-columns:1fr}
+  .desafio-left{position:static}
 }
 </style>
 </head>
 <body id="topo">
 <a class="skip" href="#conteudo">Pular para o conteúdo principal</a>
 <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
-<div id="sunDot" aria-hidden="true"></div>
 <div class="noise" aria-hidden="true"></div>
 
 <!-- ================= CABEÇALHO ================= -->
@@ -340,43 +257,40 @@ footer nav a:hover{color:var(--amber)}
   <a class="brand" href="#topo" aria-label="HÉLIOS CEP — início"><span class="brand-sun" aria-hidden="true"></span>HÉLIOS<em>·CEP</em></a>
   <nav id="mainnav" aria-label="Navegação principal">
     <a href="#desafio">Desafio</a>
-    <a href="#solucao">Solução</a>
-    <a href="#optica">Óptica</a>
+    <a href="#optica">Laboratório</a>
     <a href="#robotica">Robótica</a>
     <a href="#simulador">Simulador</a>
     <a href="#acessibilidade">Acessibilidade</a>
-    <a href="#impacto">Impacto</a>
     <a href="#equipe">Equipe</a>
   </nav>
-  <div class="a11y-tools" role="group" aria-label="Ferramentas de acessibilidade do site">
-    <button id="fontMinus" aria-label="Diminuir tamanho do texto" title="Diminuir texto">A−</button>
-    <button id="fontPlus" aria-label="Aumentar tamanho do texto" title="Aumentar texto">A+</button>
-    <button id="contrastBtn" aria-pressed="false" aria-label="Alternar modo de alto contraste" title="Alto contraste">◐</button>
-    <button id="motionBtn" aria-pressed="false" aria-label="Pausar ou retomar animações" title="Pausar animações">⏸</button>
+  <div class="a11y-tools" role="group" aria-label="Ferramentas de acessibilidade">
+    <button id="fontMinus" aria-label="Diminuir texto" title="Diminuir texto">A−</button>
+    <button id="fontPlus" aria-label="Aumentar texto" title="Aumentar texto">A+</button>
+    <button id="contrastBtn" aria-pressed="false" aria-label="Alternar alto contraste" title="Alto contraste">◐</button>
+    <button id="motionBtn" aria-pressed="false" aria-label="Pausar animações" title="Pausar animações">⏸</button>
   </div>
   <button class="hamb" id="hambBtn" aria-expanded="false" aria-controls="mainnav">☰ menu</button>
 </header>
 
 <main id="conteudo">
 
-<!-- ================= ABERTURA: PAINEL DE CONTROLE ================= -->
+<!-- ================= HERO ================= -->
 <section class="hero" aria-label="Apresentação do projeto">
   <div class="wrap hero-grid">
     <div>
       <p class="kicker">Projeto Integrador · 2026 · CEP</p>
       <h1><span id="scrambleTitle" data-text="HÉLIOS·CEP">HÉLIOS·CEP</span></h1>
-      <p class="tagline">Sistema <strong>autônomo de aquecimento solar</strong> para a piscina térmica do CEP — onde a Óptica capta a luz, a Robótica decide e a Programação executa. Energia zero da rede, conforto o ano inteiro.</p>
+      <p class="tagline">Sistema <strong>autônomo de aquecimento solar</strong> para a piscina térmica. Onde a <span class="sol">Óptica</span> capta a luz, a Robótica decide e a Programação executa.</p>
       <div class="chips">
-        <span class="chip">☀ Óptica aplicada</span>
-        <span class="chip">🤖 Robótica</span>
-        <span class="chip">⌨ Programação</span>
-        <span class="chip">♿ Acessibilidade</span>
+        <span class="chip">☀ Dispersão & Difração</span>
+        <span class="chip">🤖 Automação</span>
+        <span class="chip">♿ Acessível</span>
       </div>
-      <a class="btn" href="#simulador">Testar o simulador</a>
-      <a class="btn ghost" href="#desafio" style="margin-left:.6rem">Conhecer o desafio</a>
+      <a class="btn" href="#optica">Entrar no Laboratório</a>
+      <a class="btn ghost" href="#desafio" style="margin-left:.6rem">O Desafio</a>
     </div>
 
-    <div class="panel" aria-label="Painel de controle simulado do sistema HÉLIOS">
+    <div class="panel" aria-label="Painel de controle simulado">
       <div class="panel-head"><span class="led" aria-hidden="true"></span> UNIDADE DE CONTROLE · HÉLIOS v1.0 · <span id="panelMode">AUTO</span></div>
       <div class="panel-body">
         <div class="reads">
@@ -385,509 +299,252 @@ footer nav a:hover{color:var(--amber)}
           <div class="read"><small>IRRADIÂNCIA</small><strong><span id="pIrr">812</span> W/m²</strong></div>
           <div class="read"><small>VAZÃO</small><strong><span id="pFlow">5.4</span> L/min</strong></div>
         </div>
-        <div class="pump-row">
-          <span>BOMBA: <b id="pumpState">LIGADA</b></span>
-          <span class="fan on" id="pumpIcon" aria-hidden="true">✳</span>
-        </div>
-        <canvas id="spark" width="360" height="56" aria-label="Gráfico da temperatura da piscina em tempo real" role="img"></canvas>
+        <div class="pump-row"><span>BOMBA: <b id="pumpState">LIGADA</b></span><span class="fan on" id="pumpIcon" aria-hidden="true">✳</span></div>
+        <canvas id="spark" width="360" height="56" aria-label="Gráfico da temperatura" role="img"></canvas>
         <div class="panel-btns">
-          <button id="btnMode">Alternar AUTO / MANUAL</button>
-          <button id="btnPump">Ligar / desligar bomba</button>
+          <button id="btnMode">AUTO / MANUAL</button>
+          <button id="btnPump">Ligar/Desligar Bomba</button>
         </div>
-        <p class="panel-note">Simulação didática em tempo real — valores gerados por modelo simplificado do sistema.</p>
       </div>
     </div>
   </div>
 </section>
-
-<div class="ticker" aria-hidden="true">
-  <div class="ticker-track" id="tickerTrack">
-    <span>ABSORÇÃO ☀ REFLEXÃO ◑ REFRAÇÃO ◣ DISCO DE NEWTON ✦ CÂMARA ESCURA ▣ EFEITO ESTUFA ♨ AUTOMAÇÃO ⚙ ENERGIA LIMPA ♻ ACESSIBILIDADE ♿ </span>
-    <span>ABSORÇÃO ☀ REFLEXÃO ◑ REFRAÇÃO ◣ DISCO DE NEWTON ✦ CÂMARA ESCURA ▣ EFEITO ESTUFA ♨ AUTOMAÇÃO ⚙ ENERGIA LIMPA ♻ ACESSIBILIDADE ♿ </span>
-  </div>
-</div>
 
 <!-- ================= 01 DESAFIO ================= -->
 <section id="desafio">
   <div class="wrap">
     <div class="sec-head rv">
       <p class="sec-num">01 / O DESAFIO</p>
-      <h2 class="lm"><span>Uma piscina quente o ano todo — sem esquentar a conta de energia</span></h2>
+      <h2 class="lm"><span>Calor o ano todo, sem esquentar a conta</span></h2>
     </div>
     <div class="desafio-grid">
       <div class="desafio-left rv">
-        <div class="bigstat">70%<small>do calor de uma piscina descoberta se perde por <strong>evaporação</strong></small></div>
-        <p class="quote">“Manter a piscina térmica do CEP entre 28 °C e 30 °C com aquecedor elétrico consome o equivalente à energia de dezenas de chuveiros ligados o dia inteiro.”</p>
+        <div class="bigstat">70%<small>do calor se perde por <strong>evaporação</strong></small></div>
         <div class="stats3">
-          <div class="stat"><b>28–30 °C</b><span>faixa ideal para hidroterapia e aulas</span></div>
-          <div class="stat"><b>R$ ↑↑</b><span>custo do aquecimento exclusivamente elétrico</span></div>
-          <div class="stat"><b>CO₂ ↑</b><span>emissão indireta ao usar energia da rede</span></div>
+          <div class="stat"><b>28–30 °C</b><span>faixa ideal para hidroterapia</span></div>
+          <div class="stat"><b>R$ ↑↑</b><span>custo do aquecimento elétrico</span></div>
+          <div class="stat"><b>CO₂ ↑</b><span>emissão indireta da rede</span></div>
         </div>
       </div>
-      <div class="desafio-right rv">
-        <p>A piscina térmica do CEP é usada em aulas de natação, hidroterapia e atividades de inclusão. Mas a água perde calor continuamente — pela <strong>evaporação da superfície</strong> (a maior fatia), pela <strong>radiação infravermelha</strong> emitida para o ambiente e pela <strong>condução</strong> pelas paredes e tubulações.</p>
-        <p>Compensar essas perdas apenas com resistências elétricas é caro e pouco sustentável. A solução precisa <strong>capturar energia gratuita</strong> e <strong>decidir com inteligência</strong> quando transferi-la para a água.</p>
-        <p>Nosso objetivo: projetar um sistema <strong>híbrido e autônomo</strong> — coletores solares de baixo custo, sensores, um controlador e lógica de automação — mantendo a acessibilidade como requisito de projeto, tanto no sistema físico quanto neste site.</p>
-        <figure class="kb">
-          <img src="https://picsum.photos/seed/piscina-termica-cep/900/600" alt="Vista ilustrativa de uma piscina térmica coberta, com água calma e vapor suave sobre a superfície" width="900" height="600" loading="lazy">
-        </figure>
+      <div class="rv">
+        <p>A piscina térmica do CEP perde calor continuamente. Compensar isso com resistências elétricas é caro e insustentável. A solução precisa <strong>capturar energia gratuita</strong> do sol.</p>
+        <p>Mas para capturar a luz com eficiência máxima, precisamos entender como ela se comporta. É aqui que a <strong>Óptica</strong> deixa de ser teoria e vira a chave da engenharia: ao entender como a luz se separa (dispersão) e se espalha (difração), aprendemos a fazer o caminho inverso: <strong>aprisionar todo o espectro</strong> e transformá-lo em calor.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================= 02 SOLUÇÃO ================= -->
-<section id="solucao">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <p class="sec-num">02 / A SOLUÇÃO</p>
-      <h2 class="lm"><span>Um circuito que colhe sol e decide sozinho</span></h2>
-      <p class="lead">A água da piscina circula por coletores escuros instalados sob o sol. Um controlador compara temperaturas e só liga a bomba quando há calor útil a colher. <strong>Toque nos componentes do diagrama</strong> para entender cada parte.</p>
-    </div>
-    <div class="sol-grid">
-      <div class="diagram-box rv">
-        <svg viewBox="0 0 900 430" role="group" aria-label="Diagrama interativo do sistema HÉLIOS: piscina, bomba, filtro, válvula, coletores solares e controlador">
-          <!-- sol -->
-          <g aria-hidden="true">
-            <circle cx="90" cy="66" r="26" fill="var(--amber)"/>
-            <g stroke="var(--amber)" stroke-width="4" stroke-linecap="round">
-              <line x1="90" y1="20" x2="90" y2="32"/><line x1="90" y1="100" x2="90" y2="112"/>
-              <line x1="44" y1="66" x2="56" y2="66"/><line x1="124" y1="66" x2="136" y2="66"/>
-              <line x1="58" y1="34" x2="66" y2="42"/><line x1="114" y1="90" x2="122" y2="98"/>
-              <line x1="122" y1="34" x2="114" y2="42"/><line x1="66" y1="90" x2="58" y2="98"/>
-            </g>
-          </g>
-          <!-- tubulação -->
-          <path class="pipe" d="M300 320 H356 M404 320 H452 M522 320 H548 M572 320 H600 V150 M700 128 V200 H300" aria-hidden="true"/>
-          <!-- coletor -->
-          <g class="dnode" data-id="coletor" tabindex="0" role="button" aria-label="Coletores solares — clique para detalhes">
-            <g transform="rotate(-16 620 120)">
-              <rect class="dshape" x="500" y="96" width="240" height="52" rx="6" fill="var(--teal-dk)" stroke="var(--line)" stroke-width="2.5"/>
-              <line x1="560" y1="96" x2="560" y2="148" stroke="var(--aqua)" stroke-width="2"/>
-              <line x1="620" y1="96" x2="620" y2="148" stroke="var(--aqua)" stroke-width="2"/>
-              <line x1="680" y1="96" x2="680" y2="148" stroke="var(--aqua)" stroke-width="2"/>
-            </g>
-            <line x1="560" y1="160" x2="545" y2="205" stroke="var(--line)" stroke-width="4"/>
-            <line x1="700" y1="140" x2="715" y2="205" stroke="var(--line)" stroke-width="4"/>
-            <text x="600" y="62" font-family="Space Mono" font-size="15" fill="var(--ink)" text-anchor="middle" font-weight="bold">COLETOR SOLAR</text>
-          </g>
-          <!-- piscina -->
-          <g class="dnode" data-id="piscina" tabindex="0" role="button" aria-label="Piscina térmica — clique para detalhes">
-            <rect class="dshape" x="40" y="252" width="262" height="120" rx="16" fill="var(--aqua)" stroke="var(--line)" stroke-width="3"/>
-            <path d="M56 282 q14 -10 28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0" fill="none" stroke="var(--paper)" stroke-width="3.5" opacity=".85"/>
-            <path d="M56 310 q14 -10 28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0" fill="none" stroke="var(--paper)" stroke-width="3.5" opacity=".55"/>
-            <text x="171" y="352" font-family="Space Mono" font-size="15" fill="var(--ink)" text-anchor="middle" font-weight="bold">PISCINA TÉRMICA</text>
-          </g>
-          <!-- bomba -->
-          <g class="dnode" data-id="bomba" tabindex="0" role="button" aria-label="Bomba de circulação — clique para detalhes">
-            <circle class="dshape" cx="380" cy="320" r="26" fill="var(--paper)" stroke="var(--line)" stroke-width="3"/>
-            <path d="M380 302 v36 M362 320 h36 M368 308 l24 24 M392 308 l-24 24" stroke="var(--orange)" stroke-width="3"/>
-            <text x="380" y="372" font-family="Space Mono" font-size="14" fill="var(--ink)" text-anchor="middle" font-weight="bold">BOMBA</text>
-          </g>
-          <!-- filtro -->
-          <g class="dnode" data-id="filtro" tabindex="0" role="button" aria-label="Filtro — clique para detalhes">
-            <rect class="dshape" x="452" y="294" width="70" height="52" rx="10" fill="var(--paper)" stroke="var(--line)" stroke-width="3"/>
-            <line x1="462" y1="310" x2="512" y2="310" stroke="var(--teal)" stroke-width="3"/>
-            <line x1="462" y1="322" x2="512" y2="322" stroke="var(--teal)" stroke-width="3"/>
-            <line x1="462" y1="334" x2="512" y2="334" stroke="var(--teal)" stroke-width="3"/>
-            <text x="487" y="372" font-family="Space Mono" font-size="14" fill="var(--ink)" text-anchor="middle" font-weight="bold">FILTRO</text>
-          </g>
-          <!-- válvula -->
-          <g class="dnode" data-id="valvula" tabindex="0" role="button" aria-label="Válvula de três vias — clique para detalhes">
-            <circle class="dshape" cx="560" cy="320" r="14" fill="var(--amber)" stroke="var(--line)" stroke-width="3"/>
-            <text x="560" y="372" font-family="Space Mono" font-size="13" fill="var(--ink)" text-anchor="middle">VÁLVULA 3 VIAS</text>
-          </g>
-          <!-- sensores -->
-          <g class="dnode" data-id="sensores" tabindex="0" role="button" aria-label="Sensores de temperatura T1 e T2 — clique para detalhes">
-            <circle class="dshape" cx="320" cy="320" r="9" fill="var(--orange)" stroke="var(--line)" stroke-width="2.5"/>
-            <circle class="dshape" cx="700" cy="176" r="9" fill="var(--orange)" stroke="var(--line)" stroke-width="2.5"/>
-            <text x="338" y="300" font-family="Space Mono" font-size="13" fill="var(--orange)" font-weight="bold">T1</text>
-            <text x="716" y="172" font-family="Space Mono" font-size="13" fill="var(--orange)" font-weight="bold">T2</text>
-          </g>
-          <!-- controlador -->
-          <g class="dnode" data-id="controlador" tabindex="0" role="button" aria-label="Controlador — clique para detalhes">
-            <rect class="dshape" x="700" y="272" width="168" height="96" rx="10" fill="var(--paper)" stroke="var(--line)" stroke-width="3"/>
-            <text x="784" y="302" font-family="Space Mono" font-size="14" fill="var(--ink)" text-anchor="middle" font-weight="bold">CONTROLADOR</text>
-            <text x="784" y="322" font-family="Space Mono" font-size="11" fill="var(--ink2)" text-anchor="middle">ΔT = T2 − T1 ≥ 5 °C?</text>
-            <text x="784" y="342" font-family="Space Mono" font-size="11" fill="var(--teal)" text-anchor="middle">→ liga / desliga bomba</text>
-            <line x1="700" y1="300" x2="576" y2="320" stroke="var(--ink2)" stroke-width="2" stroke-dasharray="4 5"/>
-            <line x1="760" y1="272" x2="706" y2="186" stroke="var(--ink2)" stroke-width="2" stroke-dasharray="4 5"/>
-          </g>
-        </svg>
-      </div>
-      <aside class="rv">
-        <div class="card dinfo" aria-live="polite">
-          <h3 id="dTitle">Toque em um componente</h3>
-          <p id="dDesc">Selecione qualquer peça do diagrama ao lado — coletor, bomba, filtro, válvula, sensores, piscina ou controlador — para ver a explicação do seu papel no sistema.</p>
-        </div>
-        <ol class="steps-list">
-          <li><strong>Captação:</strong> as placas escuras absorvem a radiação solar e aquecem a água que passa por seus tubos.</li>
-          <li><strong>Decisão:</strong> o controlador compara T2 (coletor) e T1 (piscina). Só há transferência útil se o coletor estiver bem mais quente.</li>
-          <li><strong>Circulação:</strong> a bomba empurra a água da piscina pelo circuito e a devolve aquecida, já filtrada.</li>
-          <li><strong>Proteção:</strong> à noite a válvula fecha o circuito, evitando que o processo se inverta e esfrie a piscina.</li>
-        </ol>
-      </aside>
-    </div>
-  </div>
-</section>
-
-<!-- ================= 03 ÓPTICA ================= -->
+<!-- ================= 02 LABORATÓRIO DE ÓPTICA (FUSÃO) ================= -->
 <section id="optica">
   <div class="wrap">
     <div class="sec-head rv">
-      <p class="sec-num">03 / TECNOCIÊNCIA E ÓPTICA</p>
-      <h2 class="lm"><span>A luz, as cores e por que o preto vence</span></h2>
-      <p class="lead">Cada escolha de material do coletor é, no fundo, uma escolha sobre o destino dos fótons: <strong>refletir</strong>, <strong>atravessar</strong> ou <strong>ser absorvido</strong>. Só o terceiro caminho vira calor.</p>
+      <p class="sec-num">02 / LABORATÓRIO HÉLIOS</p>
+      <h2 class="lm"><span>A Física por trás do Aquecimento</span></h2>
+      <p class="lead">Interaja com os fenômenos abaixo para entender como dominamos a luz para aquecer a piscina.</p>
     </div>
-    <div class="opt-grid">
-      <aside class="opt-side rv">
-        <div class="card">
-          <p class="mono" style="font-size:.72rem;letter-spacing:.15em;color:var(--ink2)">NESTA SEÇÃO</p>
-          <nav aria-label="Subseções de óptica">
-            <a href="#absorcao" class="on">→ Absorção &amp; cores</a>
-            <a href="#newton">→ Disco de Newton</a>
-            <a href="#camara">→ Câmara Escura</a>
-            <a href="#refracao">→ Refração &amp; efeito estufa</a>
-          </nav>
-        </div>
-      </aside>
 
-      <div>
-        <!-- Absorção -->
-        <article class="opt-block card rv" id="absorcao">
-          <h3>Teste de materiais: quem absorve mais luz?<span class="tag">INTERATIVO</span></h3>
-          <p>Quando a luz branca do sol atinge uma superfície, parte é <strong>refletida</strong>, parte é <strong>absorvida</strong> (convertida em energia térmica) e parte pode ser <strong>transmitida</strong>. A cor que enxergamos é justamente a faixa do espectro que o material <em>devolve</em> aos nossos olhos. Escolha um material e veja o resultado:</p>
-          <div class="mat-chips" id="matChips" role="group" aria-label="Seleção de materiais para teste de absorção"></div>
-          <p class="mono" style="font-size:.72rem;letter-spacing:.1em">ABSORÇÃO <output id="absVal" for="matChips">95%</output></p>
-          <div class="bar"><i class="b-abs" id="barAbs" style="width:95%"></i></div>
-          <p class="mono" style="font-size:.72rem;letter-spacing:.1em">REFLEXÃO <output id="reflVal">4%</output></p>
-          <div class="bar"><i class="b-ref" id="barRefl" style="width:4%"></i></div>
-          <p class="verdict" id="matVerdict" aria-live="polite"></p>
-        </article>
-
-        <!-- Disco de Newton -->
-        <article class="opt-block card rv" id="newton">
-          <h3>Disco de Newton: a prova de que a luz branca é colorida<span class="tag">INTERATIVO</span></h3>
-          <div class="newton-lab">
-            <div class="disk-stage">
-              <div class="disk" id="newtonDisk" role="img" aria-label="Disco de Newton dividido em sete setores coloridos do espectro"></div>
-              <div class="disk-blend" id="newtonBlend" aria-hidden="true"></div>
-              <div class="disk-hub" aria-hidden="true"></div>
-            </div>
-            <div>
-              <p>Em 1666, Newton usou um prisma para mostrar que a luz branca é a <strong>soma de todas as cores</strong>. Girando este disco — vermelho, laranja, amarelo, verde, azul, anil e violeta — a persistência da visão soma as cores e percebemos <strong>branco</strong>.</p>
-              <div class="range-row">
-                <label for="newtonSpeed" class="mono" style="font-size:.75rem">VELOCIDADE</label>
-                <input type="range" id="newtonSpeed" min="0" max="10" step="0.5" value="0" aria-describedby="newtonLabel">
-              </div>
-              <p class="verdict" id="newtonLabel" aria-live="polite">Parado — sete cores nítidas.</p>
-              <button class="btn" id="btnSpinFast" style="margin-top:.9rem">⤾ Girar rápido!</button>
-              <p style="margin-top:1rem;font-size:.92rem;color:var(--ink2)"><strong>A ponte com o projeto:</strong> o coletor faz o caminho inverso do disco. Em vez de reunir as cores e devolvê-las como luz branca, a placa preta <em>captura todas elas</em> — do vermelho ao violeta — e transforma cada faixa do espectro em calor. Por isso superfícies brancas ou espelhadas são péssimas para aquecer: elas “devolvem” o disco inteiro.</p>
-            </div>
-          </div>
-        </article>
-
-        <!-- Câmara escura -->
-        <article class="opt-block card rv" id="camara">
-          <h3>Câmara Escura: a geometria dos raios<span class="tag">INTERATIVO</span></h3>
-          <p>A luz se propaga em <strong>linha reta</strong>. Numa caixa fechada com um pequeno furo, cada ponto do objeto projeta um ponto correspondente do lado de dentro — e a imagem sai <strong>invertida</strong>. É o princípio da fotografia… e da medição segura do sol. Aproxime ou afaste a vela e observe:</p>
-          <div class="cam-stage" style="margin-top:1rem">
-            <svg id="camSvg" viewBox="0 0 720 320" role="img" aria-label="Demonstração interativa de uma câmara escura: uma vela à esquerda projeta uma imagem invertida dentro da caixa à direita">
-              <rect x="392" y="30" width="300" height="260" fill="#14262c" stroke="var(--line)" stroke-width="3" rx="6"/>
-              <rect x="386" y="30" width="10" height="118" fill="var(--paper)" stroke="var(--line)" stroke-width="2"/>
-              <rect x="386" y="182" width="10" height="108" fill="var(--paper)" stroke="var(--line)" stroke-width="2"/>
-              <circle id="camRayDot" cx="392" cy="165" r="4" fill="var(--amber)"/>
-              <line id="camRay1" x1="120" y1="95" x2="640" y2="235" stroke="var(--amber)" stroke-width="2.5"/>
-              <line id="camRay2" x1="120" y1="165" x2="640" y2="165" stroke="var(--amber)" stroke-width="2.5" opacity=".6"/>
-              <g id="camObj">
-                <rect x="-8" y="-70" width="16" height="70" rx="3" fill="#f0e6d2" stroke="var(--line)" stroke-width="2"/>
-                <path d="M0 -92 C 10 -80 8 -72 0 -70 C -8 -72 -10 -80 0 -92" fill="var(--orange)" stroke="var(--amber)" stroke-width="2"/>
-              </g>
-              <g id="camImg">
-                <rect x="-6" y="0" width="12" height="52" rx="3" fill="#f0e6d2" opacity=".9"/>
-                <path d="M0 66 C 8 58 6 52 0 52 C -6 52 -8 58 0 66" fill="var(--orange)" opacity=".9"/>
-              </g>
-              <text x="30" y="310" font-family="Space Mono" font-size="13" fill="var(--ink)">objeto (vela · 30 cm)</text>
-              <text x="470" y="310" font-family="Space Mono" font-size="13" fill="var(--ink)">imagem invertida dentro da câmara</text>
-            </svg>
-            <div class="range-row" style="margin-top:.8rem">
-              <label for="camDist" class="mono" style="font-size:.75rem">DISTÂNCIA DO OBJETO</label>
-              <input type="range" id="camDist" min="0.8" max="3" step="0.1" value="1.6">
-            </div>
-            <p class="formula" id="camReadout">i = o · (dᵢ / dₒ)</p>
-            <p style="margin-top:1rem;font-size:.92rem;color:var(--ink2)"><strong>A ponte com o projeto:</strong> entender que os raios viajam em linha reta é o que nos permite calcular o <strong>ângulo de inclinação dos coletores</strong> (≈ latitude local) para que os raios incidam o mais próximo possível da perpendicular — e o espaçamento entre fileiras de placas, para que uma não faça sombra na outra. A mesma geometria da câmara escura dimensiona nossa usina solar.</p>
-          </div>
-        </article>
-
-        <!-- Refração -->
-        <article class="opt-block card rv" id="refracao">
-          <h3>Refração &amp; efeito estufa: a tampa de vidro<span class="tag">CONCEITO</span></h3>
-          <p>Ao passar do ar para o vidro, a luz <strong>refrata</strong> — muda de velocidade e de direção (Lei de Snell). Um vidro de baixo teor de ferro deixa atravessar cerca de <strong>90% da radiação solar</strong> (alta transmitância). Essa luz chega à placa preta, que aquece e reemite energia como <strong>infravermelho de onda longa</strong>. O detalhe óptico decisivo: o vidro é praticamente <em>opaco</em> a esse infravermelho. A energia entra fácil, mas não consegue sair — o <strong>efeito estufa</strong> que eleva a temperatura do coletor em 15–25 °C além da placa descoberta.</p>
-          <p style="margin-top:.8rem">Combinamos então os três fenômenos: <strong>máxima absorção</strong> (placa preta seletiva), <strong>mínima reflexão</strong> (inclinação correta dos raios) e <strong>refração controlada</strong> (tampa de vidro que aprisiona o calor).</p>
-        </article>
+    <div class="card rv">
+      <div class="opt-tabs" role="tablist">
+        <button class="opt-tab active" role="tab" aria-selected="true" data-tab="tab1">1. O Espectro</button>
+        <button class="opt-tab" role="tab" aria-selected="false" data-tab="tab2">2. Dispersão</button>
+        <button class="opt-tab" role="tab" aria-selected="false" data-tab="tab3">3. Difração</button>
+        <button class="opt-tab" role="tab" aria-selected="false" data-tab="tab4">4. O Encontro (CD)</button>
+        <button class="opt-tab" role="tab" aria-selected="false" data-tab="tab5">5. Desafio da Piscina</button>
       </div>
+
+      <!-- TAB 1: ESPECTRO -->
+      <div id="tab1" class="opt-content active">
+        <h3>De onde vêm as cores (e o calor)?</h3>
+        <p>A luz branca é uma ilusão. Ela carrega todo o espectro, incluindo o <strong>infravermelho</strong> (calor invisível). Arraste para ver:</p>
+        <div class="lab-stage">
+          <span class="hint">ARRASTE</span>
+          <svg class="scene" viewBox="0 0 900 150" role="img" aria-label="Feixe de luz mudando de cor">
+            <rect x="30" y="50" width="90" height="50" rx="10" fill="#1a2a4a" stroke="#3b537f"/>
+            <polygon id="beamSpectrum" class="rayline" points="120,65 880,20 880,130 120,85" fill="#ffffff" opacity=".85"/>
+          </svg>
+          <input type="range" id="wlSlider" min="380" max="750" value="700" step="1">
+          <p class="mono" id="wlRead" style="font-size:.9rem;text-align:center">λ = 700 nm · 🔴 Vermelho (próximo ao Infravermelho térmico)</p>
+        </div>
+        <p style="margin-top:1rem;color:var(--ink2)"><strong>A ponte com o projeto:</strong> Para aquecer a piscina, não queremos separar essas cores. Queremos um material que as <em>absorva todas</em>, especialmente as de maior comprimento de onda (vermelho/infravermelho), convertendo-as em energia térmica.</p>
+      </div>
+
+      <!-- TAB 2: DISPERSÃO -->
+      <div id="tab2" class="opt-content">
+        <h3>Dispersão: A Chave que Revela o Espectro</h3>
+        <p>O prisma separa a luz porque cada cor (comprimento de onda) desvia em um ângulo diferente. Arraste o prisma e ative a dispersão:</p>
+        <div class="lab-stage">
+          <span class="hint">⠿ ARRASTE O PRISMA</span>
+          <svg class="scene" id="prismSvg" viewBox="0 0 900 300" role="img" aria-label="Prisma separando a luz">
+            <line id="beamIn" class="rayline" x1="50" y1="150" x2="400" y2="150" stroke="#ffffff" stroke-width="4"/>
+            <g id="raysG" style="display:none"></g>
+            <line id="beamOut" class="rayline" x1="450" y1="150" x2="850" y2="160" stroke="#ffffff" stroke-width="4"/>
+            <g id="prismG" class="draggable" tabindex="0" role="button" aria-label="Prisma">
+              <polygon id="prismPoly" points="400,100 450,200 350,200" fill="rgba(56,163,255,.2)" stroke="#38a3ff" stroke-width="3"/>
+            </g>
+          </svg>
+          <button class="btn" id="btnDispers" style="margin-top:1rem;font-size:.75rem;padding:.6rem 1rem">[ ATIVAR DISPERSÃO ]</button>
+          <div class="fb" id="p2fb" style="margin-top:1rem">Ative para ver como a luz branca se separa. Isso prova que ela é composta por várias energias diferentes.</div>
+        </div>
+      </div>
+
+      <!-- TAB 3: DIFRAÇÃO -->
+      <div id="tab3" class="opt-content">
+        <h3>Difração: A Luz Contorna Obstáculos</h3>
+        <p>Quando a luz passa por uma fenda pequena, ela se espalha como uma onda. Controle o tamanho da fenda:</p>
+        <div class="lab-stage">
+          <span class="hint">FENDA ↕</span>
+          <canvas id="slitCanvas" height="250" aria-label="Simulação de difração em fenda única"></canvas>
+          <label class="mono" style="font-size:.72rem;display:block;margin-top:.5rem">PEQUENA ─────────── GRANDE</label>
+          <input type="range" class="plain" id="slitSlider" min="8" max="150" value="60">
+          <p class="mono" id="slitRead" style="font-size:.85rem;text-align:center;margin-top:.5rem">Fenda média — espalhamento moderado.</p>
+        </div>
+        <p style="margin-top:1rem;color:var(--ink2)"><strong>A ponte com o projeto:</strong> Em microescala, as superfícies dos coletores solares podem ter texturas que usam a difração para "aprisionar" a luz, fazendo-a ricochetear internamente até ser totalmente absorvida, em vez de refletida.</p>
+      </div>
+
+      <!-- TAB 4: CD -->
+      <div id="tab4" class="opt-content">
+        <h3>O Encontro dos Fenômenos: O CD</h3>
+        <p>Aqui, difração e dispersão trabalham juntas! Arraste o sol ☀️ e clique no CD:</p>
+        <div class="lab-stage">
+          <span class="hint">⠿ ARRASTE O ☀️</span>
+          <div id="cdArea">
+            <div id="cdRays" aria-hidden="true"></div>
+            <div id="cdDisc" role="button" tabindex="0" aria-label="CD virtual"></div>
+            <div id="cdLight" role="button" tabindex="0" aria-label="Fonte de luz">☀️</div>
+          </div>
+          <button class="btn" id="btnCdWhy" style="margin-top:1rem;font-size:.75rem;padding:.6rem 1rem">🌈 DESVENDAR O SEGREDO</button>
+          <div class="fb" id="cdFb" style="display:none"></div>
+        </div>
+      </div>
+
+      <!-- TAB 5: DESAFIO -->
+      <div id="tab5" class="opt-content">
+        <h3>Desafio Final: A Solução HÉLIOS</h3>
+        <p>Monte a sequência lógica de como o conhecimento da óptica resolve o aquecimento da piscina:</p>
+        <div class="lab-stage">
+          <p style="font-weight:700;margin-bottom:1rem">Como transformamos a luz em calor para a piscina?</p>
+          <div class="seq-slots" id="seqSlots"></div>
+          <div class="pool-btns" id="seqPool"></div>
+          <div class="fb" id="seqFb" style="display:none"></div>
+        </div>
+      </div>
+
     </div>
   </div>
 </section>
 
-<!-- ================= 04 ROBÓTICA ================= -->
+<!-- ================= 03 ROBÓTICA ================= -->
 <section id="robotica">
   <div class="wrap">
     <div class="sec-head rv">
-      <p class="sec-num">04 / ROBÓTICA E PROGRAMAÇÃO</p>
-      <h2 class="lm"><span>Sentir, decidir, agir — o ciclo da automação</span></h2>
-      <p class="lead">Sensores medem o mundo, o controlador aplica a lógica e os atuadores transformam decisão em movimento. Abaixo, o hardware, o fluxograma executável e o pseudocódigo do sistema.</p>
+      <p class="sec-num">03 / ROBÓTICA E LÓGICA</p>
+      <h2 class="lm"><span>Sentir, decidir, agir</span></h2>
     </div>
-
     <div class="bento rv">
-      <div class="hw"><span class="hw-tag">SENSOR</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3v10a4 4 0 1 0 2 0V3z"/><circle cx="12" cy="17" r="2" fill="currentColor"/></svg>
-        <h3>DS18B20 à prova d’água ×2</h3>
-        <p>Medem T1 (saída da piscina) e T2 (coletor) com precisão de ±0,5 °C. É a diferença entre eles (ΔT) que comanda tudo.</p></div>
-      <div class="hw"><span class="hw-tag">SENSOR</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v3M12 19v3M2 12h3M19 12h3M4.9 4.9l2.1 2.1M17 17l2.1 2.1M19.1 4.9L17 7M7 17l-2.1 2.1"/></svg>
-        <h3>LDR + irradiância</h3>
-        <p>Detector de luminosidade que identifica dia/noite e nuvens pesadas.</p></div>
-      <div class="hw"><span class="hw-tag">SENSOR</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M12 3c4 5 6 8 6 11a6 6 0 1 1-12 0c0-3 2-6 6-11z"/></svg>
-        <h3> Sensor de vazão YF-S201</h3>
-        <p>Confirma se a água está realmente circulando; protege a bomba contra funcionamento a seco.</p></div>
-      <div class="hw act"><span class="hw-tag">ATUADOR</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 3v6l4 3"/></svg>
-        <h3>Bomba de circulação</h3>
-        <p>O “coração” do sistema: move a água da piscina até os coletores e de volta. Ligada apenas quando ΔT ≥ 5 °C — cada acionamento desperdiçado é energia jogada fora.</p></div>
-      <div class="hw act"><span class="hw-tag">ATUADOR</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M4 12h16M12 4v16"/><circle cx="12" cy="12" r="3" fill="currentColor"/></svg>
-        <h3>Válvula de 3 vias</h3>
-        <p>Desvia ou bloqueia o circuito — fecha à noite contra o termossifão reverso.</p></div>
-      <div class="hw act"><span class="hw-tag">ATUADOR</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="4" y="6" width="16" height="12" rx="2"/><path d="M8 6V3M16 6V3M8 21v-3M16 21v-3"/></svg>
-        <h3>Módulo relé + sinalização</h3>
-        <p>Chaveia a bomba com segurança elétrica; LEDs e buzzer indicam o estado para a equipe de manutenção.</p></div>
-      <div class="hw"><span class="hw-tag">CÉREBRO</span>
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="5" y="5" width="14" height="14" rx="2"/><path d="M9 9h6v6H9z"/></svg>
-        <h3>Microcontrolador (Arduino)</h3>
-        <p>Lê os sensores a cada ciclo, executa a lógica com histerese e registra os dados exibidos neste site.</p></div>
+      <div class="hw"><span class="hw-tag">SENSOR</span><h3>DS18B20 ×2</h3><p>Medem T1 (piscina) e T2 (coletor). A diferença ΔT comanda tudo.</p></div>
+      <div class="hw"><span class="hw-tag">SENSOR</span><h3>LDR / Irradiância</h3><p>Identifica dia/noite e nuvens pesadas para proteger o sistema.</p></div>
+      <div class="hw"><span class="hw-tag">ATUADOR</span><h3>Bomba de Circulação</h3><p>Só liga quando ΔT ≥ 5 °C. Ligar sem calor disponível desperdiça energia.</p></div>
+      <div class="hw"><span class="hw-tag">CÉREBRO</span><h3>Microcontrolador</h3><p>Lê sensores, aplica lógica com histerese e registra dados para este site.</p></div>
     </div>
 
-    <div class="flow-wrap">
-      <div class="rv">
-        <h3 style="margin-bottom:1.2rem">Fluxograma de controle<span class="mono" style="font-size:.7rem;color:var(--orange);margin-left:.7rem">EXECUTÁVEL</span></h3>
-        <div class="flow" id="flowChart" aria-label="Fluxograma da lógica de controle">
-          <div class="fstep" id="fs1">LER SENSORES · T1 piscina · T2 coletor · luz</div>
-          <div class="farrow" aria-hidden="true">▼</div>
-          <div class="fstep" id="fs2">CALCULAR ΔT = T2 − T1</div>
-          <div class="farrow" aria-hidden="true">▼</div>
-          <div class="fstep decision" id="fs3">ΔT ≥ 5 °C ?</div>
-          <div class="farrow" aria-hidden="true">▼</div>
-          <div class="fbranch">
-            <div class="fstep" id="fsY"><span class="fbranch-label">SIM</span>LIGAR BOMBA ◉ colher calor</div>
-            <div class="fstep" id="fsN"><span class="fbranch-label">NÃO</span>DESLIGAR BOMBA ○ poupar energia</div>
-          </div>
-          <div class="farrow" aria-hidden="true">▼</div>
-          <div class="fstep" id="fs6">PROTEÇÕES · T2 &gt; 65 °C? noite? → fechar válvula</div>
-          <div class="farrow" aria-hidden="true">▼</div>
-          <div class="fstep" id="fs7">REGISTRAR DADOS → painel do site · aguardar 30 s ↺</div>
+    <div class="card rv">
+      <h3 style="margin-bottom:1.2rem">Bancada de Testes Interativa</h3>
+      <div class="bench">
+        <div>
+          <label class="mono" style="font-size:.72rem">TEMP. PISCINA (T1) <output id="bPoolOut">28 °C</output></label>
+          <input type="range" id="bPool" min="20" max="38" value="28" step="0.5">
+          <label class="mono" style="font-size:.72rem;display:block;margin-top:.9rem">TEMP. COLETOR (T2) <output id="bCollOut">41 °C</output></label>
+          <input type="range" id="bColl" min="20" max="75" value="41" step="0.5">
+          <p style="font-size:.85rem;color:var(--ink2);margin-top:1rem">ΔT atual: <strong class="mono" id="bDelta">13,0 °C</strong>. A histerese exige ΔT ≥ 5 °C para ligar e só desliga quando ΔT ≤ 1 °C.</p>
         </div>
-        <div class="sim-btns" style="margin-top:1.4rem">
-          <button class="btn" id="btnRunFlow">▶ Executar lógica</button>
-        </div>
-        <p class="visually-hidden" id="flowLive" aria-live="polite"></p>
-      </div>
-
-      <div class="rv">
-        <h3 style="margin-bottom:1.2rem">Pseudocódigo do controlador</h3>
-<pre class="code" aria-label="Pseudocódigo da lógica de controle"><code><span class="kw">loop</span>():
-    T_piscina = ler(sensor_A)        <span class="cm">// DS18B20 na saída da piscina</span>
-    T_coletor = ler(sensor_B)        <span class="cm">// DS18B20 no coletor</span>
-    delta     = T_coletor - T_piscina
-
-    <span class="kw">se</span> delta &gt;= 5 <span class="kw">e</span> T_coletor &lt; 65:
-        ligar(BOMBA)                 <span class="cm">// há calor útil para colher</span>
-    <span class="kw">senão se</span> delta &lt;= 1:
-        desligar(BOMBA)              <span class="cm">// histerese evita liga-desliga</span>
-
-    <span class="kw">se</span> noite() <span class="kw">ou</span> T_coletor &lt; T_piscina:
-        fechar(VALVULA)              <span class="cm">// evita termossifão reverso</span>
-
-    registrar(dados)                 <span class="cm">// alimenta o painel deste site</span>
-    esperar(30 s)</code></pre>
-
-        <div class="bench card">
-          <div>
-            <h3 style="font-size:1.05rem;margin-bottom:.9rem">Bancada de testes — decida você mesmo</h3>
-            <label class="mono" for="bPool" style="font-size:.72rem;letter-spacing:.1em">TEMP. DA PISCINA <output id="bPoolOut">28 °C</output></label>
-            <input type="range" id="bPool" min="20" max="38" value="28" step="0.5">
-            <label class="mono" for="bColl" style="font-size:.72rem;letter-spacing:.1em;display:block;margin-top:.9rem">TEMP. DO COLETOR <output id="bCollOut">41 °C</output></label>
-            <input type="range" id="bColl" min="20" max="75" value="41" step="0.5">
-            <p style="font-size:.85rem;color:var(--ink2);margin-top:1rem">ΔT atual: <strong class="mono" id="bDelta">13,0 °C</strong>. A histerese exige ΔT ≥ 5 °C para ligar e só desliga quando ΔT ≤ 1 °C — assim a bomba não fica “piscando” em dias de nuvens passageiras.</p>
-          </div>
-          <div class="lamp on" id="bLamp" role="status">● BOMBA LIGADA</div>
-          <p class="visually-hidden" id="benchLive" aria-live="polite"></p>
-        </div>
+        <div class="lamp on" id="bLamp" role="status">● BOMBA LIGADA</div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================= 05 SIMULADOR ================= -->
+<!-- ================= 04 SIMULADOR ================= -->
 <section id="simulador">
   <div class="wrap">
     <div class="sec-head rv">
-      <p class="sec-num">05 / SIMULADOR TÉRMICO</p>
-      <h2 class="lm" style="color:#fff"><span>Um dia inteiro de sol, em segundos</span></h2>
-      <p class="lead">Configure o sistema e acompanhe 24 horas simuladas: irradiância ao longo do dia, bomba automática, perdas por evaporação e o efeito da capa térmica. Modelo didático simplificado.</p>
+      <p class="sec-num">04 / SIMULADOR TÉRMICO</p>
+      <h2 class="lm"><span>Um dia de sol, em segundos</span></h2>
     </div>
     <div class="sim-grid">
       <div class="sim-controls rv">
-        <label for="sPlates">Placas coletoras <output id="sPlatesOut">6</output></label>
+        <label>Placas coletoras <output id="sPlatesOut">6</output></label>
         <input type="range" id="sPlates" min="0" max="12" value="6">
-        <label for="sCloud">Nebulosidade <output id="sCloudOut">10%</output></label>
+        <label>Nebulosidade <output id="sCloudOut">10%</output></label>
         <input type="range" id="sCloud" min="0" max="80" value="10">
-        <div class="check-row"><input type="checkbox" id="sCover" checked><label for="sCover" style="margin:0">Capa térmica sobre a piscina</label></div>
+        <div class="check-row"><input type="checkbox" id="sCover" checked><label for="sCover" style="margin:0">Capa térmica na piscina</label></div>
         <div class="check-row"><input type="checkbox" id="sAuto" checked><label for="sAuto" style="margin:0">Bomba automática (ΔT ≥ 5 °C)</label></div>
-        <label for="sSpeed">Velocidade da simulação</label>
-        <select id="sSpeed" class="mono" style="width:100%;padding:.5rem;border:2px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);font-size:.85rem">
-          <option value="1">1× — 10 min sim. por passo</option>
-          <option value="2" selected>2× — mais rápido</option>
-          <option value="4">4× — dia em segundos</option>
+        <label>Velocidade</label>
+        <select id="sSpeed" class="mono" style="width:100%;padding:.5rem;border:2px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink)">
+          <option value="1">1× (Lento)</option>
+          <option value="2" selected>2× (Normal)</option>
+          <option value="4">4× (Rápido)</option>
         </select>
-        <div class="sim-btns">
-          <button class="btn" id="btnPlay">▶ Iniciar</button>
-          <button class="btn ghost" id="btnReset">↺ Reiniciar</button>
+        <div style="display:flex;gap:.6rem;margin-top:1.2rem">
+          <button class="btn" id="btnPlay" style="flex:1">▶ Iniciar</button>
+          <button class="btn ghost" id="btnReset" style="flex:1">↺</button>
         </div>
       </div>
       <div class="sim-stage rv">
         <div class="sim-top">
-          <div>
-            <span class="mono" style="font-size:.68rem;letter-spacing:.15em;opacity:.8">ÁGUA DA PISCINA</span>
-            <div class="sim-temp"><span id="simTemp">24.0</span>°C</div>
-          </div>
+          <div><span class="mono" style="font-size:.68rem;letter-spacing:.15em;color:var(--ink2)">ÁGUA DA PISCINA</span>
+          <div class="sim-temp"><span id="simTemp">24.0</span>°C</div></div>
           <div style="text-align:right">
             <div class="sim-clock" id="simClock">Dia 1 · 06:00</div>
             <div class="sim-state" id="simState" style="margin-top:.5rem">BOMBA EM ESPERA</div>
           </div>
         </div>
-        <svg viewBox="0 0 560 130" role="img" aria-label="Representação da piscina: a cor da água esquenta do azul frio ao laranja quente conforme a temperatura" style="width:100%;height:auto">
-          <rect x="6" y="10" width="548" height="112" rx="18" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="3"/>
-          <rect id="poolWater" x="12" y="16" width="536" height="100" rx="14" fill="hsl(205,70%,52%)"/>
-          <path d="M30 46 q20 -12 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0" fill="none" stroke="rgba(255,255,255,.55)" stroke-width="3"/>
-          <path d="M30 76 q20 -12 40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0 t40 0" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="3"/>
-          <g id="poolSteam" opacity="0" stroke="#fff" stroke-width="2.5" fill="none" stroke-linecap="round">
-            <path d="M200 30 c6 -8 -6 -12 0 -20"/><path d="M280 34 c6 -8 -6 -12 0 -20"/><path d="M360 30 c6 -8 -6 -12 0 -20"/>
-          </g>
-        </svg>
-        <canvas id="simChart" role="img" aria-label="Gráfico da temperatura da água ao longo do tempo simulado"></canvas>
+        <canvas id="simChart" role="img" aria-label="Gráfico da temperatura"></canvas>
         <div class="sim-stats">
-          <div><b><span id="sKwh">0.0</span> kWh</b><span>energia elétrica poupada</span></div>
-          <div><b><span id="sCo2">0.0</span> kg</b><span>de CO₂ evitados</span></div>
-          <div><b>R$ <span id="sMoney">0</span></b><span>economia acumulada</span></div>
+          <div><b><span id="sKwh">0.0</span> kWh</b><span>poupados</span></div>
+          <div><b><span id="sCo2">0.0</span> kg</b><span>CO₂ evitados</span></div>
+          <div><b>R$ <span id="sMoney">0</span></b><span>economia</span></div>
         </div>
-        <p class="visually-hidden" id="simLive" aria-live="polite"></p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================= 06 ACESSIBILIDADE ================= -->
+<!-- ================= 05 ACESSIBILIDADE ================= -->
 <section id="acessibilidade">
   <div class="wrap">
     <div class="sec-head rv">
-      <p class="sec-num">06 / ACESSIBILIDADE DIGITAL</p>
-      <h2 class="lm"><span>Um site que todo mundo consegue usar</span></h2>
-      <p class="lead">Acessibilidade não é um anexo do projeto — é requisito desde a primeira linha de código. Este site implementa, na prática, tudo o que defende.</p>
+      <p class="sec-num">05 / ACESSIBILIDADE</p>
+      <h2 class="lm"><span>Requisito, não anexo</span></h2>
     </div>
-    <div class="acess-grid">
-      <div class="rv">
-        <ul class="check-list">
-          <li><strong>Contraste AA:</strong> paleta testada para contraste mínimo 4,5:1 entre texto e fundo — e um <strong>modo de alto contraste</strong> ativável no topo da página.</li>
-          <li><strong>Tipografia legível:</strong> corpo do texto em <em>Atkinson Hyperlegible</em>, fonte criada pelo Braille Institute para leitores com baixa visão; ajuste de tamanho A− / A+ funcional.</li>
-          <li><strong>Textos alternativos:</strong> todas as imagens, diagramas e gráficos possuem <code>alt</code>/descrições significativas para leitores de tela.</li>
-          <li><strong>Navegação por teclado:</strong> todos os elementos interativos (diagrama, sliders, botões) são alcançáveis via Tab, com foco sempre visível; link “pular para o conteúdo” no início.</li>
-          <li><strong>HTML semântico + ARIA:</strong> cabeçalhos hierárquicos, regiões <code>main/nav/section</code>, <code>aria-live</code> para anunciar resultados dos simuladores.</li>
-          <li><strong>Movimento sob controle:</strong> animações respeitam <code>prefers-reduced-motion</code> e podem ser pausadas pelo botão ⏸ do topo.</li>
-        </ul>
-      </div>
-      <aside class="rv">
-        <div class="card">
-          <h3 style="font-size:1.1rem;margin-bottom:.7rem">Demonstração: por que contraste importa?</h3>
-          <p style="font-size:.9rem;color:var(--ink2)">O texto abaixo alterna entre baixo e alto contraste. Perceba o esforço de leitura:</p>
-          <div class="demo-box good" id="demoBox">A luz que aquece a piscina deve caber nos olhos de quem lê este site.</div>
-          <button class="btn ghost" id="btnContrastDemo" style="margin-top:1rem" aria-pressed="false">Alternar contraste do exemplo</button>
-          <figure class="kb" style="margin-top:1.6rem;aspect-ratio:16/10">
-            <img src="https://picsum.photos/seed/inclusao-natacao-acessivel/800/500" alt="Duas pessoas em atividade aquática adaptada dentro de uma piscina, uma delas com apoio do instrutor" width="800" height="500" loading="lazy">
-          </figure>
-          <p style="font-size:.85rem;color:var(--ink2);margin-top:.8rem">Experimente agora mesmo os botões <strong>A− A+ ◐ ⏸</strong> no topo da página — todos funcionam de verdade neste site.</p>
-        </div>
-      </aside>
+    <div class="card rv" style="max-width:800px;margin:0 auto">
+      <ul class="check-list">
+        <li><strong>Contraste AA:</strong> Paleta testada. Use o botão ◐ no topo para o modo de alto contraste.</li>
+        <li><strong>Tipografia:</strong> Space Grotesk e Space Mono, otimizadas para legibilidade. Use A− / A+ no topo.</li>
+        <li><strong>Navegação por teclado:</strong> Todos os elementos interativos (abas, sliders, diagramas) são focáveis via Tab.</li>
+        <li><strong>Movimento sob controle:</strong> Respeita `prefers-reduced-motion` e pode ser pausado com o botão ⏸.</li>
+        <li><strong>ARIA Live:</strong> Leitores de tela anunciam mudanças nos simuladores e resultados de desafios.</li>
+      </ul>
     </div>
   </div>
 </section>
 
-<!-- ================= 07 IMPACTO ================= -->
-<section id="impacto">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <p class="sec-num">07 / INOVAÇÃO E IMPACTO SOCIAL</p>
-      <h2 class="lm"><span>Sustentabilidade que se mede — e inclusão que se sente</span></h2>
-    </div>
-    <div class="counters rv">
-      <div class="counter"><b><span class="count" data-to="11500">0</span></b><span>kWh/ano poupados da rede elétrica (estimativa)</span></div>
-      <div class="counter"><b><span class="count" data-to="1200">0</span> kg</b><span>de CO₂e evitados por ano</span></div>
-      <div class="counter"><b><span class="count" data-to="310">0</span></b><span>estudantes beneficiados, incluindo turmas de hidroterapia adaptada</span></div>
-      <div class="counter"><b>R$ <span class="count" data-to="0">0</span></b><span>custo de combustível: o sol não envia fatura</span></div>
-    </div>
-    <div class="impact-cols rv">
-      <div class="card">
-        <h3 style="font-size:1.15rem;margin-bottom:.7rem">🌱 Dimensão ambiental</h3>
-        <p>Cada kWh deslocado do aquecimento elétrico para o sol reduz emissões indiretas e a demanda nos horários de pico. A capa térmica — peça simples e barata — ataca os 70% de perda por evaporação, multiplicando o efeito dos coletores. O projeto foi desenhado com materiais de baixo custo e manutenção simples, para ser <strong>replicável por outras escolas</strong>.</p>
-      </div>
-      <div class="card">
-        <h3 style="font-size:1.15rem;margin-bottom:.7rem">🤝 Dimensão social</h3>
-        <p>Água aquecida com estabilidade garante as atividades de <strong>hidroterapia e natação adaptada</strong> o ano inteiro. O painel de dados, aberto à comunidade escolar, transforma a piscina num <strong>laboratório vivo</strong> de física e programação. E este site leva a mesma inclusão para o digital: informação científica acessível a todos os perfis de usuário.</p>
-        <ul class="ods" aria-label="Objetivos de Desenvolvimento Sustentável contemplados">
-          <li>ODS 4 · Educação de Qualidade</li>
-          <li>ODS 7 · Energia Limpa</li>
-          <li>ODS 10 · Redução das Desigualdades</li>
-          <li>ODS 13 · Ação Climática</li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ================= 08 EQUIPE ================= -->
+<!-- ================= 06 EQUIPE ================= -->
 <section id="equipe">
   <div class="wrap">
     <div class="sec-head rv">
-      <p class="sec-num">08 / EQUIPE E PERCURSO</p>
-      <h2 class="lm"><span>Quem constrói o HÉLIOS·CEP</span></h2>
+      <p class="sec-num">06 / EQUIPE HÉLIOS</p>
+      <h2 class="lm"><span>Quem constrói o projeto</span></h2>
     </div>
     <div class="team rv">
-      <article class="member"><img src="https://picsum.photos/seed/equipe-ana-optica/400/400" alt="Retrato da estudante Ana Clara, responsável pela óptica" loading="lazy"><h3>Guilherme Effgen</h3><p>Óptica &amp; conteúdo científico</p></article>
-      <article class="member"><img src="https://picsum.photos/seed/equipe-bruno-robotica/400/400" alt="Retrato do estudante Bruno, responsável pela robótica" loading="lazy"><h3>Pedro Frois</h3><p>Robótica &amp; hardware</p></article>
-      <article class="member"><img src="https://picsum.photos/seed/equipe-caio-codigo/400/400" alt="Retrato do estudante Caio, responsável pela programação" loading="lazy"><h3>Davi Goss</h3><p>Programação &amp; dados</p></article>
-      <article class="member"><img src="https://picsum.photos/seed/equipe-dandara-design/400/400" alt="Retrato da estudante Dandara, responsável pelo design e acessibilidade" loading="lazy"><h3>Gustavo Rodrigues</h3><p>Design &amp; acessibilidade</p></article>
-      <article class="member"><img src="https://picsum.photos/seed/equipe-prof-orientador/400/400" alt="Retrato do professor orientador do projeto" loading="lazy"><h3>Eduardo França</h3><p>Orientação &amp; mediação</p></article>
+      <article class="member"><img src="https://picsum.photos/seed/ana-optica/400/400" alt="Ana" loading="lazy"><h3>Guilherme Effgen</h3><p>Óptica & Conteúdo</p></article>
+      <article class="member"><img src="https://picsum.photos/seed/bruno-robotica/400/400" alt="Bruno" loading="lazy"><h3>Pedro Frois</h3><p>Robótica & Hardware</p></article>
+      <article class="member"><img src="https://picsum.photos/seed/caio-codigo/400/400" alt="Caio" loading="lazy"><h3>Davi Goss</h3><p>Programação & Dados</p></article>
+      <article class="member"><img src="https://picsum.photos/seed/dandara-design/400/400" alt="Dandara" loading="lazy"><h3>Gustavo Rodrigues</h3><p>Design & Acessibilidade</p></article>
+      <article class="member"><img src="https://picsum.photos/seed/prof-orientador/400/400" alt="Professor" loading="lazy"><h3>Eduardo França</h3><p>Orientação</p></article>
     </div>
-    <h3 style="margin-bottom:1.4rem" class="rv">Linha do tempo do projeto</h3>
-    <ul class="timeline rv">
-      <li><b>1º trimestre · 2026</b>Diagnóstico da piscina, estudos de Óptica (Disco de Newton, câmara escura) e definição do conceito.</li>
-      <li><b>Julho · 2026</b>Dimensionamento dos coletores, montagem do protótipo de controle e primeira versão do site.</li>
-      <li><b>Agosto · 2026</b>Testes do simulador térmico, auditoria de acessibilidade e refinamento do design — <em>estamos aqui</em>.</li>
-      <li><b>Setembro · 2026</b>Apresentação à comunidade escolar e proposta de instalação piloto na piscina do CEP.</li>
-    </ul>
-    <h3 style="margin-bottom:1rem" class="rv">Referências</h3>
-    <ol class="refs rv">
-      <li>NEWTON, I. <em>Opticks</em> (1704) — decomposição da luz branca e o disco de cores.</li>
-      <li>HECHT, E. <em>Óptica</em>. Fundamentos de absorção, reflexão, refração e Lei de Snell.</li>
-      <li>INSTITUTO BRASILEIRO DE GEOGRAFIA — ângulos de inclinação solar por latitude.</li>
-      <li>Arduino Documentation — sensores DS18B20, YF-S201 e módulos relé.</li>
-      <li>W3C. <em>Web Content Accessibility Guidelines (WCAG) 2.1</em>, 2018.</li>
-      <li>BRANNON INSTITUTE. <em>Atkinson Hyperlegible</em> — tipografia para baixa visão.</li>
-    </ol>
   </div>
 </section>
+
 </main>
 
 <!-- ================= RODAPÉ ================= -->
@@ -895,16 +552,16 @@ footer nav a:hover{color:var(--amber)}
   <div class="wrap foot-grid">
     <div>
       <a class="brand" href="#topo"><span class="brand-sun" aria-hidden="true"></span>HÉLIOS<em style="color:var(--aqua)">·CEP</em></a>
-      <p style="max-width:34ch;font-size:.85rem;margin-top:.8rem;opacity:.85">Projeto Integrador 2026 — aquecimento solar autônomo da piscina térmica do CEP. Ciência aberta, energia livre, site para todas as pessoas.</p>
+      <p style="max-width:34ch;font-size:.85rem;margin-top:.8rem;color:var(--ink2)">Projeto Integrador 2026. Ciência aberta, energia livre, site para todas as pessoas.</p>
     </div>
     <nav aria-label="Rodapé">
-      <a href="#desafio">O desafio</a><a href="#solucao">A solução</a><a href="#optica">Óptica aplicada</a><a href="#robotica">Robótica</a><a href="#simulador">Simulador</a><a href="#acessibilidade">Acessibilidade</a><a href="#impacto">Impacto</a><a href="#equipe">Equipe</a>
+      <a href="#desafio">Desafio</a><a href="#optica">Laboratório</a><a href="#robotica">Robótica</a><a href="#simulador">Simulador</a>
     </nav>
-    <a class="btn" href="#topo" style="background:var(--amber)">↑ Voltar ao topo</a>
+    <a class="btn" href="#topo" style="background:var(--amber)">↑ Topo</a>
   </div>
   <div class="wrap foot-fim">
-    <span>© 2026 Equipe HÉLIOS·CEP · Conteúdo educativo livre (CC BY-SA)</span>
-    <span>Feito com HTML + CSS + JavaScript puros, ☀ e um pouco de teimosia.</span>
+    <span>© 2026 Equipe HÉLIOS·CEP · CC BY-SA</span>
+    <span>HTML + CSS + JS puros, ☀ e teimosia.</span>
   </div>
 </footer>
 
@@ -917,9 +574,8 @@ if(nomotion){document.body.classList.add('nomotion');$('#motionBtn').setAttribut
 const motionOK=()=>!nomotion;
 const fmt=(n,d=1)=>n.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
 const hcOn=()=>document.body.classList.contains('hc');
-const sleep=ms=>new Promise(r=>setTimeout(r,ms));
 
-/* ================= ACESSIBILIDADE: TOOLBAR ================= */
+/* ================= ACESSIBILIDADE ================= */
 const scales=[.9,1,1.12,1.28]; let fsIdx=1;
 function applyFont(){document.documentElement.style.fontSize=(100*scales[fsIdx])+'%';}
 $('#fontPlus').addEventListener('click',()=>{fsIdx=Math.min(scales.length-1,fsIdx+1);applyFont();});
@@ -929,20 +585,16 @@ $('#contrastBtn').addEventListener('click',e=>{
   e.currentTarget.setAttribute('aria-pressed',on);
 });
 $('#motionBtn').addEventListener('click',e=>{
-  nomotion=!nomotion;
-  document.body.classList.toggle('nomotion',nomotion);
+  nomotion=!nomotion;document.body.classList.toggle('nomotion',nomotion);
   e.currentTarget.setAttribute('aria-pressed',nomotion);
 });
-
-/* ================= MENU MOBILE ================= */
 const hamb=$('#hambBtn'),nav=$('#mainnav');
 hamb.addEventListener('click',()=>{
-  const open=nav.classList.toggle('open');
-  hamb.setAttribute('aria-expanded',open);
+  const open=nav.classList.toggle('open');hamb.setAttribute('aria-expanded',open);
 });
-nav.addEventListener('click',e=>{ if(e.target.tagName==='A'){nav.classList.remove('open');hamb.setAttribute('aria-expanded','false');} });
+nav.addEventListener('click',e=>{if(e.target.tagName==='A'){nav.classList.remove('open');hamb.setAttribute('aria-expanded','false');}});
 
-/* ================= SCRAMBLE DO TÍTULO ================= */
+/* ================= SCRAMBLE TITLE ================= */
 (function(){
   const el=$('#scrambleTitle'),final=el.dataset.text;
   if(!motionOK()){el.textContent=final;return;}
@@ -953,16 +605,24 @@ nav.addEventListener('click',e=>{ if(e.target.tagName==='A'){nav.classList.remov
   })();
 })();
 
-/* ================= TELEMETRIA DO PAINEL ================= */
+/* ================= SCROLL & REVEAL ================= */
+const bar=$('#progressBar');
+addEventListener('scroll',()=>{requestAnimationFrame(()=>{
+  bar.style.width=(scrollY/(document.documentElement.scrollHeight-innerHeight||1)*100)+'%';
+});},{passive:true});
+const rv=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');rv.unobserve(e.target);}}),{threshold:.12});
+$$('.rv, .lm').forEach(el=>rv.observe(el));
+
+/* ================= TELEMETRIA PAINEL ================= */
 const telem={pool:30.6,coll:46,irr:812,flow:5.4,pump:true,auto:true,hist:[]};
 const spark=$('#spark'),sctx=spark.getContext('2d');
 function drawSpark(){
   const w=spark.width=spark.clientWidth*2,h=spark.height=112;
   sctx.clearRect(0,0,w,h);
-  const data=telem.hist;if(data.length<2)return;
+  if(telem.hist.length<2)return;
   const min=24,max=42;
-  sctx.strokeStyle=hcOn()?'#ffd23f':'#f5a71c';sctx.lineWidth=3;sctx.beginPath();
-  data.forEach((v,i)=>{const x=i/(data.length-1)*w,y=h-(v-min)/(max-min)*h;i?sctx.lineTo(x,y):sctx.moveTo(x,y);});
+  sctx.strokeStyle=hcOn()?'#ffd23f':'#ffe14d';sctx.lineWidth=3;sctx.beginPath();
+  telem.hist.forEach((v,i)=>{const x=i/(telem.hist.length-1)*w,y=h-(v-min)/(max-min)*h;i?sctx.lineTo(x,y):sctx.moveTo(x,y);});
   sctx.stroke();
 }
 function tickTelem(){
@@ -985,115 +645,154 @@ setInterval(tickTelem,2000);tickTelem();
 $('#btnMode').addEventListener('click',()=>{telem.auto=!telem.auto;});
 $('#btnPump').addEventListener('click',()=>{telem.auto=false;telem.pump=!telem.pump;});
 
-/* ================= SCROLL: PROGRESSO + SOL + SPY + REVEAL ================= */
-const bar=$('#progressBar'),sun=$('#sunDot');
-addEventListener('scroll',()=>{requestAnimationFrame(()=>{
-  const p=scrollY/(document.documentElement.scrollHeight-innerHeight||1);
-  bar.style.width=(p*100)+'%';
-  sun.style.left=(6+p*86)+'%';sun.style.top=(88-34*Math.sin(p*Math.PI))+'px';
-});},{passive:true});
-const spy=new IntersectionObserver(es=>es.forEach(e=>{
-  if(e.isIntersecting)$$('.topbar nav a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id));
-}),{rootMargin:'-42% 0px -52% 0px'});
-$$('main section[id]').forEach(s=>spy.observe(s));
-const rv=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');rv.unobserve(e.target);}}),{threshold:.12});
-$$('.rv, .lm').forEach(el=>rv.observe(el));
-
-/* ================= CONTADORES ================= */
-const cnt=new IntersectionObserver(es=>es.forEach(e=>{
-  if(!e.isIntersecting)return;cnt.unobserve(e.target);
-  const el=e.target,to=+el.dataset.to;
-  if(!motionOK()||to===0){el.textContent=to.toLocaleString('pt-BR');return;}
-  const t0=performance.now();
-  (function run(t){const k=Math.min(1,(t-t0)/1500),v=Math.round(to*(1-Math.pow(1-k,3)));
-    el.textContent=v.toLocaleString('pt-BR');if(k<1)requestAnimationFrame(run);})(t0);
-}),{threshold:.6});
-$$('.count').forEach(el=>cnt.observe(el));
-
-/* ================= DIAGRAMA INTERATIVO ================= */
-const dInfo={
-  coletor:['Coletores solares','Chapas metálicas pintadas de preto fosco (alta absorção α ≈ 0,95), cobertas por vidro (efeito estufa) e inclinadas próximo à latitude local para receber os raios o mais perpendicular possível. A água esquenta ao atravessar os tubos internos.'],
-  bomba:['Bomba de circulação','Movimenta a água da piscina até os coletores e de volta. É comandada pelo controlador e só funciona quando existe calor útil disponível — ligá-la sem ΔT suficiente desperdiçaria eletricidade.'],
-  filtro:['Filtro','Retém impurezas da água antes dos coletores, protegendo os tubos finos contra entupimento. Aproveita o mesmo circuito já existente de tratamento da piscina.'],
-  valvula:['Válvula de 3 vias','Direciona o fluxo. À noite, fecha o circuito dos coletores para impedir o termossifão reverso — situação em que a água quente da piscina subiria, esfriaria na placa fria e retornaria, roubando calor.'],
-  sensores:['Sensores T1 e T2','Dois DS18B20 à prova d’água: T1 mede a temperatura na saída da piscina e T2 no coletor. A diferença ΔT = T2 − T1 é o coração da lógica de decisão.'],
-  piscina:['Piscina térmica','O “reservatório” de calor. A capa térmica reduz drasticamente a perda por evaporação (≈ 70% das perdas totais), multiplicando o efeito do aquecimento solar.'],
-  controlador:['Controlador (Arduino)','Lê os sensores a cada ciclo, aplica a lógica com histerese, aciona relé, bomba e válvula e registra os dados que alimentam o painel deste site.']
-};
-$$('.dnode').forEach(n=>{
-  const act=()=>{
-    $$('.dnode').forEach(x=>x.classList.remove('sel'));n.classList.add('sel');
-    const[title,desc]=dInfo[n.dataset.id];
-    $('#dTitle').textContent=title;$('#dDesc').textContent=desc;
-  };
-  n.addEventListener('click',act);
-  n.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();act();}});
-});
-
-/* ================= TESTE DE MATERIAIS ================= */
-const materiais=[
-  {nome:'Chapa preta fosca (tinta seletiva)',abs:95,refl:4,nota:'🏆 Excelente: quase toda a luz vira calor. O padrão ideal para coletores — a tinta seletiva absorve no visível e emite pouco infravermelho.',},
-  {nome:'Galvanizada pintada de preto',abs:88,refl:12,nota:'Muito boa e barata: solução acessível para protótipos escolares, com pequena perda por reflexão difusa.'},
-  {nome:'Alumínio pintado de branco',abs:21,refl:79,nota:'Ruim para aquecer: o branco devolve quase todo o “disco de Newton” — é por isso que telhados brancos refrescam ambientes.'},
-  {nome:'Espelho de vidro prateado',abs:6,refl:94,nota:'Péssimo como absorvedor: reflete praticamente todas as cores. Só seria útil para redirecionar luz a outra placa.'},
-  {nome:'Cobre polido',abs:30,refl:70,nota:'Metálico e refletor: apesar de ótimo condutor térmico, absorve pouco. Polido, devolve boa parte do espectro.'}
-];
-const chipsBox=$('#matChips');
-materiais.forEach((m,i)=>{
-  const b=document.createElement('button');
-  b.textContent=m.nome;b.setAttribute('aria-pressed',i===0);
-  b.addEventListener('click',()=>{
-    chipsBox.querySelectorAll('button').forEach(x=>x.setAttribute('aria-pressed','false'));
-    b.setAttribute('aria-pressed','true');setMat(m);
+/* ================= TABS DO LABORATÓRIO ================= */
+$$('.opt-tab').forEach(tab=>{
+  tab.addEventListener('click',()=>{
+    $$('.opt-tab').forEach(t=>{t.classList.remove('active');t.setAttribute('aria-selected','false');});
+    $$('.opt-content').forEach(c=>c.classList.remove('active'));
+    tab.classList.add('active');tab.setAttribute('aria-selected','true');
+    $('#'+tab.dataset.tab).classList.add('active');
+    if(tab.dataset.tab==='tab3') drawSlit(performance.now());
   });
-  chipsBox.appendChild(b);
 });
-function setMat(m){
-  $('#barAbs').style.width=m.abs+'%';$('#barRefl').style.width=m.refl+'%';
-  $('#absVal').textContent=m.abs+'%';$('#reflVal').textContent=m.refl+'%';
-  $('#matVerdict').innerHTML=`<strong>${m.nome} —</strong> ${m.nota}`;
-}
-setMat(materiais[0]);
 
-/* ================= DISCO DE NEWTON ================= */
-const disk=$('#newtonDisk'),blend=$('#newtonBlend'),nSpeed=$('#newtonSpeed'),nLabel=$('#newtonLabel');
-let diskSpd=0,ang=0;
-function diskLoop(){
-  if(motionOK()){ang=(ang+diskSpd*1.6)%360;disk.style.transform=`rotate(${ang}deg)`;}
-  blend.style.opacity=Math.max(0,Math.min(1,(diskSpd-4.5)/5)).toFixed(2);
-  requestAnimationFrame(diskLoop);
-}
-requestAnimationFrame(diskLoop);
-function diskText(){
-  nLabel.textContent=diskSpd===0?'Parado — sete cores nítidas.':
-    diskSpd<5?`Girando (${diskSpd}×) — as bordas começam a se misturar…`:
-    `Alta rotação (${diskSpd}×): a persistência retiniana soma as cores — vemos BRANCO!`;
-}
-nSpeed.addEventListener('input',()=>{diskSpd=+nSpeed.value;diskText();});
-$('#btnSpinFast').addEventListener('click',()=>{nSpeed.value=10;diskSpd=10;diskText();});
+/* ================= 1. ESPECTRO ================= */
+function wl2rgb(w){let r,g,b;
+  if(w<440){r=(440-w)/60;g=0;b=1}else if(w<490){r=0;g=(w-440)/50;b=1}
+  else if(w<510){r=0;g=1;b=(510-w)/20}else if(w<580){r=(w-510)/70;g=1;b=0}
+  else if(w<645){r=1;g=(645-w)/65;b=0}else{r=1;g=0;b=0}
+  return `rgb(${Math.round(r*255)},${Math.round(g*255)},${Math.round(b*255)})`;}
+$('#wlSlider').addEventListener('input',e=>{
+  const w=+e.target.value, col=wl2rgb(w);
+  $('#beamSpectrum').setAttribute('fill',col);
+  $('#beamSpectrum').style.filter=`drop-shadow(0 0 14px ${col})`;
+  let nome='Vermelho (próximo ao Infravermelho térmico)', emoji='🔴';
+  if(w<450){nome='Violeta';emoji='🟣'}else if(w<500){nome='Azul';emoji='🔵'}
+  else if(w<560){nome='Verde';emoji='🟢'}else if(w<620){nome='Amarelo/Laranja';emoji='🟡'}
+  $('#wlRead').textContent=`λ = ${w} nm · ${emoji} ${nome}`;
+});
 
-/* ================= CÂMARA ESCURA ================= */
-const camDist=$('#camDist'),camObj=$('#camObj'),camImg=$('#camImg'),camR1=$('#camRay1'),camR2=$('#camRay2'),camRead=$('#camReadout');
-const PX=392,PY=165,OBJ_H=70,IMG_X=640;
-function camUpdate(){
-  const d=+camDist.value, doPx=d*88, x=PX-doPx;
-  const hi=OBJ_H*(0.2/d), s=hi/OBJ_H;
-  camObj.setAttribute('transform',`translate(${x},${PY})`);
-  camImg.setAttribute('transform',`translate(${IMG_X+12},${PY}) scale(${s},${s})`);
-  const yTop=PY-OBJ_H, yAfter=PY+OBJ_H*((IMG_X-PX)/doPx);
-  camR1.setAttribute('x1',x);camR1.setAttribute('y1',yTop);
-  camR1.setAttribute('x2',IMG_X+20);camR1.setAttribute('y2',yAfter);
-  camR2.setAttribute('x1',x);camR2.setAttribute('x2',IMG_X+20);
-  const iCm=30*0.2/d;
-  camRead.textContent=`i = o · (dᵢ/dₒ) = 30 · (0,2/${fmt(d)}) ≈ ${fmt(iCm)} cm ${d<1.4?'— perto: imagem MAIOR':'— longe: imagem MENOR'}`;
+/* ================= 2. DISPERSÃO ================= */
+const prism={x:400,y:150};let dispers=false;
+const raysG=$('#raysG'),SVG=$('#prismSvg');
+const RAYC=['#ff4d3d','#ff9f1c','#ffe14d','#3ddc84','#38a3ff','#b06bff'];
+RAYC.forEach((c,i)=>{
+  const l=document.createElementNS('http://www.w3.org/2000/svg','line');
+  l.setAttribute('class','rayline');l.setAttribute('stroke',c);l.setAttribute('stroke-width','4');
+  raysG.appendChild(l);
+  const h=document.createElementNS('http://www.w3.org/2000/svg','line');
+  h.setAttribute('class','hitline');h.setAttribute('role','button');h.setAttribute('tabindex','0');
+  h.addEventListener('click',()=>{
+    $('#p2fb').className='fb ok';
+    $('#p2fb').innerHTML=`<strong>Por que separa?</strong> Cada comprimento de onda desvia de forma diferente no material. O violeta desvia mais, o vermelho menos. Isso revela o espectro escondido na luz branca!`;
+  });
+  raysG.appendChild(h);
+});
+function renderPrism(){
+  $('#prismPoly').setAttribute('points',`${prism.x},${prism.y-50} ${prism.x+50},${prism.y+50} ${prism.x-50},${prism.y+50}`);
+  $('#beamIn').setAttribute('x2',prism.x-8);$('#beamIn').setAttribute('y2',prism.y);
+  if(dispers){
+    $('#beamOut').style.display='none';raysG.style.display='';
+    const lines=raysG.querySelectorAll('line');
+    for(let i=0;i<6;i++){
+      const yEnd=prism.y+10+(i-2.5)*25;
+      lines[i*2].setAttribute('x1',prism.x+30);lines[i*2].setAttribute('y1',prism.y+5);
+      lines[i*2].setAttribute('x2',850);lines[i*2].setAttribute('y2',Math.max(20,Math.min(280,yEnd)));
+      lines[i*2+1].setAttribute('x1',prism.x+30);lines[i*2+1].setAttribute('y1',prism.y+5);
+      lines[i*2+1].setAttribute('x2',850);lines[i*2+1].setAttribute('y2',Math.max(20,Math.min(280,yEnd)));
+    }
+  }else{
+    raysG.style.display='none';$('#beamOut').style.display='';
+    $('#beamOut').setAttribute('x1',prism.x+30);$('#beamOut').setAttribute('y1',prism.y+5);
+    $('#beamOut').setAttribute('x2',850);$('#beamOut').setAttribute('y2',prism.y+15);
+  }
 }
-camDist.addEventListener('input',camUpdate);camUpdate();
+$('#btnDispers').addEventListener('click',e=>{
+  dispers=!dispers;e.currentTarget.textContent=dispers?'[ DESATIVAR DISPERSÃO ]':'[ ATIVAR DISPERSÃO ]';
+  renderPrism();
+});
+let dragP=false;
+const svgPt=e=>{const p=SVG.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(SVG.getScreenCTM().inverse());};
+$('#prismG').addEventListener('pointerdown',e=>{dragP=true;$('#prismG').setPointerCapture(e.pointerId);});
+SVG.addEventListener('pointermove',e=>{if(!dragP)return;const p=svgPt(e);
+  prism.x=Math.max(200,Math.min(600,p.x));prism.y=Math.max(80,Math.min(220,p.y));renderPrism();});
+addEventListener('pointerup',()=>dragP=false);
+renderPrism();
 
-/* sub-nav de óptica */
-const optSpy=new IntersectionObserver(es=>es.forEach(e=>{
-  if(e.isIntersecting)$$('.opt-side nav a').forEach(a=>a.classList.toggle('on',a.getAttribute('href')==='#'+e.target.id));
-}),{rootMargin:'-30% 0px -60% 0px'});
-$$('.opt-block').forEach(b=>optSpy.observe(b));
+/* ================= 3. DIFRAÇÃO ================= */
+const sc=$('#slitCanvas'),sx=sc.getContext('2d');
+function sizeSC(){sc.width=sc.clientWidth*2;sc.height=250*2;}
+function drawSlit(t){
+  sizeSC();const w=sc.width,h=sc.height,bx=w*.4,cy=h/2,slit=(+$('#slitSlider').value)/150;
+  const gap=20+slit*(h*.6);
+  sx.clearRect(0,0,w,h);
+  const speed=motionOK()?t*.15:t*.0+40;
+  sx.strokeStyle='rgba(56,163,255,.6)';sx.lineWidth=3;
+  for(let x=((speed)%60);x<bx-8;x+=60){sx.beginPath();sx.moveTo(x,20);sx.lineTo(x,h-20);sx.stroke();}
+  sx.fillStyle='#0a1226';sx.strokeStyle='#3b537f';
+  sx.fillRect(bx-8,0,16,cy-gap/2);sx.fillRect(bx-8,cy+gap/2,16,h-(cy+gap/2));
+  const spread=1.3-(slit)*1.1;
+  const R0=(speed*1.4)%80;
+  for(let r=R0+20;r<w*.6;r+=70){
+    sx.beginPath();sx.strokeStyle=`rgba(56,163,255,${Math.max(0,.7-r/(w*.7))})`;sx.lineWidth=3;
+    sx.arc(bx+6,cy,r,-spread,spread);sx.stroke();
+  }
+  const v=+$('#slitSlider').value;
+  $('#slitRead').textContent=v<50?'Fenda PEQUENA — a luz se espalha MUITO! (Difração forte)':v<100?'Fenda média — espalhamento moderado.':'Fenda GRANDE — a luz segue quase em linha reta.';
+}
+(function slitLoop(t){if($('#tab3').classList.contains('active')&&motionOK())drawSlit(t);requestAnimationFrame(slitLoop)})(0);
+$('#slitSlider').addEventListener('input',()=>{if(!motionOK())drawSlit(performance.now());});
+
+/* ================= 4. CD ================= */
+const cdArea=$('#cdArea'),cdL=$('#cdLight');let lx=0,ly=0,cdDrag=false;
+function cdPos(x,y){
+  const r=cdArea.getBoundingClientRect();
+  lx=Math.max(10,Math.min(r.width-40,x));ly=Math.max(8,Math.min(r.height-44,y));
+  cdL.style.left=lx+'px';cdL.style.top=ly+'px';
+  const cx=r.width/2,cy=r.height*.52;
+  const ang=Math.round(Math.atan2(ly+16-cy,lx+16-cx)*180/Math.PI);
+  $('#cdDisc').style.setProperty('--sheen',ang+'deg');
+  $('#cdRays').style.transform=`rotate(${ang+180}deg)`;
+  $('#cdRays').style.filter=`blur(1.5px) hue-rotate(${ang}deg) drop-shadow(0 0 8px #fff)`;
+}
+cdL.addEventListener('pointerdown',e=>{cdDrag=true;cdL.setPointerCapture(e.pointerId);e.preventDefault();});
+cdArea.addEventListener('pointermove',e=>{if(!cdDrag)return;const r=cdArea.getBoundingClientRect();cdPos(e.clientX-r.left-16,e.clientY-r.top-16);});
+addEventListener('pointerup',()=>cdDrag=false);
+function cdWhy(){
+  const f=$('#cdFb');f.style.display='block';f.className='fb ok';
+  f.innerHTML='<strong>🌈 O segredo:</strong> As trilhas microscópicas do CD agem como uma <strong>rede de difração</strong>. Elas espalham a luz (difração), e como cada cor tem um comprimento de onda diferente, elas são espalhadas em ângulos diferentes, causando a <strong>dispersão</strong> das cores que você vê!';
+}
+$('#cdDisc').addEventListener('click',cdWhy);
+$('#btnCdWhy').addEventListener('click',cdWhy);
+setTimeout(()=>{const r=cdArea.getBoundingClientRect();cdPos(r.width*.12,r.height*.18)},100);
+
+/* ================= 5. DESAFIO SEQUENCIAL ================= */
+const seqItems=['LUZ BRANCA DO SOL','CONHECER O ESPECTRO (DISPERSÃO)','ABSORVER TODAS AS CORES','GERAR CALOR','AQUECER A PISCINA'];
+let seqProg=0;
+function initSeq(){
+  const slots=$('#seqSlots'),pool=$('#seqPool');
+  slots.innerHTML='';pool.innerHTML='';
+  seqItems.forEach(()=>{const s=document.createElement('div');s.className='slot';s.textContent='· · ·';slots.appendChild(s);});
+  let shuffled=[...seqItems].sort(()=>Math.random()-.5);
+  shuffled.forEach(txt=>{
+    const b=document.createElement('button');b.textContent=txt;
+    b.addEventListener('click',()=>{
+      if(txt===seqItems[seqProg]){
+        b.classList.add('used');
+        slots.children[seqProg].textContent=txt;slots.children[seqProg].classList.add('filled');
+        seqProg++;
+        if(seqProg===seqItems.length){
+          $('#seqFb').style.display='block';$('#seqFb').className='fb ok';
+          $('#seqFb').innerHTML='✅ <strong>PERFEITO!</strong> Ao entender que a luz branca contém todo o espectro (graças à dispersão), projetamos coletores que fazem o inverso do prisma: em vez de separar, eles <em>absorvem</em> todas as cores, convertendo a energia luminosa total em calor para a piscina!';
+        }
+      }else{
+        b.classList.add('err');setTimeout(()=>b.classList.remove('err'),450);
+      }
+    });
+    pool.appendChild(b);
+  });
+}
+initSeq();
 
 /* ================= BANCADA DE LÓGICA ================= */
 let pumpBench=true;
@@ -1106,32 +805,13 @@ function benchUpdate(){
   const lamp=$('#bLamp');
   lamp.className='lamp '+(pumpBench?'on':'off');
   lamp.textContent=pumpBench?'● BOMBA LIGADA':'○ BOMBA DESLIGADA';
-  $('#benchLive').textContent=`Diferença de ${fmt(delta)} graus. Bomba ${pumpBench?'ligada':'desligada'}.`;
 }
 $('#bPool').addEventListener('input',benchUpdate);
 $('#bColl').addEventListener('input',benchUpdate);
 benchUpdate();
 
-/* ================= FLUXOGRAMA EXECUTÁVEL ================= */
-let flowRunning=false;
-$('#btnRunFlow').addEventListener('click',async()=>{
-  if(flowRunning)return;flowRunning=true;
-  const steps=['fs1','fs2','fs3'];
-  const branch=(+$('#bColl').value-+$('#bPool').value)>=5?'fsY':'fsN';
-  const seq=[...steps,branch,'fs6','fs7'];
-  $('#flowLive').textContent='Executando a lógica de controle.';
-  for(const id of seq){
-    $('#'+id).classList.add('now');
-    await sleep(motionOK()?800:120);
-    if(id!=='fs7')$('#'+id).classList.remove('now');
-  }
-  $('#flowLive').textContent='Ciclo concluído. '+(branch==='fsY'?'A bomba foi ligada: calor disponível.':'A bomba permanece desligada: economia de energia.');
-  await sleep(900);$('#fs7').classList.remove('now');
-  flowRunning=false;
-});
-
 /* ================= SIMULADOR TÉRMICO ================= */
-let sim={T:24,mins:360,day:1,kwh:0,hist:[],timer:null,playing:false,announce:0};
+let sim={T:24,mins:360,day:1,kwh:0,hist:[],timer:null,playing:false};
 const chart=$('#simChart'),cctx=chart.getContext('2d');
 const irr=m=>{const x=(m/60-6)/14;return(x<0||x>1)?0:Math.sin(Math.PI*x);};
 function simTick(){
@@ -1150,26 +830,20 @@ function simTick(){
   $('#simTemp').textContent=fmt(sim.T);
   $('#simState').textContent=pump?'☀ COLETANDO CALOR':'○ BOMBA EM ESPERA';
   $('#sKwh').textContent=fmt(sim.kwh);$('#sCo2').textContent=fmt(sim.kwh*0.09);$('#sMoney').textContent=Math.round(sim.kwh*0.92).toLocaleString('pt-BR');
-  const k=Math.max(0,Math.min(1,(sim.T-24)/16));
-  $('#poolWater').setAttribute('fill',`hsl(${205-185*k},${70+15*k}%,${52+6*k}%)`);
-  $('#poolSteam').setAttribute('opacity',Math.max(0,Math.min(.85,(sim.T-32)/9)));
   drawChart();
-  if(++sim.announce>=8){sim.announce=0;$('#simLive').textContent=`Simulação: água a ${fmt(sim.T)} graus às ${hh}:${mm}.`;}
 }
 function drawChart(){
   const w=chart.width=chart.clientWidth*2,h=chart.height=340;
   cctx.clearRect(0,0,w,h);
   const min=16,max=44,l=52,r=w-14,t=14,b=h-30;
-  cctx.font='20px Space Mono';cctx.fillStyle=hcOn()?'#ffd23f':'rgba(255,255,255,.65)';
+  cctx.font='20px Space Mono';cctx.fillStyle=hcOn()?'#ffd23f':'#93a4c3';
   for(let v=20;v<=40;v+=10){const y=t+(max-v)/(max-min)*(b-t);
-    cctx.fillText(v+'°',6,y+6);cctx.strokeStyle='rgba(255,255,255,.14)';cctx.beginPath();cctx.moveTo(l,y);cctx.lineTo(r,y);cctx.stroke();}
+    cctx.fillText(v+'°',6,y+6);cctx.strokeStyle=hcOn()?'rgba(255,210,63,.2)':'rgba(147,164,195,.2)';cctx.beginPath();cctx.moveTo(l,y);cctx.lineTo(r,y);cctx.stroke();}
   if(sim.hist.length>1){
-    cctx.strokeStyle='#f5a71c';cctx.lineWidth=4;cctx.beginPath();
+    cctx.strokeStyle=hcOn()?'#ffd23f':'#ffe14d';cctx.lineWidth=4;cctx.beginPath();
     sim.hist.forEach((v,i)=>{const x=l+i/(sim.hist.length-1)*(r-l),y=t+(max-v)/(max-min)*(b-t);
       i?cctx.lineTo(x,y):cctx.moveTo(x,y);});
     cctx.stroke();
-    const lastX=r,lastY=t+(max-sim.hist.at(-1))/(max-min)*(b-t);
-    cctx.fillStyle='#f5a71c';cctx.beginPath();cctx.arc(lastX,lastY,8,0,7);cctx.fill();
   }
 }
 function setPlay(on){
@@ -1179,17 +853,11 @@ function setPlay(on){
 }
 $('#btnPlay').addEventListener('click',()=>setPlay(!sim.playing));
 $('#sSpeed').addEventListener('change',()=>{if(sim.playing)setPlay(true);});
-$('#btnReset').addEventListener('click',()=>{setPlay(false);sim={T:24,mins:360,day:1,kwh:0,hist:[],timer:null,playing:false,announce:0};simTick();});
+$('#btnReset').addEventListener('click',()=>{setPlay(false);sim={T:24,mins:360,day:1,kwh:0,hist:[],timer:null,playing:false};simTick();});
 $('#sPlates').addEventListener('input',e=>$('#sPlatesOut').textContent=e.target.value);
 $('#sCloud').addEventListener('input',e=>$('#sCloudOut').textContent=e.target.value+'%');
-simTick();addEventListener('resize',()=>{drawSpark();drawChart();});
-
-/* ================= DEMONSTRAÇÃO DE CONTRASTE ================= */
-$('#btnContrastDemo').addEventListener('click',e=>{
-  const box=$('#demoBox'),good=box.classList.toggle('good');
-  box.classList.toggle('bad',!good);
-  e.currentTarget.setAttribute('aria-pressed',!good);
-});
+simTick();
+addEventListener('resize',()=>{drawSpark();drawChart();if($('#tab3').classList.contains('active'))drawSlit(performance.now());});
 </script>
 </body>
 </html>
