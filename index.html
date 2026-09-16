@@ -16,7 +16,7 @@
   --teal:#3ddc84; --teal-dk:#2a9d5c; --aqua:#38a3ff; --orange:#ff9f1c; --amber:#ffe14d;
   --line:rgba(147,164,195,.28); --shadow:0 10px 40px rgba(0,0,0,.4);
   --f-disp:'Unbounded',sans-serif; --f-body:'Space Grotesk',sans-serif; --f-mono:'Space Mono',monospace;
-  --pool-c1: #38a3ff; --pool-c2: #1e5fa8; /* Variáveis para transição suave de cor */
+  --pool-c1: #38a3ff; --pool-c2: #1e5fa8;
 }
 body.hc{
   --bg:#000; --bg2:#000; --paper:#000; --ink:#fff; --ink2:#ffd23f;
@@ -42,7 +42,7 @@ h1,h2,h3{font-family:var(--f-disp);line-height:1.12;letter-spacing:-.01em}
 
 /* ================= UTILITÁRIOS ================= */
 .noise{position:fixed;inset:0;pointer-events:none;z-index:120;opacity:.03;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
 .progress{position:fixed;top:0;left:0;right:0;height:4px;background:transparent;z-index:210}
 .progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--amber),var(--orange));transition:width 0.1s linear}
 .rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
@@ -186,7 +186,7 @@ input[type=range].plain{background:var(--paper)}
 .sim-stats-box .label{font-family:var(--f-mono); font-size:.7rem; color:var(--ink2); text-transform:uppercase;}
 .sim-stats-box .value{font-family:var(--f-disp); font-size:1.8rem; color:var(--teal); font-variant-numeric:tabular-nums; transition: color 0.3s ease;}
 
-/* ================= 03 ROBÓTICA - BANCADA COM PISCINA ================= */
+/* ================= 03 ROBÓTICA - BANCADA RENOVADA ================= */
 .bento{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-bottom:3rem}
 .hw{border:2px solid var(--line);border-radius:12px;background:var(--paper);box-shadow:4px 4px 0 var(--line);padding:1.1rem;transition:transform .2s}
 .hw:hover{transform:translateY(-5px)}
@@ -194,44 +194,40 @@ input[type=range].plain{background:var(--paper)}
 .hw h3{font-size:1rem;margin:.7rem 0 .3rem}
 .hw p{font-size:.85rem;color:var(--ink2)}
 
-.bench-pool{margin-top:2rem;display:grid;grid-template-columns:1.2fr 1fr;gap:2rem;align-items:stretch}
+.bench-pool{margin-top:2rem;display:grid;grid-template-columns:1.1fr 1fr;gap:2rem;align-items:start}
 @media(max-width:900px){.bench-pool{grid-template-columns:1fr}}
 
-.pool-viewer{background:var(--bg2);border:2px solid var(--line);border-radius:14px;padding:1rem;display:flex;flex-direction:column;gap:.8rem;position:relative;overflow:hidden}
-.pool-viewer::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 30%,rgba(56,163,255,.08),transparent 60%);pointer-events:none}
-.pool-svg-wrap{position:relative;width:100%;aspect-ratio:16/10;background:rgba(0,0,0,.25);border-radius:10px;overflow:hidden;border:1px solid var(--line)}
-.pool-svg-wrap svg{width:100%;height:100%;display:block}
-.pool-info{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
-.pool-temp-big{font-family:var(--f-disp);font-weight:900;font-size:clamp(1.8rem,4vw,2.4rem);color:var(--amber);font-variant-numeric:tabular-nums}
-.pool-temp-big small{font-size:.6em;color:var(--ink2);font-weight:400;margin-left:.3rem}
-.pool-status{display:flex;align-items:center;gap:.5rem;font-family:var(--f-mono);font-size:.78rem;color:var(--ink2)}
-.pool-status .dot{width:10px;height:10px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal); transition: all 0.3s ease;}
-.pool-status .dot.off{background:var(--ink2);box-shadow:none}
-.pool-status .dot.on{animation:blink 1.2s infinite}
+.system-diagram{background:var(--bg2);border:2px solid var(--line);border-radius:14px;padding:1.5rem;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.system-diagram svg{width:100%;height:auto;max-height:320px}
+.pipe-flow{opacity:0.2;transition:opacity 0.4s ease, stroke 0.4s ease}
+.pipe-flow.active{opacity:1;animation:flowDash 1s linear infinite}
+@keyframes flowDash{to{stroke-dashoffset:-16}}
+.pump-icon-svg{transform-origin:20px 20px;transition:transform 0.3s ease}
+.pump-icon-svg.active{animation:spin 1.5s linear infinite}
 
-.pool-bubble{fill:rgba(255,255,255,.6);animation:bubbleRise 3s linear infinite}
-@keyframes bubbleRise{
-  0%{transform:translateY(0);opacity:0}
-  10%{opacity:.8}
-  90%{opacity:.6}
-  100%{transform:translateY(-60px);opacity:0}
-}
-.pool-wave{animation:waveMove 4s ease-in-out infinite alternate}
-@keyframes waveMove{
-  0%{transform:translateX(0)}
-  100%{transform:translateX(-20px)}
-}
-.pump-icon{transition:transform .3s}
-.pump-icon.on{animation:spin 1.5s linear infinite}
+.scenario-btns{display:flex;gap:0.5rem;margin-bottom:1.2rem;flex-wrap:wrap}
+.scenario-btn{flex:1;font-family:var(--f-mono);font-size:0.75rem;padding:0.6rem;background:var(--bg2);border:1px solid var(--line);border-radius:6px;color:var(--ink2);cursor:pointer;transition:all 0.2s;text-align:center}
+.scenario-btn:hover{border-color:var(--aqua);color:var(--ink)}
+.scenario-btn.active{background:var(--aqua);color:#000;border-color:var(--aqua);font-weight:700}
 
-.bench-controls{background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;gap:.8rem}
-.bench-controls h3{font-size:1.05rem;margin-bottom:.4rem;color:var(--ink)}
-.lamp{font-family:var(--f-mono);font-weight:700;font-size:1rem;padding:1rem 1.6rem;border:3px solid var(--line);border-radius:12px;text-align:center;transition:all .3s}
-.lamp.on{background:var(--teal);color:#000;border-color:var(--teal)}
+.control-group{margin-bottom:1.2rem}
+.slider-row{display:flex;align-items:center;gap:1rem}
+.slider-row input[type=range]{flex:1;margin:0}
+.val-badge{font-family:var(--f-mono);font-size:0.9rem;font-weight:700;color:var(--amber);min-width:75px;text-align:right}
+
+.delta-display-large{background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:10px;padding:1rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}
+.delta-main .label, .delta-rule .label{font-family:var(--f-mono);font-size:0.7rem;color:var(--ink2);text-transform:uppercase;letter-spacing:0.1em;display:block;margin-bottom:0.3rem}
+.delta-main .value{font-family:var(--f-disp);font-size:1.8rem;color:var(--orange);font-variant-numeric:tabular-nums}
+.delta-rule .value{font-family:var(--f-mono);font-size:0.85rem;color:var(--ink2)}
+.delta-rule .value.rule-ok{color:var(--teal);font-weight:700}
+.delta-rule .value.rule-fail{color:#ff4d3d;font-weight:700}
+
+.lamp{font-family:var(--f-mono);font-weight:700;font-size:1rem;padding:1rem;border:2px solid var(--line);border-radius:10px;text-align:center;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:0.5rem}
+.lamp.on{background:var(--teal);color:#000;border-color:var(--teal);box-shadow:0 0 15px rgba(61,220,132,0.3)}
 .lamp.off{background:var(--bg2);color:var(--ink2);border-color:var(--line)}
-.delta-display{background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:10px;padding:.8rem 1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
-.delta-display .label{font-family:var(--f-mono);font-size:.7rem;color:var(--ink2);text-transform:uppercase;letter-spacing:.1em}
-.delta-display .value{font-family:var(--f-disp);font-size:1.4rem;color:var(--orange);font-variant-numeric:tabular-nums}
+.lamp-icon{font-size:1.2rem}
+
+.logic-explanation{font-size:0.85rem;color:var(--ink2);line-height:1.6;background:rgba(56,163,255,0.05);border-left:3px solid var(--aqua);padding:0.8rem;border-radius:0 8px 8px 0;margin-top:0.5rem;transition:border-color 0.3s ease}
 
 /* ================= 04 SIMULADOR ================= */
 #simulador{background:var(--bg2)}
@@ -276,7 +272,7 @@ footer nav a:hover{color:var(--amber)}
 .foot-fim{margin-top:2.4rem;padding-top:1.2rem;border-top:1px dashed var(--line);font-family:var(--f-mono);font-size:.68rem;opacity:.75;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
 
 @media(max-width:980px){
-  .hero-grid,.desafio-grid,.sim-grid{grid-template-columns:1fr}
+  .hero-grid,.desafio-grid,.sim-grid,.bench-pool{grid-template-columns:1fr}
   .desafio-left{position:static}
   .sim-controls-row{flex-direction:column; align-items:stretch;}
   .sim-stats-box{margin-left:0; text-align:left; display:flex; justify-content:space-between; align-items:center;}
@@ -498,7 +494,7 @@ footer nav a:hover{color:var(--amber)}
   </div>
 </section>
 
-<!-- ================= 03 ROBÓTICA (COM PISCINA SIMULADA) ================= -->
+<!-- ================= 03 ROBÓTICA (BANCADA RENOVADA) ================= -->
 <section id="robotica">
   <div class="wrap">
     <div class="sec-head rv">
@@ -513,108 +509,105 @@ footer nav a:hover{color:var(--amber)}
     </div>
 
     <div class="card rv">
-      <h3 style="margin-bottom:1.2rem">🏊 Bancada Interativa — Simulador da Piscina</h3>
-      <p style="color:var(--ink2);margin-bottom:1.2rem">Ajuste as temperaturas da piscina e do coletor. Observe em tempo real a decisão da bomba, a cor da água mudando e as bolhas de circulação aparecendo.</p>
+      <h3 style="margin-bottom:0.5rem">🏊 Bancada Interativa: Lógica de Controle</h3>
+      <p style="color:var(--ink2);margin-bottom:1.5rem;font-size:0.95rem">
+        O sistema compara a temperatura do coletor (T2) com a da piscina (T1). 
+        A bomba só liga se o coletor estiver pelo menos <strong>5 °C mais quente</strong> que a piscina, evitando perder calor à noite.
+      </p>
       
       <div class="bench-pool">
-        <!-- VISUALIZADOR DA PISCINA -->
-        <div class="pool-viewer">
-          <div class="pool-svg-wrap">
-            <svg viewBox="0 0 400 250" role="img" aria-label="Visualização da piscina térmica com temperatura variável" aria-describedby="poolDesc">
-              <desc id="poolDesc">Representação gráfica de uma piscina. A cor da água muda do azul frio para tons alaranjados conforme a temperatura aumenta. Bolhas indicam circulação da bomba.</desc>
-              <defs>
-                <linearGradient id="poolWaterGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop id="poolColor1" offset="0%" stop-color="var(--pool-c1)"/>
-                  <stop id="poolColor2" offset="100%" stop-color="var(--pool-c2)"/>
-                </linearGradient>
-                <linearGradient id="poolEdge" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#3b537f"/>
-                  <stop offset="100%" stop-color="#1a2a4a"/>
-                </linearGradient>
-                <clipPath id="poolClip">
-                  <rect x="30" y="50" width="340" height="160" rx="16"/>
-                </clipPath>
-              </defs>
+        <!-- DIAGRAMA DO SISTEMA -->
+        <div class="system-diagram">
+          <svg viewBox="0 0 400 300" role="img" aria-label="Diagrama do sistema de aquecimento solar" aria-describedby="diagramDesc">
+            <desc id="diagramDesc">Diagrama mostrando a piscina conectada a um coletor solar por meio de uma bomba. Setas indicam o fluxo de água quando a bomba está ligada.</desc>
+            
+            <!-- Tubulações (Fundo) -->
+            <path d="M 80 200 L 80 150 L 200 150" fill="none" stroke="#3b537f" stroke-width="8" stroke-linecap="round"/>
+            <path d="M 280 150 L 320 150 L 320 200" fill="none" stroke="#3b537f" stroke-width="8" stroke-linecap="round"/>
+            
+            <!-- Tubulações (Fluxo Animado) -->
+            <path id="flow1" class="pipe-flow" d="M 80 200 L 80 150 L 200 150" fill="none" stroke="var(--aqua)" stroke-width="4" stroke-dasharray="8 8" stroke-linecap="round"/>
+            <path id="flow2" class="pipe-flow" d="M 280 150 L 320 150 L 320 200" fill="none" stroke="var(--orange)" stroke-width="4" stroke-dasharray="8 8" stroke-linecap="round"/>
+
+            <!-- Piscina -->
+            <g transform="translate(40, 180)">
+              <rect x="0" y="0" width="80" height="60" rx="8" fill="var(--bg2)" stroke="var(--line)" stroke-width="2"/>
+              <rect id="diagPoolWater" x="4" y="4" width="72" height="52" rx="4" fill="var(--pool-c1)" style="transition: fill 0.5s ease"/>
+              <text x="40" y="-10" text-anchor="middle" fill="var(--ink)" font-family="Space Mono" font-size="12" font-weight="bold">PISCINA</text>
+              <text id="diagT1" x="40" y="35" text-anchor="middle" fill="#fff" font-family="Unbounded" font-size="16" font-weight="900">28°C</text>
+            </g>
+
+            <!-- Bomba -->
+            <g transform="translate(180, 130)">
+              <circle cx="20" cy="20" r="20" fill="var(--paper)" stroke="var(--line)" stroke-width="2"/>
+              <g id="diagPumpIcon" class="pump-icon-svg">
+                <path d="M 10 20 L 30 20 M 20 10 L 20 30 M 13 13 L 27 27 M 13 27 L 27 13" stroke="var(--amber)" stroke-width="3" stroke-linecap="round"/>
+              </g>
+              <text x="20" y="55" text-anchor="middle" fill="var(--ink2)" font-family="Space Mono" font-size="10">BOMBA</text>
+            </g>
+
+            <!-- Coletor Solar -->
+            <g transform="translate(280, 80)">
+              <rect x="0" y="0" width="80" height="60" rx="4" fill="var(--paper)" stroke="var(--line)" stroke-width="2"/>
+              <line x1="10" y1="10" x2="70" y2="10" stroke="var(--orange)" stroke-width="2"/>
+              <line x1="10" y1="25" x2="70" y2="25" stroke="var(--orange)" stroke-width="2"/>
+              <line x1="10" y1="40" x2="70" y2="40" stroke="var(--orange)" stroke-width="2"/>
+              <line x1="10" y1="50" x2="70" y2="50" stroke="var(--orange)" stroke-width="2"/>
+              <text x="40" y="-10" text-anchor="middle" fill="var(--ink)" font-family="Space Mono" font-size="12" font-weight="bold">COLETOR</text>
+              <text id="diagT2" x="40" y="35" text-anchor="middle" fill="#fff" font-family="Unbounded" font-size="16" font-weight="900">41°C</text>
               
-              <rect x="20" y="40" width="360" height="180" rx="20" fill="url(#poolEdge)" stroke="#4a6490" stroke-width="2"/>
-              <g clip-path="url(#poolClip)">
-                <rect id="poolWater" x="30" y="50" width="340" height="160" fill="url(#poolWaterGrad)" style="transition: stop-color 0.8s ease;"/>
-                <g class="pool-wave" opacity=".5">
-                  <path d="M 30 80 Q 80 70 130 80 T 230 80 T 330 80 T 430 80" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="2"/>
-                  <path d="M 30 110 Q 80 100 130 110 T 230 110 T 330 110 T 430 110" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"/>
-                </g>
-                <g id="poolBubbles" opacity="0" style="transition: opacity 0.5s ease;">
-                  <circle class="pool-bubble" cx="80" cy="180" r="3" style="animation-delay:0s"/>
-                  <circle class="pool-bubble" cx="140" cy="190" r="4" style="animation-delay:.6s"/>
-                  <circle class="pool-bubble" cx="200" cy="175" r="3" style="animation-delay:1.2s"/>
-                  <circle class="pool-bubble" cx="260" cy="185" r="4" style="animation-delay:1.8s"/>
-                  <circle class="pool-bubble" cx="320" cy="180" r="3" style="animation-delay:2.4s"/>
-                  <circle class="pool-bubble" cx="110" cy="195" r="2" style="animation-delay:.3s"/>
-                  <circle class="pool-bubble" cx="230" cy="195" r="2" style="animation-delay:1.5s"/>
-                  <circle class="pool-bubble" cx="290" cy="190" r="3" style="animation-delay:2.1s"/>
-                </g>
-                <g id="poolSteam" opacity="0" style="transition: opacity 0.5s ease;">
-                  <path d="M 100 55 Q 105 45 100 35" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M 200 55 Q 205 45 200 35" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M 300 55 Q 305 45 300 35" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round"/>
-                </g>
+              <!-- Ícone de Sol -->
+              <g id="diagSun" transform="translate(40, -35)" opacity="0.8">
+                <circle cx="0" cy="0" r="8" fill="var(--amber)"/>
+                <path d="M 0 -14 L 0 -10 M 0 10 L 0 14 M -14 0 L -10 0 M 10 0 L 14 0 M -10 -10 L -7 -7 M 10 10 L 7 7 M -10 10 L -7 7 M 10 -10 L 7 -7" stroke="var(--amber)" stroke-width="2" stroke-linecap="round"/>
               </g>
-              <g id="poolPumpIcon" transform="translate(340, 200)">
-                <circle cx="0" cy="0" r="18" fill="#1a2a4a" stroke="#3b537f" stroke-width="2"/>
-                <g class="pump-icon" id="pumpRotator">
-                  <line x1="-10" y1="0" x2="10" y2="0" stroke="#ffe14d" stroke-width="2"/>
-                  <line x1="0" y1="-10" x2="0" y2="10" stroke="#ffe14d" stroke-width="2"/>
-                  <line x1="-7" y1="-7" x2="7" y2="7" stroke="#ffe14d" stroke-width="2"/>
-                  <line x1="-7" y1="7" x2="7" y2="-7" stroke="#ffe14d" stroke-width="2"/>
-                </g>
-              </g>
-              <rect x="360" y="100" width="40" height="8" fill="#3b537f"/>
-              <text x="375" y="95" font-family="Space Mono" font-size="9" fill="#ffe14d" text-anchor="middle">→ COLETOR</text>
-              <text x="200" y="30" font-family="Unbounded" font-size="14" fill="#eaf2ff" text-anchor="middle" font-weight="700">PISCINA TÉRMICA · CEP</text>
-            </svg>
-          </div>
-          
-          <div class="pool-info">
-            <div>
-              <span class="mono" style="font-size:.7rem;color:var(--ink2);letter-spacing:.1em">TEMPERATURA ATUAL</span>
-              <div class="pool-temp-big"><span id="poolTempDisplay">28.0</span><small>°C</small></div>
-            </div>
-            <div class="pool-status" aria-live="polite">
-              <span class="dot off" id="poolStatusDot"></span>
-              <span id="poolStatusText">BOMBA DESLIGADA</span>
-            </div>
-          </div>
+            </g>
+          </svg>
         </div>
 
         <!-- CONTROLES DA BANCADA -->
         <div class="bench-controls">
-          <h3>Painel de Controle</h3>
+          <h3 style="margin-bottom:1rem">Painel de Controle</h3>
           
-          <div>
-            <label class="mono" style="font-size:.72rem">TEMP. PISCINA (T1) <output id="bPoolOut">28 °C</output></label>
-            <input type="range" id="bPool" min="20" max="38" value="28" step="0.5" aria-label="Temperatura da piscina">
-          </div>
-          
-          <div>
-            <label class="mono" style="font-size:.72rem">TEMP. COLETOR (T2) <output id="bCollOut">41 °C</output></label>
-            <input type="range" id="bColl" min="20" max="75" value="41" step="0.5" aria-label="Temperatura do coletor">
+          <div class="scenario-btns">
+            <button class="scenario-btn" data-t1="24" data-t2="26">🌅 Manhã Fria</button>
+            <button class="scenario-btn active" data-t1="28" data-t2="41">☀️ Meio-dia</button>
+            <button class="scenario-btn" data-t1="30" data-t2="28">🌙 Noite</button>
           </div>
 
-          <div class="delta-display">
-            <div>
+          <div class="control-group">
+            <label class="mono" style="font-size:.72rem">TEMP. PISCINA (T1)</label>
+            <div class="slider-row">
+              <input type="range" id="bPool" min="20" max="38" value="28" step="0.5" aria-label="Temperatura da piscina">
+              <span class="val-badge" id="bPoolOut">28.0 °C</span>
+            </div>
+          </div>
+          
+          <div class="control-group">
+            <label class="mono" style="font-size:.72rem">TEMP. COLETOR (T2)</label>
+            <div class="slider-row">
+              <input type="range" id="bColl" min="20" max="75" value="41" step="0.5" aria-label="Temperatura do coletor">
+              <span class="val-badge" id="bCollOut">41.0 °C</span>
+            </div>
+          </div>
+
+          <div class="delta-display-large">
+            <div class="delta-main">
               <span class="label">DIFERENÇA ΔT</span>
-              <div class="value" id="bDelta">13,0 °C</div>
+              <div class="value" id="bDelta">13.0 °C</div>
             </div>
-            <div style="text-align:right">
-              <span class="label">META</span>
-              <div class="value" style="color:var(--teal);font-size:1rem">≥ 5 °C</div>
+            <div class="delta-rule">
+              <span class="label">REGRA DE ATIVAÇÃO</span>
+              <div class="value rule-ok" id="bRule">ΔT ≥ 5 °C (LIGAR)</div>
             </div>
           </div>
 
-          <div class="lamp on" id="bLamp" role="status" aria-live="polite">● BOMBA LIGADA</div>
+          <div class="lamp on" id="bLamp" role="status" aria-live="polite">
+            <span class="lamp-icon">●</span> BOMBA LIGADA
+          </div>
           
-          <p style="font-size:.82rem;color:var(--ink2);line-height:1.6;margin-top:.4rem">
-            💡 A <strong>histerese</strong> evita "piscar": a bomba só liga com ΔT ≥ 5 °C e só desliga quando ΔT ≤ 1 °C — protegendo o sistema em dias nublados.
+          <p class="logic-explanation" id="logicText" aria-live="polite">
+            O coletor está 13.0 °C mais quente que a piscina. Como ΔT ≥ 5 °C, a bomba é acionada para transferir o calor.
           </p>
         </div>
       </div>
@@ -895,7 +888,7 @@ SVG.addEventListener('pointermove', e => {
 addEventListener('pointerup', () => dragP = false);
 renderPrism();
 
-/* ================= 3. DIFRAÇÃO (FÍSICA REALISTA) ================= */
+/* ================= 3. DIFRAÇÃO ================= */
 const sc = $('#slitCanvas'), sx = sc.getContext('2d');
 let slitNeedsResize = true;
 function sizeSC(){
@@ -911,26 +904,21 @@ function drawSlit(t){
   const gap = 20 + (slitVal / 150) * (h * 0.6);
   
   sx.clearRect(0, 0, w, h);
-  
-  // Fundo e barreira
   sx.fillStyle = '#0a1226'; sx.strokeStyle = hcOn() ? '#fff' : '#3b537f'; sx.lineWidth = 2;
   sx.fillRect(bx - 8, 0, 16, cy - gap/2);
   sx.fillRect(bx - 8, cy + gap/2, 16, h - (cy + gap/2));
   sx.strokeRect(bx - 8, 0, 16, cy - gap/2);
   sx.strokeRect(bx - 8, cy + gap/2, 16, h - (cy + gap/2));
   
-  // Ondas incidentes (esquerda)
   const speed = motionOK() ? t * 0.15 : 40;
   sx.strokeStyle = hcOn() ? 'rgba(255,255,255,.6)' : 'rgba(56,163,255,.6)'; sx.lineWidth = 3;
   for(let x = ((speed) % 60); x < bx - 8; x += 60){
     sx.beginPath(); sx.moveTo(x, 20); sx.lineTo(x, h - 20); sx.stroke();
   }
   
-  // Padrão de difração na "tela" (direita)
-  // I = I0 * (sin(alpha)/alpha)^2, onde alpha = (pi * a * sin(theta)) / lambda
   const screenX = w * 0.85;
-  const a = gap; // largura da fenda
-  const lambda = 40; // comprimento de onda arbitrário para visualização
+  const a = gap;
+  const lambda = 40;
   
   sx.beginPath();
   sx.strokeStyle = hcOn() ? '#ffd23f' : '#38a3ff';
@@ -942,22 +930,17 @@ function drawSlit(t){
     let intensity = 0;
     if(Math.abs(alpha) < 0.01) intensity = 1;
     else intensity = Math.pow(Math.sin(alpha) / alpha, 2);
-    
-    // Atenuação com a distância
     intensity *= Math.max(0, 1 - (Math.abs(y - cy) / (h * 0.6)));
-    
     const xVal = screenX + (intensity * w * 0.15);
     if(y === 0) sx.moveTo(xVal, y);
     else sx.lineTo(xVal, y);
   }
   sx.stroke();
   
-  // Preenchimento do padrão
   sx.lineTo(screenX, h); sx.lineTo(screenX, 0); sx.closePath();
   sx.fillStyle = hcOn() ? 'rgba(255,210,63,0.1)' : 'rgba(56,163,255,0.1)';
   sx.fill();
   
-  // Texto de feedback
   const v = +$('#slitSlider').value;
   $('#slitRead').textContent = v < 50 ? 'Fenda PEQUENA — a luz se espalha MUITO! (Difração forte, padrão largo)' : 
                                  v < 100 ? 'Fenda média — espalhamento moderado.' : 
@@ -1007,7 +990,6 @@ function startCollectorSim(){
   
   function loop(){
     ctx.clearRect(0, 0, 800, 300);
-    
     if(simConfig.glass){
       ctx.fillStyle = hcOn() ? 'rgba(255,255,255,0.05)' : 'rgba(100,200,255,0.1)';
       ctx.fillRect(0, 0, 800, 60);
@@ -1032,11 +1014,7 @@ function startCollectorSim(){
     }
 
     if(Math.random() < 0.15){
-      photons.push({
-        x: Math.random() * 200, y: 0,
-        vx: 2 + Math.random(), vy: 2 + Math.random(),
-        state: 'falling', life: 100
-      });
+      photons.push({x: Math.random() * 200, y: 0, vx: 2 + Math.random(), vy: 2 + Math.random(), state: 'falling', life: 100});
       simStats.total++;
     }
 
@@ -1045,38 +1023,25 @@ function startCollectorSim(){
       if(p.state === 'falling'){
         p.x += p.vx; p.y += p.vy;
         if(p.y >= surfaceY - 2){
-          if(simConfig.surface === 'white'){
-            p.state = 'reflected'; p.vy = -Math.abs(p.vy) * 0.9; p.vx += (Math.random() - 0.5);
-          } else if(simConfig.surface === 'black_flat'){
+          if(simConfig.surface === 'white'){ p.state = 'reflected'; p.vy = -Math.abs(p.vy) * 0.9; p.vx += (Math.random() - 0.5); } 
+          else if(simConfig.surface === 'black_flat'){
             if(Math.random() > 0.2){ p.state = 'absorbed'; simStats.absorbed++; spawnHeat(p.x, surfaceY); }
             else { p.state = 'reflected'; p.vy = -Math.abs(p.vy) * 0.8; }
           } else if(simConfig.surface === 'black_textured'){
-            if(Math.random() > 0.05){ 
-              p.state = 'trapped'; 
-              p.vx = (Math.random() - 0.5) * 4; p.vy = -Math.abs(p.vy) * 0.3;
-              simStats.absorbed++; spawnHeat(p.x, surfaceY);
-            } else {
-              p.state = 'reflected'; p.vy = -Math.abs(p.vy) * 0.5; p.vx = (Math.random() - 0.5) * 2;
-            }
+            if(Math.random() > 0.05){ p.state = 'trapped'; p.vx = (Math.random() - 0.5) * 4; p.vy = -Math.abs(p.vy) * 0.3; simStats.absorbed++; spawnHeat(p.x, surfaceY); } 
+            else { p.state = 'reflected'; p.vy = -Math.abs(p.vy) * 0.5; p.vx = (Math.random() - 0.5) * 2; }
           }
         }
       } else if(p.state === 'reflected'){
         p.x += p.vx; p.y += p.vy;
-        if(simConfig.glass && p.y <= 60 && p.vy < 0){
-          if(Math.random() > 0.2){ p.vy = Math.abs(p.vy); p.state = 'falling'; } // Efeito estufa: reflete de volta
-          else { p.life = 0; }
-        }
+        if(simConfig.glass && p.y <= 60 && p.vy < 0){ if(Math.random() > 0.2){ p.vy = Math.abs(p.vy); p.state = 'falling'; } else { p.life = 0; } }
         if(p.y > 300 || p.x > 800 || p.x < 0) p.life = 0;
       } else if(p.state === 'trapped'){
         p.x += p.vx; p.y += p.vy;
-        if(p.y >= surfaceY - 2){ p.vy = -Math.abs(p.vy) * 0.2; p.vx *= 0.8; } // Quica na textura
+        if(p.y >= surfaceY - 2){ p.vy = -Math.abs(p.vy) * 0.2; p.vx *= 0.8; }
         if(Math.random() > 0.9) p.life = 0;
       }
-      
-      if(p.state !== 'absorbed' && p.life > 0){
-        ctx.globalAlpha = p.life / 100;
-        ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI * 2); ctx.fill();
-      }
+      if(p.state !== 'absorbed' && p.life > 0){ ctx.globalAlpha = p.life / 100; ctx.beginPath(); ctx.arc(p.x, p.y, 3, 0, Math.PI * 2); ctx.fill(); }
       p.life -= 0.5;
       return p.life > 0;
     });
@@ -1092,33 +1057,21 @@ function startCollectorSim(){
     const eff = simStats.total > 0 ? Math.round((simStats.absorbed / simStats.total) * 100) : 0;
     $('#simEfficiency').textContent = eff + '%';
     $('#simEfficiency').style.color = eff > 80 ? 'var(--teal)' : (eff > 40 ? 'var(--amber)' : 'var(--orange)');
-
     collectorAnimId = requestAnimationFrame(loop);
   }
   loop();
 }
 
 function stopCollectorSim(){
-  if(collectorAnimId){
-    cancelAnimationFrame(collectorAnimId);
-    collectorAnimId = null;
-  }
+  if(collectorAnimId){ cancelAnimationFrame(collectorAnimId); collectorAnimId = null; }
 }
-
 function spawnHeat(x, y){
-  for(let i = 0; i < 3; i++){
-    heatParticles.push({x: x + (Math.random() - 0.5) * 10, y: y, vy: 0.5 + Math.random(), size: 2 + Math.random() * 3, life: 50});
-  }
+  for(let i = 0; i < 3; i++) heatParticles.push({x: x + (Math.random() - 0.5) * 10, y: y, vy: 0.5 + Math.random(), size: 2 + Math.random() * 3, life: 50});
 }
 
 $('#simSurface').addEventListener('change', e => {
-  simConfig.surface = e.target.value;
-  photons = []; heatParticles = []; simStats = {total: 0, absorbed: 0};
-  const msgs = {
-    'white': 'Superfície branca: A maior parte da luz é refletida de volta. Baixa eficiência térmica.',
-    'black_flat': 'Superfície preta lisa: Boa absorção, mas parte da luz ainda reflete em ângulo igual.',
-    'black_textured': 'Superfície texturizada: A difração espalha a luz lateralmente, criando uma "armadilha" que maximiza a absorção.'
-  };
+  simConfig.surface = e.target.value; photons = []; heatParticles = []; simStats = {total: 0, absorbed: 0};
+  const msgs = {'white': 'Superfície branca: A maior parte da luz é refletida de volta. Baixa eficiência térmica.', 'black_flat': 'Superfície preta lisa: Boa absorção, mas parte da luz ainda reflete em ângulo igual.', 'black_textured': 'Superfície texturizada: A difração espalha a luz lateralmente, criando uma "armadilha" que maximiza a absorção.'};
   $('#simFeedback').innerHTML = '💡 <strong>Nota:</strong> ' + msgs[e.target.value];
 });
 
@@ -1128,67 +1081,82 @@ $('#simGlass').addEventListener('click', e => {
   e.target.setAttribute('aria-pressed', simConfig.glass);
   e.target.classList.toggle('active-toggle', simConfig.glass);
   photons = []; heatParticles = []; simStats = {total: 0, absorbed: 0};
-  $('#simFeedback').innerHTML = simConfig.glass ? 
-    '💡 <strong>Efeito Estufa:</strong> A luz visível entra, mas o calor (infravermelho) refletido pela superfície é bloqueado pelo vidro e devolvido para a placa, aumentando drasticamente a eficiência.' : 
-    '💡 <strong>Sem tampa:</strong> O calor irradiado pela placa escapa facilmente para a atmosfera (convecção e radiação).';
+  $('#simFeedback').innerHTML = simConfig.glass ? '💡 <strong>Efeito Estufa:</strong> A luz visível entra, mas o calor (infravermelho) refletido pela superfície é bloqueado pelo vidro e devolvido para a placa, aumentando drasticamente a eficiência.' : '💡 <strong>Sem tampa:</strong> O calor irradiado pela placa escapa facilmente para a atmosfera (convecção e radiação).';
 });
 
-/* ================= BANCADA COM PISCINA ================= */
+/* ================= BANCADA COM PISCINA (RENOVADA) ================= */
 let pumpBench = true;
 
-function getPoolColor(temp){
-  const t = Math.max(20, Math.min(38, temp));
-  const k = (t - 20) / 18; // 0 a 1
+function updateBenchVisuals(t1, t2) {
+  $('#bPoolOut').textContent = fmt(t1) + ' °C';
+  $('#bCollOut').textContent = fmt(t2) + ' °C';
+  $('#diagT1').textContent = fmt(t1, 0) + '°C';
+  $('#diagT2').textContent = fmt(t2, 0) + '°C';
   
-  let r1, g1, b1;
-  if(k < 0.5){
-    const kk = k * 2;
-    r1 = Math.round(56 + kk * 40); g1 = Math.round(163 + kk * 40); b1 = 255;
-  } else {
-    const kk = (k - 0.5) * 2;
-    r1 = Math.round(96 + kk * 159); g1 = Math.round(203 - kk * 80); b1 = Math.round(255 - kk * 100);
-  }
-  
-  const r2 = Math.round(r1 * 0.5), g2 = Math.round(g1 * 0.5), b2 = Math.round(b1 * 0.7);
-  return { top: `rgb(${r1},${g1},${b1})`, bottom: `rgb(${r2},${g2},${b2})` };
-}
-
-function updatePoolVisual(temp, pumpOn){
-  const colors = getPoolColor(temp);
-  document.documentElement.style.setProperty('--pool-c1', colors.top);
-  document.documentElement.style.setProperty('--pool-c2', colors.bottom);
-  
-  $('#poolTempDisplay').textContent = fmt(temp);
-  $('#poolBubbles').style.opacity = pumpOn ? '1' : '0';
-  
-  const steamOpacity = Math.max(0, Math.min(1, (temp - 32) / 4));
-  $('#poolSteam').style.opacity = steamOpacity;
-  
-  $('#pumpRotator').classList.toggle('on', pumpOn);
-  
-  const dot = $('#poolStatusDot');
-  dot.classList.toggle('on', pumpOn); dot.classList.toggle('off', !pumpOn);
-  $('#poolStatusText').textContent = pumpOn ? 'CIRCULANDO → COLETOR' : 'EM ESPERA';
-}
-
-function benchUpdate(){
-  const p = +$('#bPool').value, c = +$('#bColl').value, delta = c - p;
-  $('#bPoolOut').textContent = fmt(p) + ' °C';
-  $('#bCollOut').textContent = fmt(c) + ' °C';
+  const delta = t2 - t1;
   $('#bDelta').textContent = fmt(delta) + ' °C';
   
-  if(!pumpBench && delta >= 5) pumpBench = true;
-  if(pumpBench && delta <= 1) pumpBench = false;
+  const ruleEl = $('#bRule');
+  if (delta >= 5) {
+    ruleEl.textContent = 'ΔT ≥ 5 °C (LIGAR)';
+    ruleEl.className = 'value rule-ok';
+  } else {
+    ruleEl.textContent = 'ΔT < 5 °C (DESLIGAR)';
+    ruleEl.className = 'value rule-fail';
+  }
+  
+  if (!pumpBench && delta >= 5) pumpBench = true;
+  if (pumpBench && delta <= 1) pumpBench = false;
   
   const lamp = $('#bLamp');
   lamp.className = 'lamp ' + (pumpBench ? 'on' : 'off');
-  lamp.textContent = pumpBench ? '● BOMBA LIGADA' : '○ BOMBA DESLIGADA';
+  lamp.innerHTML = pumpBench ? '<span class="lamp-icon">●</span> BOMBA LIGADA' : '<span class="lamp-icon">○</span> BOMBA DESLIGADA';
   
-  updatePoolVisual(p, pumpBench);
+  const flow1 = $('#flow1'), flow2 = $('#flow2'), pumpIcon = $('#diagPumpIcon');
+  if (pumpBench) { flow1.classList.add('active'); flow2.classList.add('active'); pumpIcon.classList.add('active'); } 
+  else { flow1.classList.remove('active'); flow2.classList.remove('active'); pumpIcon.classList.remove('active'); }
+  
+  const k = Math.max(0, Math.min(1, (t1 - 20) / 18));
+  let r, g, b;
+  if (k < 0.5) { const kk = k * 2; r = Math.round(56 + kk * 40); g = Math.round(163 + kk * 40); b = 255; } 
+  else { const kk = (k - 0.5) * 2; r = Math.round(96 + kk * 159); g = Math.round(203 - kk * 80); b = Math.round(255 - kk * 100); }
+  $('#diagPoolWater').setAttribute('fill', `rgb(${r},${g},${b})`);
+  
+  const logicText = $('#logicText');
+  if (pumpBench) {
+    logicText.textContent = `O coletor está ${fmt(delta)} °C mais quente que a piscina. Como ΔT ≥ 5 °C, a bomba é acionada para transferir o calor para a água.`;
+    logicText.style.borderLeftColor = 'var(--teal)';
+  } else {
+    if (delta < 0) {
+      logicText.textContent = `O coletor está ${fmt(Math.abs(delta))} °C mais FRIO que a piscina. Ligar a bomba agora esfriaria a água. Sistema protegido.`;
+    } else {
+      logicText.textContent = `A diferença de temperatura é de apenas ${fmt(delta)} °C. Para evitar desperdício de energia com ganho mínimo, a bomba permanece desligada (histerese).`;
+    }
+    logicText.style.borderLeftColor = '#ff4d3d';
+  }
+}
+
+function benchUpdate() {
+  const p = +$('#bPool').value, c = +$('#bColl').value;
+  updateBenchVisuals(p, c);
+  $$('.scenario-btn').forEach(btn => {
+    if (+btn.dataset.t1 === p && +btn.dataset.t2 === c) btn.classList.add('active');
+    else btn.classList.remove('active');
+  });
 }
 
 $('#bPool').addEventListener('input', benchUpdate);
 $('#bColl').addEventListener('input', benchUpdate);
+
+$$('.scenario-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    $('#bPool').value = btn.dataset.t1;
+    $('#bColl').value = btn.dataset.t2;
+    pumpBench = (+btn.dataset.t2 - +btn.dataset.t1) >= 5;
+    benchUpdate();
+  });
+});
+
 benchUpdate();
 
 /* ================= SIMULADOR TÉRMICO MACRO ================= */
@@ -1203,17 +1171,12 @@ function simTick(){
   const Tc = air + (I / 1000) * 34;
   const pump = plates > 0 && ($('#sAuto').checked ? (Tc - sim.T >= 4) : true);
   
-  if(pump){
-    sim.T += plates * (I / 1000) * 0.08;
-    sim.kwh += plates * 1.5 * I * 0.55 * (10 / 60) / 1000;
-  }
-  
+  if(pump){ sim.T += plates * (I / 1000) * 0.08; sim.kwh += plates * 1.5 * I * 0.55 * (10 / 60) / 1000; }
   const dT = Math.max(0, sim.T - air);
   sim.T -= 0.012 * dT + ($('#sCover').checked ? 0.004 : 0.02) * dT;
   sim.T = Math.max(16, Math.min(42, sim.T));
   
   sim.hist.push(sim.T); if(sim.hist.length > 160) sim.hist.shift();
-  
   const hh = String(Math.floor(sim.mins / 60)).padStart(2, '0'), mm = String(sim.mins % 60).padStart(2, '0');
   $('#simClock').textContent = `Dia ${sim.day} · ${hh}:${mm}`;
   $('#simTemp').textContent = fmt(sim.T);
@@ -1265,7 +1228,7 @@ addEventListener('resize', () => {
   if($('#tab3').classList.contains('active')) drawSlit(performance.now());
 });
 
-}); // Fim do DOMContentLoaded
+});
 </script>
 </body>
 </html>
