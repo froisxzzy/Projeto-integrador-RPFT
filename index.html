@@ -3,329 +3,342 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="HÉLIOS·CEP — Projeto Integrador: sistema autônomo de aquecimento solar, integrando óptica (dispersão/difração), robótica e acessibilidade digital.">
-<title>HÉLIOS·CEP · Aquecimento Solar Inteligente & Óptica Aplicada</title>
+<meta name="description" content="HÉLIOS·CEP — Projeto Integrador: aquecimento solar autônomo da piscina térmica com óptica, robótica e acessibilidade.">
+<title>HÉLIOS·CEP · Aquecimento Solar Inteligente</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☀️</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;500;700;900&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-/* ================= VARIÁVEIS E BASE ================= */
 :root{
-  --bg:#04070f; --bg2:#0a1226; --paper:#0f172a; --ink:#eaf2ff; --ink2:#93a4c3;
-  --teal:#3ddc84; --teal-dk:#2a9d5c; --aqua:#38a3ff; --orange:#ff9f1c; --amber:#ffe14d;
-  --line:rgba(147,164,195,.28); --shadow:0 10px 40px rgba(0,0,0,.4);
-  --f-disp:'Unbounded',sans-serif; --f-body:'Space Grotesk',sans-serif; --f-mono:'Space Mono',monospace;
+  --bg:#030712;--bg2:#0a1628;--bg3:#111d33;--paper:#0f172a;--ink:#f0f4ff;--ink2:#8b9ec2;--ink3:#5a6f94;
+  --teal:#34d399;--teal-dk:#059669;--aqua:#38bdf8;--aqua-dk:#0284c7;--orange:#fb923c;--amber:#fbbf24;--red:#f87171;--violet:#a78bfa;
+  --line:rgba(139,158,194,.18);--line2:rgba(139,158,194,.08);
+  --glow-teal:0 0 20px rgba(52,211,153,.3);--glow-aqua:0 0 20px rgba(56,189,248,.3);--glow-amber:0 0 20px rgba(251,191,36,.3);
+  --shadow:0 8px 32px rgba(0,0,0,.5),0 2px 8px rgba(0,0,0,.3);
+  --f-d:'Unbounded',sans-serif;--f-b:'Space Grotesk',sans-serif;--f-m:'Space Mono',monospace;
+  --radius:14px;
 }
-body.hc{
-  --bg:#000; --bg2:#000; --paper:#000; --ink:#fff; --ink2:#ffd23f;
-  --teal:#ffd23f; --teal-dk:#ffd23f; --aqua:#ffd23f; --orange:#ffd23f; --amber:#ffd23f;
-  --line:#fff; --shadow:4px 4px 0 rgba(255,210,63,.8);
-}
+body.hc{--bg:#000;--bg2:#000;--bg3:#111;--paper:#000;--ink:#fff;--ink2:#ffd23f;--ink3:#ffd23f;
+  --teal:#ffd23f;--aqua:#ffd23f;--orange:#ffd23f;--amber:#ffd23f;--red:#ffd23f;--violet:#ffd23f;
+  --line:#ffd23f;--line2:#ffd23f;--shadow:3px 3px 0 #ffd23f}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
-body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:1.06rem;line-height:1.65;overflow-x:hidden}
-body.nomotion *,body.nomotion *::before,body.nomotion *::after{animation-play-state:paused!important;transition:none!important}
-@media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-b);font-size:1.05rem;line-height:1.7;overflow-x:hidden}
+body.nomotion *,body.nomotion *::before,body.nomotion *::after{animation:none!important;transition:none!important}
+@media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}html{scroll-behavior:auto}}
 img,svg,canvas{max-width:100%;display:block}
 a{color:var(--aqua);text-decoration:none}
-:focus-visible{outline:3px solid var(--orange);outline-offset:3px;border-radius:4px}
+:focus-visible{outline:3px solid var(--amber);outline-offset:3px;border-radius:6px}
 ::selection{background:var(--amber);color:#000}
-.wrap{width:min(1180px,92%);margin:0 auto}
-.mono{font-family:var(--f-mono)}
-h1,h2,h3{font-family:var(--f-disp);line-height:1.12;letter-spacing:-.01em}
-.skip{position:absolute;left:-999px;top:0;background:var(--ink);color:#000;padding:.8rem 1.2rem;z-index:300;font-family:var(--f-mono);font-weight:700}
-.skip:focus{left:12px;top:12px}
+.wrap{width:min(1200px,92%);margin:0 auto}
+.mono{font-family:var(--f-m)}
+h1,h2,h3,h4{font-family:var(--f-d);line-height:1.15}
+.skip{position:absolute;left:-999px;top:0;background:var(--amber);color:#000;padding:.8rem 1.2rem;z-index:999;font-family:var(--f-m);font-weight:700;border-radius:0 0 8px 0}
+.skip:focus{left:0}
 
-/* ================= UTILITÁRIOS ================= */
-.noise{position:fixed;inset:0;pointer-events:none;z-index:120;opacity:.04;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
-.progress{position:fixed;top:0;left:0;right:0;height:4px;background:transparent;z-index:210}
-.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--amber),var(--orange))}
-.rv{opacity:0;transform:translateY(26px);transition:opacity .7s ease,transform .7s ease}
+/* Noise + Progress + Sun */
+.noise{position:fixed;inset:0;pointer-events:none;z-index:120;opacity:.035;
+  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E")}
+.progress{position:fixed;top:0;left:0;right:0;height:3px;z-index:300;background:transparent}
+.progress span{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--teal),var(--aqua),var(--amber))}
+#sunDot{position:fixed;top:72px;left:5%;width:14px;height:14px;border-radius:50%;background:var(--amber);
+  box-shadow:0 0 0 4px rgba(251,191,36,.2),0 0 20px 4px rgba(251,191,36,.4);z-index:130;pointer-events:none;transition:top .1s}
+@media(max-width:900px){#sunDot{display:none}}
+
+/* Reveal */
+.rv{opacity:0;transform:translateY(30px);transition:opacity .8s cubic-bezier(.2,.7,.2,1),transform .8s cubic-bezier(.2,.7,.2,1)}
 .rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.1s}.rv.d2{transition-delay:.2s}.rv.d3{transition-delay:.3s}
 .lm{overflow:hidden;display:block}
-.lm>span{display:block;transform:translateY(112%);transition:transform .8s cubic-bezier(.2,.7,.2,1)}
-.in .lm>span,.lm.in>span{transform:none}
+.lm>span{display:block;transform:translateY(110%);transition:transform .9s cubic-bezier(.2,.7,.2,1)}
+.in .lm>span{transform:none}
 
-/* ================= CABEÇALHO ================= */
+/* ================= HEADER ================= */
 .topbar{position:sticky;top:0;z-index:200;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
-  padding:.7rem 4%;background:rgba(4,7,15,.92);backdrop-filter:blur(12px);border-bottom:2px solid var(--line)}
-.brand{font-family:var(--f-disp);font-weight:900;font-size:1.15rem;color:var(--ink);display:flex;align-items:center;gap:.5rem}
-.brand-sun{width:20px;height:20px;border-radius:50%;background:var(--amber);box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--ink);animation:pulse 3s ease-in-out infinite}
-@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.18)}}
+  padding:.65rem 4%;background:rgba(3,7,18,.9);backdrop-filter:blur(16px) saturate(1.4);border-bottom:1px solid var(--line)}
+.brand{font-family:var(--f-d);font-weight:900;font-size:1.1rem;color:var(--ink);display:flex;align-items:center;gap:.5rem}
+.brand-sun{width:18px;height:18px;border-radius:50%;background:var(--amber);box-shadow:var(--glow-amber);animation:pulse 3s ease-in-out infinite}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.2);opacity:.8}}
 .brand em{font-style:normal;color:var(--aqua)}
-.topbar nav{display:flex;gap:.2rem;flex-wrap:wrap;margin-inline:auto}
-.topbar nav a{font-family:var(--f-mono);font-size:.7rem;text-transform:uppercase;letter-spacing:.06em;
-  color:var(--ink2);padding:.45rem .6rem;border-radius:6px;transition:all .2s}
-.topbar nav a:hover,.topbar nav a.active{background:var(--ink);color:var(--bg)}
+.topbar nav{display:flex;gap:.15rem;flex-wrap:wrap;margin-inline:auto}
+.topbar nav a{font-family:var(--f-m);font-size:.68rem;text-transform:uppercase;letter-spacing:.08em;
+  color:var(--ink3);padding:.4rem .55rem;border-radius:6px;transition:all .25s}
+.topbar nav a:hover{color:var(--ink);background:rgba(255,255,255,.05)}
+.topbar nav a.active{color:var(--bg);background:var(--ink)}
 body.hc .topbar nav a.active{background:var(--amber);color:#000}
-.a11y-tools{display:flex;gap:.35rem;align-items:center}
-.a11y-tools button{font-family:var(--f-mono);font-size:.75rem;font-weight:700;min-width:38px;min-height:38px;
-  background:var(--paper);border:2px solid var(--line);border-radius:8px;cursor:pointer;color:var(--ink);transition:transform .15s}
-.a11y-tools button:hover{transform:translateY(-2px)}
-.a11y-tools button[aria-pressed="true"]{background:var(--ink);color:var(--bg)}
-body.hc .a11y-tools button[aria-pressed="true"]{background:var(--amber);color:#000}
-.hamb{display:none;font-family:var(--f-mono);background:var(--paper);border:2px solid var(--line);border-radius:8px;padding:.5rem .8rem;cursor:pointer;color:var(--ink)}
-@media(max-width:1020px){.hamb{display:block}.topbar nav{display:none;width:100%;flex-direction:column;border-top:2px dashed var(--line);padding-top:.6rem}.topbar nav.open{display:flex}}
+.a11y{display:flex;gap:.3rem;align-items:center}
+.a11y button{font-family:var(--f-m);font-size:.72rem;font-weight:700;min-width:36px;min-height:36px;
+  background:var(--paper);border:1.5px solid var(--line);border-radius:8px;cursor:pointer;color:var(--ink);transition:all .2s}
+.a11y button:hover{border-color:var(--aqua);color:var(--aqua);transform:translateY(-1px)}
+.a11y button[aria-pressed="true"]{background:var(--ink);color:var(--bg);border-color:var(--ink)}
+.hamb{display:none;font-family:var(--f-m);background:var(--paper);border:1.5px solid var(--line);border-radius:8px;padding:.45rem .7rem;cursor:pointer;color:var(--ink)}
+@media(max-width:1060px){.hamb{display:block}.topbar nav{display:none;width:100%;flex-direction:column;border-top:1px dashed var(--line);padding-top:.5rem}.topbar nav.open{display:flex}}
 
-/* ================= HERO / PAINEL ================= */
-.hero{padding:4.5rem 0 3.5rem;background:radial-gradient(circle at 82% 8%,rgba(255,159,28,.15),transparent 42%),radial-gradient(circle at 10% 90%,rgba(56,163,255,.12),transparent 45%)}
-.hero-grid{display:grid;grid-template-columns:1.1fr .95fr;gap:3rem;align-items:center}
-.kicker{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:.8rem;color:var(--ink2)}
-.kicker::after{content:"";height:2px;width:70px;background:var(--line)}
-.hero h1{font-size:clamp(2.4rem,6vw,4.2rem);font-weight:900;margin:.9rem 0 .4rem}
-.hero h1 .sol{color:var(--orange)}
-.hero .tagline{font-size:1.15rem;max-width:34rem;color:var(--ink2)}
-.chips{display:flex;flex-wrap:wrap;gap:.5rem;margin:1.4rem 0 1.8rem}
-.chip{font-family:var(--f-mono);font-size:.72rem;padding:.4rem .75rem;border:2px solid var(--line);border-radius:99px;background:var(--paper)}
-.btn{display:inline-block;font-family:var(--f-mono);font-weight:700;font-size:.85rem;text-transform:uppercase;letter-spacing:.05em;
-  padding:.85rem 1.4rem;border:2px solid var(--line);border-radius:10px;cursor:pointer;
-  background:var(--amber);color:#000;box-shadow:4px 4px 0 var(--line);transition:transform .15s,box-shadow .15s}
-.btn:hover{transform:translate(-2px,-2px);box-shadow:6px 6px 0 var(--line)}
-.btn:active{transform:translate(2px,2px);box-shadow:2px 2px 0 var(--line)}
-.btn.ghost{background:transparent;color:var(--ink);border-color:var(--ink2)}
-.btn.ghost:hover{background:var(--paper);color:var(--ink)}
+/* ================= BUTTONS ================= */
+.btn{display:inline-flex;align-items:center;gap:.5rem;font-family:var(--f-m);font-weight:700;font-size:.82rem;text-transform:uppercase;letter-spacing:.06em;
+  padding:.8rem 1.4rem;border:1.5px solid var(--line);border-radius:10px;cursor:pointer;
+  background:var(--amber);color:#000;box-shadow:0 4px 12px rgba(251,191,36,.25);transition:all .25s;position:relative;overflow:hidden}
+.btn::after{content:"";position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,.2),transparent);transform:translateX(-100%);transition:transform .6s}
+.btn:hover::after{transform:translateX(100%)}
+.btn:hover{transform:translateY(-2px);box-shadow:0 6px 20px rgba(251,191,36,.35)}
+.btn:active{transform:translateY(1px)}
+.btn.ghost{background:transparent;color:var(--ink);border-color:var(--ink3);box-shadow:none}
+.btn.ghost:hover{border-color:var(--aqua);color:var(--aqua);background:rgba(56,189,248,.06)}
 .btn.active-toggle{background:var(--teal);color:#000;border-color:var(--teal)}
+.btn.sm{font-size:.72rem;padding:.55rem 1rem}
 
-.panel{background:var(--paper);color:var(--ink);border:2px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
-.panel-head{display:flex;align-items:center;gap:.6rem;padding:.8rem 1.1rem;border-bottom:1px dashed var(--line);font-family:var(--f-mono);font-size:.72rem;letter-spacing:.12em}
-.led{width:10px;height:10px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal);animation:blink 1.6s infinite}
-body.hc .led{background:var(--amber);box-shadow:0 0 8px var(--amber)}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.25}}
-.panel-body{padding:1rem 1.1rem 1.2rem}
-.reads{display:grid;grid-template-columns:1fr 1fr;gap:.7rem}
-.read{background:rgba(255,255,255,.04);border:1px solid var(--line);border-radius:8px;padding:.55rem .7rem}
-.read small{display:block;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.14em;opacity:.75}
-.read strong{font-family:var(--f-mono);font-size:1.35rem;color:var(--amber)}
-.pump-row{display:flex;align-items:center;justify-content:space-between;margin:.9rem 0 .6rem;font-family:var(--f-mono);font-size:.8rem}
-.fan{display:inline-block;font-size:1.2rem;color:var(--amber)}
-.fan.on{animation:spin 1s linear infinite}
+/* ================= HERO ================= */
+.hero{padding:5rem 0 4rem;position:relative;overflow:hidden;
+  background:radial-gradient(ellipse 80% 60% at 75% 10%,rgba(251,191,36,.1),transparent),
+             radial-gradient(ellipse 60% 50% at 15% 85%,rgba(56,189,248,.08),transparent),var(--bg)}
+.hero::before{content:"";position:absolute;top:-50%;right:-20%;width:600px;height:600px;border-radius:50%;
+  background:radial-gradient(circle,rgba(251,191,36,.06),transparent 70%);animation:heroGlow 8s ease-in-out infinite alternate;pointer-events:none}
+@keyframes heroGlow{from{transform:translate(0,0) scale(1)}to{transform:translate(-40px,30px) scale(1.15)}}
+.hero-grid{display:grid;grid-template-columns:1.15fr .85fr;gap:3rem;align-items:center}
+.kicker{font-family:var(--f-m);font-size:.72rem;letter-spacing:.2em;text-transform:uppercase;color:var(--ink3);display:flex;align-items:center;gap:.8rem}
+.kicker::before{content:"";width:24px;height:2px;background:var(--amber)}
+.hero h1{font-size:clamp(2.2rem,5.5vw,4rem);font-weight:900;margin:.8rem 0 .5rem;letter-spacing:-.02em}
+.hero h1 .sol{background:linear-gradient(135deg,var(--amber),var(--orange));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+.hero .tagline{font-size:1.12rem;max-width:32rem;color:var(--ink2);line-height:1.7}
+.chips{display:flex;flex-wrap:wrap;gap:.4rem;margin:1.3rem 0 1.8rem}
+.chip{font-family:var(--f-m);font-size:.68rem;padding:.35rem .7rem;border:1px solid var(--line);border-radius:99px;background:rgba(255,255,255,.03);color:var(--ink2)}
+
+/* Panel */
+.panel{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);overflow:hidden;backdrop-filter:blur(8px)}
+.panel-head{display:flex;align-items:center;gap:.5rem;padding:.7rem 1rem;border-bottom:1px solid var(--line);font-family:var(--f-m);font-size:.68rem;letter-spacing:.12em;color:var(--ink2)}
+.led{width:8px;height:8px;border-radius:50%;background:var(--teal);box-shadow:var(--glow-teal);animation:blink 1.8s infinite}
+body.hc .led{background:var(--amber);box-shadow:var(--glow-amber)}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:.2}}
+.panel-body{padding:1rem}
+.reads{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.read{background:rgba(255,255,255,.03);border:1px solid var(--line2);border-radius:8px;padding:.5rem .6rem}
+.read small{display:block;font-family:var(--f-m);font-size:.58rem;letter-spacing:.12em;color:var(--ink3)}
+.read strong{font-family:var(--f-m);font-size:1.2rem;color:var(--amber)}
+.pump-row{display:flex;align-items:center;justify-content:space-between;margin:.7rem 0 .5rem;font-family:var(--f-m);font-size:.75rem;color:var(--ink2)}
+.fan{display:inline-block;color:var(--amber)}.fan.on{animation:spin 1s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
-.panel canvas{width:100%;height:56px;display:block;margin-top:.5rem;border:1px dashed var(--line);border-radius:6px}
-.panel-btns{display:flex;gap:.5rem;margin-top:.9rem;flex-wrap:wrap}
-.panel-btns button{font-family:var(--f-mono);font-size:.7rem;padding:.5rem .8rem;background:transparent;border:1.5px solid var(--line);color:var(--ink);border-radius:7px;cursor:pointer}
+.panel canvas{width:100%;height:50px;display:block;margin-top:.4rem;border:1px solid var(--line2);border-radius:6px}
+.panel-btns{display:flex;gap:.4rem;margin-top:.7rem}
+.panel-btns button{font-family:var(--f-m);font-size:.65rem;padding:.4rem .65rem;background:transparent;border:1px solid var(--line);color:var(--ink2);border-radius:6px;cursor:pointer;transition:all .2s}
 .panel-btns button:hover{border-color:var(--amber);color:var(--amber)}
 
-/* ================= SEÇÕES GERAIS ================= */
-section{padding:5.5rem 0}
-.sec-head{margin-bottom:2.6rem}
-.sec-num{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.2em;color:var(--orange);display:flex;align-items:center;gap:.8rem;margin-bottom:.7rem}
-.sec-num::after{content:"";height:2px;flex:1;max-width:140px;background:var(--orange)}
-.sec-head h2{font-size:clamp(1.9rem,4.4vw,3rem);max-width:22ch}
-.sec-head p.lead{margin-top:.9rem;max-width:56ch;color:var(--ink2);font-size:1.1rem}
-.card{background:var(--paper);border:2px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:1.5rem}
+/* Ticker */
+.ticker{border-block:1px solid var(--line);background:rgba(251,191,36,.04);overflow:hidden;padding:.5rem 0}
+.ticker-track{display:flex;gap:3rem;width:max-content;animation:tick 35s linear infinite;font-family:var(--f-m);font-weight:700;font-size:.72rem;letter-spacing:.14em;text-transform:uppercase;color:var(--ink3)}
+.ticker:hover .ticker-track{animation-play-state:paused}
+@keyframes tick{to{transform:translateX(-50%)}}
 
-/* ================= 01 DESAFIO ================= */
+/* ================= SECTIONS ================= */
+section{padding:5rem 0}
+.sec-head{margin-bottom:2.5rem}
+.sec-num{font-family:var(--f-m);font-size:.7rem;letter-spacing:.22em;color:var(--orange);display:flex;align-items:center;gap:.8rem;margin-bottom:.6rem}
+.sec-num::after{content:"";height:1px;flex:1;max-width:120px;background:linear-gradient(90deg,var(--orange),transparent)}
+.sec-head h2{font-size:clamp(1.8rem,4vw,2.8rem);max-width:20ch;letter-spacing:-.01em}
+.sec-head p.lead{margin-top:.8rem;max-width:54ch;color:var(--ink2);font-size:1.05rem}
+.card{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.5rem}
+
+/* 01 Desafio */
 #desafio{background:var(--bg2)}
-.desafio-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.6rem;align-items:start}
-.desafio-left{position:sticky;top:96px}
-.bigstat{font-family:var(--f-disp);font-weight:900;font-size:clamp(3rem,7vw,5.2rem);color:var(--aqua);line-height:1}
-.bigstat small{display:block;font-family:var(--f-mono);font-size:.78rem;font-weight:400;color:var(--ink2);letter-spacing:.08em;margin-top:.6rem;text-transform:uppercase}
-.stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin-top:1.6rem}
-.stat{background:var(--paper);border:2px solid var(--line);border-radius:10px;padding:1rem;box-shadow:4px 4px 0 var(--line)}
-.stat b{font-family:var(--f-mono);font-size:1.35rem;color:var(--orange);display:block}
-.stat span{font-size:.8rem;color:var(--ink2)}
+.desafio-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;align-items:start}
+.desafio-left{position:sticky;top:90px}
+.bigstat{font-family:var(--f-d);font-weight:900;font-size:clamp(3rem,7vw,5rem);background:linear-gradient(135deg,var(--aqua),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;line-height:1}
+.bigstat small{display:block;font-family:var(--f-m);font-size:.75rem;font-weight:400;-webkit-text-fill-color:var(--ink2);letter-spacing:.06em;margin-top:.5rem;text-transform:uppercase}
+.stats3{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin-top:1.5rem}
+.stat{background:var(--paper);border:1px solid var(--line);border-radius:10px;padding:.9rem}
+.stat b{font-family:var(--f-m);font-size:1.2rem;color:var(--orange);display:block}
+.stat span{font-size:.78rem;color:var(--ink3)}
 
-/* ================= 02 LABORATÓRIO DE ÓPTICA ================= */
+/* 02 Laboratório */
 #optica{background:var(--bg)}
-.opt-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem;border-bottom:2px solid var(--line);padding-bottom:.5rem}
-.opt-tab{font-family:var(--f-mono);font-size:.8rem;padding:.6rem 1rem;border-radius:8px 8px 0 0;cursor:pointer;color:var(--ink2);border:2px solid transparent;border-bottom:none;transition:all .2s}
+.opt-tabs{display:flex;gap:.3rem;flex-wrap:wrap;margin-bottom:1.2rem;padding-bottom:.5rem;border-bottom:1px solid var(--line)}
+.opt-tab{font-family:var(--f-m);font-size:.75rem;padding:.55rem .9rem;border-radius:8px 8px 0 0;cursor:pointer;color:var(--ink3);border:1px solid transparent;border-bottom:none;transition:all .25s;background:transparent}
+.opt-tab:hover{color:var(--ink2);background:rgba(255,255,255,.02)}
 .opt-tab.active{background:var(--paper);color:var(--ink);border-color:var(--line);border-bottom-color:var(--paper);font-weight:700}
-.opt-content{display:none;animation:stageIn .5s ease}
+.opt-content{display:none;animation:fadeUp .5s ease}
 .opt-content.active{display:block}
-@keyframes stageIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 
-.lab-stage{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:1.6rem;margin-top:1rem;position:relative}
-.lab-stage .hint{position:absolute;top:.8rem;right:1.2rem;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.18em;color:var(--ink2);background:var(--paper);padding:.3rem .6rem;border-radius:4px}
+.lab-stage{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:1.4rem;margin-top:1rem;position:relative}
+.lab-stage .hint{position:absolute;top:.7rem;right:1rem;font-family:var(--f-m);font-size:.6rem;letter-spacing:.16em;color:var(--ink3);background:var(--bg3);padding:.25rem .5rem;border-radius:4px}
 .scene{width:100%;height:auto}
-.rayline{filter:drop-shadow(0 0 6px currentColor);transition:all .3s}
-.draggable{cursor:grab}
-.draggable:active{cursor:grabbing}
-
-#prismSvg{max-height:300px}
+.rayline{filter:drop-shadow(0 0 6px currentColor)}
+.draggable{cursor:grab}.draggable:active{cursor:grabbing}
+#prismSvg{max-height:280px}
 .hitline{stroke:transparent;stroke-width:22;cursor:pointer}
+#slitCanvas{width:100%;height:240px;border-radius:8px;background:#020610}
+input[type=range]{appearance:none;width:100%;height:8px;border-radius:99px;border:1px solid var(--line);
+  background:linear-gradient(90deg,var(--violet),var(--aqua),var(--teal),var(--amber),var(--orange),var(--red));cursor:pointer;margin:.7rem 0}
+input[type=range]::-webkit-slider-thumb{appearance:none;width:22px;height:22px;border-radius:50%;background:#fff;border:3px solid var(--bg);box-shadow:0 0 10px rgba(255,255,255,.5)}
+input[type=range].plain{background:var(--bg3)}
 
-#slitCanvas{width:100%;height:250px;border-radius:8px;background:#000}
-input[type=range]{appearance:none;width:100%;height:10px;border-radius:99px;border:1px solid var(--line);
-  background:linear-gradient(90deg,var(--teal),var(--aqua),var(--amber),var(--orange));cursor:pointer;margin:.8rem 0}
-input[type=range]::-webkit-slider-thumb{appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid #000}
-input[type=range].plain{background:var(--paper)}
-
-#cdArea{position:relative;height:320px;border-radius:14px;overflow:hidden;background:radial-gradient(400px 200px at 50% 60%,rgba(56,163,255,.1),transparent),var(--bg2);border:1px solid var(--line)}
-#cdDisc{position:absolute;left:50%;top:52%;width:200px;height:200px;transform:translate(-50%,-50%);border-radius:50%;cursor:pointer;
+#cdArea{position:relative;height:300px;border-radius:var(--radius);overflow:hidden;background:radial-gradient(400px 200px at 50% 60%,rgba(56,189,248,.06),transparent),var(--bg2);border:1px solid var(--line)}
+#cdDisc{position:absolute;left:50%;top:52%;width:190px;height:190px;transform:translate(-50%,-50%);border-radius:50%;cursor:pointer;
   background:conic-gradient(from var(--sheen,0deg),#ff4d3d,#ff9f1c,#ffe14d,#3ddc84,#38a3ff,#b06bff,#ff4d3d);
-  box-shadow:0 0 30px rgba(255,255,255,.15),inset 0 0 40px rgba(0,0,0,.6);animation:cdspin 20s linear infinite}
-#cdDisc::before{content:"";position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle,transparent 0 3px,rgba(255,255,255,.14) 3px 4px)}
-#cdDisc::after{content:"";position:absolute;left:50%;top:50%;width:50px;height:50px;transform:translate(-50%,-50%);border-radius:50%;background:var(--bg2);border:5px solid rgba(255,255,255,.35)}
+  box-shadow:0 0 30px rgba(255,255,255,.12),inset 0 0 40px rgba(0,0,0,.6);animation:cdspin 22s linear infinite}
+#cdDisc::before{content:"";position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle,transparent 0 3px,rgba(255,255,255,.12) 3px 4px)}
+#cdDisc::after{content:"";position:absolute;left:50%;top:50%;width:46px;height:46px;transform:translate(-50%,-50%);border-radius:50%;background:var(--bg2);border:4px solid rgba(255,255,255,.3)}
 @keyframes cdspin{to{transform:translate(-50%,-50%) rotate(360deg)}}
-#cdLight{position:absolute;left:12%;top:18%;font-size:2rem;cursor:grab;filter:drop-shadow(0 0 16px #ffe14d);user-select:none;touch-action:none;z-index:2}
-#cdRays{position:absolute;left:50%;top:52%;width:280px;height:6px;transform-origin:0 50%;pointer-events:none;
-  background:linear-gradient(90deg,transparent,#ff4d3d 20%,#ffe14d 40%,#3ddc84 60%,#38a3ff 80%,#b06bff);
-  filter:blur(1.5px) drop-shadow(0 0 8px #fff);opacity:.85}
+#cdLight{position:absolute;left:12%;top:18%;font-size:2rem;cursor:grab;filter:drop-shadow(0 0 14px #ffe14d);user-select:none;touch-action:none;z-index:2}
+#cdRays{position:absolute;left:50%;top:52%;width:260px;height:5px;transform-origin:0 50%;pointer-events:none;
+  background:linear-gradient(90deg,transparent,#ff4d3d 20%,#ffe14d 40%,#3ddc84 60%,#38a3ff 80%,#b06bff);filter:blur(1.5px) drop-shadow(0 0 6px #fff);opacity:.8}
 
-.concept-grid{display:grid;grid-template-columns:1fr;gap:1.5rem;margin-top:1rem}
-@media(min-width: 768px){.concept-grid{grid-template-columns:1fr 1fr}}
-.concept-card{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:10px;padding:1.4rem;transition:transform .2s}
-.concept-card:hover{transform:translateY(-4px);border-color:var(--aqua)}
-.concept-card h4{font-family:var(--f-disp);color:var(--amber);font-size:1.1rem;margin-bottom:.6rem;display:flex;align-items:center;gap:.5rem}
-.concept-card p{font-size:.95rem;color:var(--ink2);line-height:1.7;margin-bottom:.8rem}
-.concept-card ul{list-style:none;padding-left:0}
-.concept-card ul li{position:relative;padding-left:1.5rem;margin-bottom:.5rem;font-size:.9rem;color:var(--ink)}
+.concept-grid{display:grid;grid-template-columns:1fr;gap:1.2rem;margin-top:1.2rem}
+@media(min-width:700px){.concept-grid{grid-template-columns:1fr 1fr}}
+.concept-card{background:rgba(255,255,255,.02);border:1px solid var(--line);border-radius:12px;padding:1.3rem;transition:all .3s}
+.concept-card:hover{border-color:var(--aqua);transform:translateY(-3px);box-shadow:var(--glow-aqua)}
+.concept-card h4{font-family:var(--f-d);color:var(--amber);font-size:1rem;margin-bottom:.5rem;display:flex;align-items:center;gap:.5rem}
+.concept-card p{font-size:.92rem;color:var(--ink2);line-height:1.7}
+.concept-card ul{list-style:none;padding:0;margin-top:.5rem}
+.concept-card ul li{position:relative;padding-left:1.3rem;margin-bottom:.4rem;font-size:.88rem;color:var(--ink)}
 .concept-card ul li::before{content:"▹";position:absolute;left:0;color:var(--teal)}
+.synthesis-box{grid-column:1/-1;background:linear-gradient(135deg,rgba(251,191,36,.06),rgba(56,189,248,.06));border:1px solid var(--orange);border-radius:12px;padding:1.4rem}
+.synthesis-box h4{color:var(--orange);font-family:var(--f-d);margin-bottom:.7rem}
+.synthesis-box ol{margin-left:1.2rem;line-height:1.9;color:var(--ink)}
 
-.sim-controls-row{display:flex; gap:1rem; flex-wrap:wrap; margin-top:1rem; align-items:flex-end;}
-.sim-controls-row > div{display:flex; flex-direction:column; gap:.4rem;}
-.sim-controls-row select{padding:.6rem; border-radius:8px; background:var(--paper); color:var(--ink); border:1px solid var(--line); font-family:var(--f-mono); font-size:.85rem; cursor:pointer;}
-.sim-stats-box{margin-left:auto; text-align:right; background:rgba(0,0,0,.2); padding:.8rem 1.2rem; border-radius:8px; border:1px solid var(--line);}
-.sim-stats-box .label{font-family:var(--f-mono); font-size:.7rem; color:var(--ink2); text-transform:uppercase;}
-.sim-stats-box .value{font-family:var(--f-disp); font-size:1.8rem; color:var(--teal); font-variant-numeric:tabular-nums;}
+.sim-controls-row{display:flex;gap:1rem;flex-wrap:wrap;margin-top:1rem;align-items:flex-end}
+.sim-controls-row>div{display:flex;flex-direction:column;gap:.3rem}
+.sim-controls-row select{padding:.55rem;border-radius:8px;background:var(--paper);color:var(--ink);border:1px solid var(--line);font-family:var(--f-m);font-size:.82rem;cursor:pointer}
+.sim-stats-box{margin-left:auto;text-align:right;background:rgba(0,0,0,.25);padding:.7rem 1rem;border-radius:8px;border:1px solid var(--line)}
+.sim-stats-box .label{font-family:var(--f-m);font-size:.65rem;color:var(--ink3);text-transform:uppercase}
+.sim-stats-box .value{font-family:var(--f-d);font-size:1.6rem;color:var(--teal);font-variant-numeric:tabular-nums}
 
-/* ================= 03 ROBÓTICA - BANCADA COM PISCINA ================= */
-.bento{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-bottom:3rem}
-.hw{border:2px solid var(--line);border-radius:12px;background:var(--paper);box-shadow:4px 4px 0 var(--line);padding:1.1rem;transition:transform .2s}
-.hw:hover{transform:translateY(-5px)}
-.hw .hw-tag{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.15em;padding:.2rem .5rem;border-radius:5px;background:var(--aqua);color:#000}
-.hw h3{font-size:1rem;margin:.7rem 0 .3rem}
-.hw p{font-size:.85rem;color:var(--ink2)}
+/* 03 Robótica */
+.bento{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:.8rem;margin-bottom:2.5rem}
+.hw{border:1px solid var(--line);border-radius:12px;background:var(--paper);padding:1rem;transition:all .3s}
+.hw:hover{transform:translateY(-4px);border-color:var(--aqua);box-shadow:var(--glow-aqua)}
+.hw .hw-tag{font-family:var(--f-m);font-size:.58rem;letter-spacing:.14em;padding:.2rem .45rem;border-radius:4px;background:var(--aqua);color:#000}
+.hw h3{font-size:.95rem;margin:.6rem 0 .25rem}
+.hw p{font-size:.82rem;color:var(--ink2)}
 
-/* Bancada com piscina visual */
-.bench-pool{margin-top:2rem;display:grid;grid-template-columns:1.2fr 1fr;gap:2rem;align-items:stretch}
+/* Bancada com Piscina */
+.bench-pool{display:grid;grid-template-columns:1.3fr 1fr;gap:1.5rem;align-items:stretch}
 @media(max-width:900px){.bench-pool{grid-template-columns:1fr}}
-
-.pool-viewer{background:var(--bg2);border:2px solid var(--line);border-radius:14px;padding:1rem;display:flex;flex-direction:column;gap:.8rem;position:relative;overflow:hidden}
-.pool-viewer::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 30%,rgba(56,163,255,.08),transparent 60%);pointer-events:none}
-.pool-svg-wrap{position:relative;width:100%;aspect-ratio:16/10;background:rgba(0,0,0,.25);border-radius:10px;overflow:hidden;border:1px solid var(--line)}
-.pool-svg-wrap svg{width:100%;height:100%;display:block}
-.pool-info{display:flex;justify-content:space-between;align-items:center;gap:1rem;flex-wrap:wrap}
-.pool-temp-big{font-family:var(--f-disp);font-weight:900;font-size:clamp(1.8rem,4vw,2.4rem);color:var(--amber);font-variant-numeric:tabular-nums}
-.pool-temp-big small{font-size:.6em;color:var(--ink2);font-weight:400;margin-left:.3rem}
-.pool-status{display:flex;align-items:center;gap:.5rem;font-family:var(--f-mono);font-size:.78rem;color:var(--ink2)}
-.pool-status .dot{width:10px;height:10px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal)}
-.pool-status .dot.off{background:var(--ink2);box-shadow:none}
-.pool-status .dot.on{animation:blink 1.2s infinite}
-
-/* Bolhas animadas */
-.pool-bubble{fill:rgba(255,255,255,.6);animation:bubbleRise 3s linear infinite}
-@keyframes bubbleRise{
-  0%{transform:translateY(0);opacity:0}
-  10%{opacity:.8}
-  90%{opacity:.6}
-  100%{transform:translateY(-60px);opacity:0}
-}
-.pool-wave{animation:waveMove 4s ease-in-out infinite alternate}
-@keyframes waveMove{
-  0%{transform:translateX(0)}
-  100%{transform:translateX(-20px)}
-}
-.pump-icon{transition:transform .3s}
+.pool-viewer{background:var(--bg2);border:1px solid var(--line);border-radius:var(--radius);padding:1rem;display:flex;flex-direction:column;gap:.7rem;position:relative;overflow:hidden}
+.pool-svg-wrap{position:relative;width:100%;aspect-ratio:16/10;background:rgba(0,0,0,.3);border-radius:10px;overflow:hidden;border:1px solid var(--line)}
+.pool-svg-wrap svg{width:100%;height:100%}
+.pool-info{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem}
+.pool-temp-big{font-family:var(--f-d);font-weight:900;font-size:clamp(1.6rem,3.5vw,2.2rem);color:var(--amber);font-variant-numeric:tabular-nums}
+.pool-temp-big small{font-size:.55em;color:var(--ink3);font-weight:400}
+.pool-status{display:flex;align-items:center;gap:.4rem;font-family:var(--f-m);font-size:.72rem;color:var(--ink2)}
+.pool-status .dot{width:8px;height:8px;border-radius:50%;background:var(--ink3)}
+.pool-status .dot.on{background:var(--teal);box-shadow:var(--glow-teal);animation:blink 1.2s infinite}
+.pool-bubble{fill:rgba(255,255,255,.5);animation:bubbleUp 2.5s linear infinite}
+@keyframes bubbleUp{0%{transform:translateY(0);opacity:0}10%{opacity:.7}90%{opacity:.5}100%{transform:translateY(-55px);opacity:0}}
+.pool-wave{animation:waveX 5s ease-in-out infinite alternate}
+@keyframes waveX{to{transform:translateX(-15px)}}
 .pump-icon.on{animation:spin 1.5s linear infinite}
 
-/* Controles da bancada */
-.bench-controls{background:var(--paper);border:2px solid var(--line);border-radius:14px;padding:1.4rem;display:flex;flex-direction:column;gap:.8rem}
-.bench-controls h3{font-size:1.05rem;margin-bottom:.4rem;color:var(--ink)}
-.lamp{font-family:var(--f-mono);font-weight:700;font-size:1rem;padding:1rem 1.6rem;border:3px solid var(--line);border-radius:12px;text-align:center;transition:background .3s}
-.lamp.on{background:var(--teal);color:#000}
-.lamp.off{background:var(--bg2);color:var(--ink2)}
-.delta-display{background:rgba(0,0,0,.25);border:1px solid var(--line);border-radius:10px;padding:.8rem 1rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.5rem}
-.delta-display .label{font-family:var(--f-mono);font-size:.7rem;color:var(--ink2);text-transform:uppercase;letter-spacing:.1em}
-.delta-display .value{font-family:var(--f-disp);font-size:1.4rem;color:var(--orange);font-variant-numeric:tabular-nums}
+.bench-controls{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);padding:1.3rem;display:flex;flex-direction:column;gap:.7rem}
+.lamp{font-family:var(--f-m);font-weight:700;font-size:.95rem;padding:.9rem 1.4rem;border:2px solid var(--line);border-radius:10px;text-align:center;transition:all .3s}
+.lamp.on{background:var(--teal);color:#000;border-color:var(--teal);box-shadow:var(--glow-teal)}
+.lamp.off{background:var(--bg2);color:var(--ink3)}
+.delta-display{background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:10px;padding:.7rem .9rem;display:flex;justify-content:space-between;align-items:center}
+.delta-display .label{font-family:var(--f-m);font-size:.65rem;color:var(--ink3);text-transform:uppercase;letter-spacing:.08em}
+.delta-display .value{font-family:var(--f-d);font-size:1.3rem;color:var(--orange)}
 
-/* ================= 04 SIMULADOR ================= */
+/* 04 Simulador */
 #simulador{background:var(--bg2)}
-.sim-grid{display:grid;grid-template-columns:340px 1fr;gap:2rem;align-items:start}
-.sim-controls{background:var(--paper);color:var(--ink);border:2px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:1.4rem}
-.sim-controls label{display:block;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;margin:1rem 0 .3rem;color:var(--ink2)}
-.sim-controls output{font-family:var(--f-mono);font-weight:700;color:var(--orange);float:right}
-.check-row{display:flex;align-items:center;gap:.6rem;margin:1rem 0;font-family:var(--f-mono);font-size:.78rem}
-.check-row input{width:20px;height:20px;accent-color:var(--orange)}
-.sim-stage{border:2px solid var(--line);border-radius:14px;background:var(--paper);padding:1.4rem}
-.sim-top{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;margin-bottom:1rem}
-.sim-temp{font-family:var(--f-disp);font-weight:900;font-size:clamp(2.4rem,5vw,3.6rem);color:var(--amber)}
-.sim-clock{font-family:var(--f-mono);font-size:.85rem;color:var(--ink2)}
-.sim-state{font-family:var(--f-mono);font-size:.72rem;padding:.3rem .7rem;border:1.5px solid var(--teal);border-radius:99px;color:var(--teal)}
-#simChart{width:100%;height:170px;border:1px dashed var(--line);border-radius:8px;margin-top:1.2rem;background:var(--bg2)}
-.sim-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.9rem;margin-top:1.2rem}
-.sim-stats div{border:1.5px solid var(--line);border-radius:9px;padding:.7rem;text-align:center}
-.sim-stats b{font-family:var(--f-mono);font-size:1.15rem;color:var(--amber);display:block}
-.sim-stats span{font-size:.72rem;color:var(--ink2)}
+.sim-grid{display:grid;grid-template-columns:320px 1fr;gap:1.5rem;align-items:start}
+.sim-controls{background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:1.3rem}
+.sim-controls label{display:block;font-family:var(--f-m);font-size:.68rem;letter-spacing:.1em;text-transform:uppercase;margin:.9rem 0 .25rem;color:var(--ink3)}
+.sim-controls output{font-family:var(--f-m);font-weight:700;color:var(--orange);float:right}
+.check-row{display:flex;align-items:center;gap:.5rem;margin:.8rem 0;font-family:var(--f-m);font-size:.75rem}
+.check-row input{width:18px;height:18px;accent-color:var(--orange)}
+.sim-stage{border:1px solid var(--line);border-radius:var(--radius);background:var(--paper);padding:1.3rem}
+.sim-top{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:1rem;margin-bottom:.8rem}
+.sim-temp{font-family:var(--f-d);font-weight:900;font-size:clamp(2.2rem,4.5vw,3.2rem);color:var(--amber)}
+.sim-clock{font-family:var(--f-m);font-size:.8rem;color:var(--ink3)}
+.sim-state{font-family:var(--f-m);font-size:.68rem;padding:.25rem .6rem;border:1px solid var(--teal);border-radius:99px;color:var(--teal)}
+#simChart{width:100%;height:160px;border:1px solid var(--line2);border-radius:8px;margin-top:1rem;background:var(--bg2)}
+.sim-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:.7rem;margin-top:1rem}
+.sim-stats div{border:1px solid var(--line);border-radius:8px;padding:.6rem;text-align:center}
+.sim-stats b{font-family:var(--f-m);font-size:1.05rem;color:var(--amber);display:block}
+.sim-stats span{font-size:.68rem;color:var(--ink3)}
 
-/* ================= 05 ACESSIBILIDADE & IMPACTO ================= */
-.check-list{list-style:none;margin-top:1.2rem}
-.check-list li{padding:.75rem 0 .75rem 2.4rem;border-bottom:1px dashed var(--line);position:relative}
-.check-list li::before{content:"✔";position:absolute;left:0;top:.7rem;font-family:var(--f-mono);font-weight:700;color:var(--teal);font-size:1.1rem}
+/* 05 Acessibilidade */
+.check-list{list-style:none;margin-top:1rem}
+.check-list li{padding:.7rem 0 .7rem 2.2rem;border-bottom:1px solid var(--line2);position:relative;font-size:.95rem}
+.check-list li::before{content:"✔";position:absolute;left:0;top:.65rem;font-family:var(--f-m);font-weight:700;color:var(--teal)}
 
-/* ================= EQUIPE & RODAPÉ ================= */
-.team{display:flex;flex-wrap:wrap;gap:1.6rem;justify-content:center;margin:2.2rem 0 3.5rem}
-.member{background:var(--paper);border:2px solid var(--line);box-shadow:var(--shadow);padding:.9rem;width:196px;transition:transform .3s;text-align:center}
-.member:nth-child(odd){transform:rotate(-2deg)}
-.member:nth-child(even){transform:rotate(2deg)}
-.member:hover{transform:rotate(0) translateY(-8px)}
-.member img{width:100%;aspect-ratio:1;object-fit:cover;border:2px solid var(--line);filter:saturate(.85)}
-.member h3{font-size:.95rem;margin-top:.7rem}
-.member p{font-family:var(--f-mono);font-size:.66rem;color:var(--orange);letter-spacing:.08em;text-transform:uppercase}
+/* 06 Impacto */
+#impacto{background:var(--bg2)}
+.counters{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem;margin:2rem 0}
+.counter{background:var(--paper);border:1px solid var(--line);border-radius:12px;padding:1.2rem}
+.counter b{font-family:var(--f-d);font-weight:900;font-size:clamp(1.5rem,3vw,2.2rem);background:linear-gradient(135deg,var(--aqua),var(--teal));-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block}
+.counter span{font-family:var(--f-m);font-size:.68rem;color:var(--ink3);text-transform:uppercase;letter-spacing:.05em}
 
-footer{background:var(--paper);color:var(--ink2);padding:3rem 0 2.5rem;border-top:2px solid var(--line)}
+/* Equipe */
+.team{display:flex;flex-wrap:wrap;gap:1.2rem;justify-content:center;margin:2rem 0 3rem}
+.member{background:var(--paper);border:1px solid var(--line);padding:.8rem;width:180px;text-align:center;transition:all .3s;border-radius:12px}
+.member:nth-child(odd){transform:rotate(-1.5deg)}
+.member:nth-child(even){transform:rotate(1.5deg)}
+.member:hover{transform:rotate(0) translateY(-6px);border-color:var(--aqua);box-shadow:var(--glow-aqua)}
+.member img{width:100%;aspect-ratio:1;object-fit:cover;border:1px solid var(--line);border-radius:8px;filter:saturate(.8)}
+.member h3{font-size:.88rem;margin-top:.6rem}
+.member p{font-family:var(--f-m);font-size:.62rem;color:var(--orange);letter-spacing:.08em;text-transform:uppercase}
+
+/* Footer */
+footer{background:var(--bg2);border-top:1px solid var(--line);padding:2.5rem 0 2rem}
 .foot-grid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap;align-items:flex-start}
 footer .brand{color:var(--ink)}
-footer nav{display:flex;flex-direction:column;gap:.35rem}
-footer nav a{color:var(--ink2);font-family:var(--f-mono);font-size:.75rem}
+footer nav{display:flex;flex-direction:column;gap:.3rem}
+footer nav a{color:var(--ink3);font-family:var(--f-m);font-size:.72rem;transition:color .2s}
 footer nav a:hover{color:var(--amber)}
-.foot-fim{margin-top:2.4rem;padding-top:1.2rem;border-top:1px dashed var(--line);font-family:var(--f-mono);font-size:.68rem;opacity:.75;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
+.foot-fim{margin-top:2rem;padding-top:1rem;border-top:1px solid var(--line2);font-family:var(--f-m);font-size:.65rem;color:var(--ink3);display:flex;justify-content:space-between;flex-wrap:wrap;gap:.5rem}
+
+.fb{margin-top:1rem;padding:.9rem 1rem;border:1px solid var(--line);border-left:3px solid var(--aqua);border-radius:8px;background:var(--paper);font-size:.92rem}
+.fb.ok{border-left-color:var(--teal);background:rgba(52,211,153,.06)}
+.fb.err{border-left-color:var(--red);background:rgba(248,113,113,.06);animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-5px)}50%{transform:translateX(5px)}75%{transform:translateX(-2px)}}
 
 @media(max-width:980px){
   .hero-grid,.desafio-grid,.sim-grid{grid-template-columns:1fr}
   .desafio-left{position:static}
-  .sim-controls-row{flex-direction:column; align-items:stretch;}
-  .sim-stats-box{margin-left:0; text-align:left; display:flex; justify-content:space-between; align-items:center;}
+  .sim-controls-row{flex-direction:column;align-items:stretch}
+  .sim-stats-box{margin-left:0;text-align:left;display:flex;justify-content:space-between;align-items:center}
 }
+@media(max-width:560px){section{padding:3.5rem 0}.stats3,.sim-stats{grid-template-columns:1fr}}
 </style>
 </head>
 <body id="topo">
-<a class="skip" href="#conteudo">Pular para o conteúdo principal</a>
+<a class="skip" href="#conteudo">Pular para o conteúdo</a>
 <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+<div id="sunDot" aria-hidden="true"></div>
 <div class="noise" aria-hidden="true"></div>
 
-<!-- ================= CABEÇALHO ================= -->
 <header class="topbar">
-  <a class="brand" href="#topo" aria-label="HÉLIOS CEP — início"><span class="brand-sun" aria-hidden="true"></span>HÉLIOS<em>·CEP</em></a>
+  <a class="brand" href="#topo"><span class="brand-sun" aria-hidden="true"></span>HÉLIOS<em>·CEP</em></a>
   <nav id="mainnav" aria-label="Navegação principal">
-    <a href="#desafio">Desafio</a>
-    <a href="#optica">Laboratório</a>
-    <a href="#robotica">Robótica</a>
-    <a href="#simulador">Simulador</a>
-    <a href="#acessibilidade">Acessibilidade</a>
-    <a href="#equipe">Equipe</a>
+    <a href="#desafio">Desafio</a><a href="#optica">Laboratório</a><a href="#robotica">Robótica</a>
+    <a href="#simulador">Simulador</a><a href="#impacto">Impacto</a><a href="#acessibilidade">A11y</a><a href="#equipe">Equipe</a>
   </nav>
-  <div class="a11y-tools" role="group" aria-label="Ferramentas de acessibilidade">
-    <button id="fontMinus" aria-label="Diminuir texto" title="Diminuir texto">A−</button>
-    <button id="fontPlus" aria-label="Aumentar texto" title="Aumentar texto">A+</button>
-    <button id="contrastBtn" aria-pressed="false" aria-label="Alternar alto contraste" title="Alto contraste">◐</button>
-    <button id="motionBtn" aria-pressed="false" aria-label="Pausar animações" title="Pausar animações">⏸</button>
+  <div class="a11y" role="group" aria-label="Acessibilidade">
+    <button id="fontMinus" aria-label="Diminuir texto">A−</button>
+    <button id="fontPlus" aria-label="Aumentar texto">A+</button>
+    <button id="contrastBtn" aria-pressed="false" aria-label="Alto contraste">◐</button>
+    <button id="motionBtn" aria-pressed="false" aria-label="Pausar animações">⏸</button>
   </div>
-  <button class="hamb" id="hambBtn" aria-expanded="false" aria-controls="mainnav">☰ menu</button>
+  <button class="hamb" id="hambBtn" aria-expanded="false" aria-controls="mainnav">☰</button>
 </header>
 
 <main id="conteudo">
 
-<!-- ================= HERO ================= -->
-<section class="hero" aria-label="Apresentação do projeto">
+<!-- HERO -->
+<section class="hero" aria-label="Apresentação">
   <div class="wrap hero-grid">
     <div>
       <p class="kicker">Projeto Integrador · 2026 · CEP</p>
       <h1><span id="scrambleTitle" data-text="HÉLIOS·CEP">HÉLIOS·CEP</span></h1>
-      <p class="tagline">Sistema <strong>autônomo de aquecimento solar</strong> para a piscina térmica. Onde a <span class="sol">Óptica</span> capta a luz, a Robótica decide e a Programação executa.</p>
+      <p class="tagline">Sistema <strong>autônomo de aquecimento solar</strong> para a piscina térmica. A <span class="sol">Óptica</span> capta, a Robótica decide, a Programação executa.</p>
       <div class="chips">
-        <span class="chip">☀ Dispersão & Difração</span>
-        <span class="chip">🤖 Automação</span>
-        <span class="chip">♿ Acessível</span>
+        <span class="chip">☀ Dispersão & Difração</span><span class="chip">🤖 Automação</span><span class="chip">♿ Acessível</span><span class="chip">🌱 Sustentável</span>
       </div>
-      <a class="btn" href="#optica">Entrar no Laboratório</a>
-      <a class="btn ghost" href="#desafio" style="margin-left:.6rem">O Desafio</a>
+      <a class="btn" href="#optica">Entrar no Laboratório →</a>
+      <a class="btn ghost" href="#desafio" style="margin-left:.5rem">O Desafio</a>
     </div>
-
-    <div class="panel" aria-label="Painel de controle simulado">
-      <div class="panel-head"><span class="led" aria-hidden="true"></span> UNIDADE DE CONTROLE · HÉLIOS v1.0 · <span id="panelMode">AUTO</span></div>
+    <div class="panel" aria-label="Painel de controle">
+      <div class="panel-head"><span class="led" aria-hidden="true"></span> HÉLIOS v1.0 · <span id="panelMode">AUTO</span></div>
       <div class="panel-body">
         <div class="reads">
           <div class="read"><small>PISCINA</small><strong><span id="pPool">30.6</span>°C</strong></div>
@@ -333,885 +346,475 @@ footer nav a:hover{color:var(--amber)}
           <div class="read"><small>IRRADIÂNCIA</small><strong><span id="pIrr">812</span> W/m²</strong></div>
           <div class="read"><small>VAZÃO</small><strong><span id="pFlow">5.4</span> L/min</strong></div>
         </div>
-        <div class="pump-row"><span>BOMBA: <b id="pumpState">LIGADA</b></span><span class="fan on" id="pumpIcon" aria-hidden="true">✳</span></div>
-        <canvas id="spark" width="360" height="56" aria-label="Gráfico da temperatura" role="img"></canvas>
-        <div class="panel-btns">
-          <button id="btnMode">AUTO / MANUAL</button>
-          <button id="btnPump">Ligar/Desligar Bomba</button>
-        </div>
+        <div class="pump-row"><span>BOMBA: <b id="pumpState">LIGADA</b></span><span class="fan on" id="pumpIcon">✳</span></div>
+        <canvas id="spark" width="360" height="50" aria-label="Gráfico de temperatura"></canvas>
+        <div class="panel-btns"><button id="btnMode">AUTO/MANUAL</button><button id="btnPump">BOMBA</button></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================= 01 DESAFIO ================= -->
+<div class="ticker" aria-hidden="true"><div class="ticker-track"><span>ABSORÇÃO ☀ REFLEXÃO ◑ DISPERÇÃO 🔺 DIFRAÇÃO 🌊 DISCO DE NEWTON ✦ EFEITO ESTUFA ♨ AUTOMAÇÃO ⚙ ENERGIA LIMPA ♻ ACESSIBILIDADE ♿ PISCINA TÉRMICA 🏊 </span><span>ABSORÇÃO ☀ REFLEXÃO ◑ DISPERÇÃO 🔺 DIFRAÇÃO 🌊 DISCO DE NEWTON ✦ EFEITO ESTUFA ♨ AUTOMAÇÃO ⚙ ENERGIA LIMPA ♻ ACESSIBILIDADE ♿ PISCINA TÉRMICA 🏊 </span></div></div>
+
+<!-- 01 DESAFIO -->
 <section id="desafio">
   <div class="wrap">
-    <div class="sec-head rv">
-      <p class="sec-num">01 / O DESAFIO</p>
-      <h2 class="lm"><span>Calor o ano todo, sem esquentar a conta</span></h2>
-    </div>
+    <div class="sec-head rv"><p class="sec-num">01 / DESAFIO</p><h2 class="lm"><span>Calor o ano todo sem esquentar a conta</span></h2></div>
     <div class="desafio-grid">
       <div class="desafio-left rv">
-        <div class="bigstat">70%<small>do calor se perde por <strong>evaporação</strong></small></div>
+        <div class="bigstat">70%<small>do calor se perde por evaporação</small></div>
         <div class="stats3">
-          <div class="stat"><b>28–30 °C</b><span>faixa ideal para hidroterapia</span></div>
-          <div class="stat"><b>R$ ↑↑</b><span>custo do aquecimento elétrico</span></div>
-          <div class="stat"><b>CO₂ ↑</b><span>emissão indireta da rede</span></div>
+          <div class="stat"><b>28–30°C</b><span>faixa ideal</span></div>
+          <div class="stat"><b>R$ ↑↑</b><span>custo elétrico</span></div>
+          <div class="stat"><b>CO₂ ↑</b><span>emissão indireta</span></div>
         </div>
       </div>
-      <div class="rv">
-        <p>A piscina térmica do CEP perde calor continuamente. Compensar isso com resistências elétricas é caro e insustentável. A solução precisa <strong>capturar energia gratuita</strong> do sol.</p>
-        <p>Mas para capturar a luz com eficiência máxima, precisamos entender como ela se comporta. É aqui que a <strong>Óptica</strong> deixa de ser teoria e vira a chave da engenharia: ao entender como a luz se separa (dispersão) e se espalha (difração), aprendemos a fazer o caminho inverso: <strong>aprisionar todo o espectro</strong> e transformá-lo em calor.</p>
+      <div class="rv d1">
+        <p>A piscina térmica do CEP perde calor continuamente. Resistências elétricas são caras e insustentáveis.</p>
+        <p style="margin-top:.8rem">A <strong>Óptica</strong> é a chave: ao entender como a luz se separa (<em>dispersão</em>) e se espalha (<em>difração</em>), aprendemos a fazer o inverso — <strong>aprisionar todo o espectro</strong> e transformá-lo em calor para a água.</p>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================= 02 LABORATÓRIO DE ÓPTICA ================= -->
+<!-- 02 LABORATÓRIO -->
 <section id="optica">
   <div class="wrap">
-    <div class="sec-head rv">
-      <p class="sec-num">02 / LABORATÓRIO HÉLIOS</p>
-      <h2 class="lm"><span>A Física por trás do Aquecimento</span></h2>
-      <p class="lead">Interaja com os fenômenos abaixo para entender como dominamos a luz para aquecer a piscina.</p>
-    </div>
-
+    <div class="sec-head rv"><p class="sec-num">02 / LABORATÓRIO HÉLIOS</p><h2 class="lm"><span>A Física por trás do Aquecimento</span></h2><p class="lead">Interaja com cada fenômeno para entender como dominamos a luz.</p></div>
     <div class="card rv">
       <div class="opt-tabs" role="tablist">
-        <button class="opt-tab active" role="tab" aria-selected="true" data-tab="tab1">1. O Espectro</button>
+        <button class="opt-tab active" role="tab" aria-selected="true" data-tab="tab1">1. Espectro</button>
         <button class="opt-tab" role="tab" aria-selected="false" data-tab="tab2">2. Dispersão</button>
         <button class="opt-tab" role="tab" aria-selected="false" data-tab="tab3">3. Difração</button>
-        <button class="opt-tab" role="tab" aria-selected="false" data-tab="tab4">4. O Encontro (CD)</button>
-        <button class="opt-tab" role="tab" aria-selected="false" data-tab="tab5">5. Simulador da Solução</button>
+        <button class="opt-tab" role="tab" aria-selected="false" data-tab="tab4">4. CD</button>
+        <button class="opt-tab" role="tab" aria-selected="false" data-tab="tab5">5. Simulador</button>
       </div>
 
       <div id="tab1" class="opt-content active">
         <h3>De onde vêm as cores (e o calor)?</h3>
-        <p>A luz branca é uma ilusão. Ela carrega todo o espectro eletromagnético visível, e logo além dele, o <strong>infravermelho</strong> (calor invisível). Arraste para ver:</p>
-        <div class="lab-stage">
-          <span class="hint">ARRASTE</span>
-          <svg class="scene" viewBox="0 0 900 150" role="img" aria-label="Feixe de luz mudando de cor">
-            <rect x="30" y="50" width="90" height="50" rx="10" fill="#1a2a4a" stroke="#3b537f"/>
-            <polygon id="beamSpectrum" class="rayline" points="120,65 880,20 880,130 120,85" fill="#ffffff" opacity=".85"/>
-          </svg>
+        <p>A luz branca carrega todo o espectro visível e, além dele, o <strong>infravermelho</strong> (calor invisível).</p>
+        <div class="lab-stage"><span class="hint">ARRASTE</span>
+          <svg class="scene" viewBox="0 0 900 140"><rect x="30" y="45" width="85" height="50" rx="10" fill="#1a2a4a" stroke="#3b537f"/><polygon id="beamSpectrum" class="rayline" points="115,60 880,15 880,125 115,80" fill="#fff" opacity=".85"/></svg>
           <input type="range" id="wlSlider" min="380" max="750" value="700" step="1">
-          <p class="mono" id="wlRead" style="font-size:.9rem;text-align:center">λ = 700 nm · 🔴 Vermelho (próximo ao Infravermelho térmico)</p>
+          <p class="mono" id="wlRead" style="font-size:.88rem;text-align:center">λ = 700 nm · 🔴 Vermelho (próximo ao Infravermelho)</p>
         </div>
       </div>
 
       <div id="tab2" class="opt-content">
         <h3>Dispersão: A Chave que Revela o Espectro</h3>
-        <p>O prisma separa a luz porque cada cor (comprimento de onda) possui um <strong>índice de refração</strong> diferente no material, desviando em ângulos distintos. Arraste o prisma e ative a dispersão:</p>
-        <div class="lab-stage">
-          <span class="hint">⠿ ARRASTE O PRISMA</span>
-          <svg class="scene" id="prismSvg" viewBox="0 0 900 300" role="img" aria-label="Prisma separando a luz">
-            <line id="beamIn" class="rayline" x1="50" y1="150" x2="400" y2="150" stroke="#ffffff" stroke-width="4"/>
+        <p>Cada cor possui um <strong>índice de refração</strong> diferente no material, desviando em ângulos distintos.</p>
+        <div class="lab-stage"><span class="hint">⠿ ARRASTE</span>
+          <svg class="scene" id="prismSvg" viewBox="0 0 900 280">
+            <line id="beamIn" class="rayline" x1="50" y1="140" x2="400" y2="140" stroke="#fff" stroke-width="4"/>
             <g id="raysG" style="display:none"></g>
-            <line id="beamOut" class="rayline" x1="450" y1="150" x2="850" y2="160" stroke="#ffffff" stroke-width="4"/>
-            <g id="prismG" class="draggable" tabindex="0" role="button" aria-label="Prisma">
-              <polygon id="prismPoly" points="400,100 450,200 350,200" fill="rgba(56,163,255,.2)" stroke="#38a3ff" stroke-width="3"/>
-            </g>
+            <line id="beamOut" class="rayline" x1="450" y1="140" x2="850" y2="150" stroke="#fff" stroke-width="4"/>
+            <g id="prismG" class="draggable" tabindex="0" role="button" aria-label="Prisma"><polygon id="prismPoly" points="400,90 450,190 350,190" fill="rgba(56,189,248,.15)" stroke="#38bdf8" stroke-width="2.5"/></g>
           </svg>
-          <button class="btn" id="btnDispers" style="margin-top:1rem;font-size:.75rem;padding:.6rem 1rem">[ ATIVAR DISPERSÃO ]</button>
-          <div class="fb" id="p2fb" style="margin-top:1rem">Ative para ver como a luz branca se separa. Isso prova que ela é composta por várias energias diferentes.</div>
+          <button class="btn sm" id="btnDispers">[ ATIVAR DISPERSÃO ]</button>
+          <div class="fb" id="p2fb">Ative para ver a luz branca se separar em cores.</div>
         </div>
       </div>
 
       <div id="tab3" class="opt-content">
         <h3>Difração: A Luz Contorna Obstáculos</h3>
-        <p>Quando a luz passa por uma fenda pequena ou encontra um obstáculo, ela se espalha como uma onda, em vez de seguir apenas em linha reta. Controle o tamanho da fenda:</p>
-        <div class="lab-stage">
-          <span class="hint">FENDA ↕</span>
-          <canvas id="slitCanvas" height="250" aria-label="Simulação de difração em fenda única"></canvas>
-          <label class="mono" style="font-size:.72rem;display:block;margin-top:.5rem">PEQUENA ─────────── GRANDE</label>
+        <p>Pelo <strong>Princípio de Huygens</strong>, cada ponto da frente de onda que atinge a fenda gera ondas secundárias que se espalham.</p>
+        <div class="lab-stage"><span class="hint">FENDA ↕</span>
+          <canvas id="slitCanvas" height="240"></canvas>
+          <label class="mono" style="font-size:.7rem;display:block;margin-top:.4rem">PEQUENA ─────────── GRANDE</label>
           <input type="range" class="plain" id="slitSlider" min="8" max="150" value="60">
-          <p class="mono" id="slitRead" style="font-size:.85rem;text-align:center;margin-top:.5rem">Fenda média — espalhamento moderado.</p>
+          <p class="mono" id="slitRead" style="font-size:.82rem;text-align:center">Fenda média — espalhamento moderado.</p>
         </div>
       </div>
 
       <div id="tab4" class="opt-content">
-        <h3>O Encontro dos Fenômenos: O CD</h3>
-        <p>Aqui, difração e dispersão trabalham juntas! Arraste o sol ☀️ e clique no CD para ver a explicação:</p>
-        <div class="lab-stage">
-          <span class="hint">⠿ ARRASTE O ☀️</span>
-          <div id="cdArea">
-            <div id="cdRays" aria-hidden="true"></div>
-            <div id="cdDisc" role="button" tabindex="0" aria-label="CD virtual"></div>
-            <div id="cdLight" role="button" tabindex="0" aria-label="Fonte de luz">☀️</div>
-          </div>
-          <button class="btn" id="btnCdWhy" style="margin-top:1rem;font-size:.75rem;padding:.6rem 1rem">🌈 DESVENDAR O SEGREDO</button>
+        <h3>O Encontro: Difração + Dispersão no CD</h3>
+        <p>Arraste o sol ☀️ e clique no CD para descobrir por que as cores aparecem.</p>
+        <div class="lab-stage"><span class="hint">⠿ ARRASTE ☀️</span>
+          <div id="cdArea"><div id="cdRays"></div><div id="cdDisc" role="button" tabindex="0" aria-label="CD"></div><div id="cdLight" role="button" tabindex="0">☀️</div></div>
+          <button class="btn sm" id="btnCdWhy" style="margin-top:.8rem">🌈 DESVENDAR</button>
           <div class="fb" id="cdFb" style="display:none"></div>
         </div>
       </div>
 
       <div id="tab5" class="opt-content">
         <h3>Simulador do Coletor HÉLIOS</h3>
-        <p style="margin-bottom:1rem;color:var(--ink2)">Veja em tempo real como a escolha do material e a tampa de vidro afetam a captura de energia. Observe o comportamento dos fótons (partículas de luz).</p>
-        
-        <div class="lab-stage" style="padding:1rem;">
-          <span class="hint">SIMULADOR ÓPTICO-TERMO</span>
-          <canvas id="collectorCanvas" width="800" height="300" aria-label="Simulador de interação da luz com a superfície do coletor solar" style="width:100%; height:auto; border-radius:8px; background:#050a14;"></canvas>
-          
+        <p style="color:var(--ink2)">Observe como fótons interagem com diferentes superfícies em tempo real.</p>
+        <div class="lab-stage" style="padding:1rem"><span class="hint">SIMULADOR</span>
+          <canvas id="collectorCanvas" width="800" height="280" style="width:100%;height:auto;border-radius:8px;background:#020610"></canvas>
           <div class="sim-controls-row">
-            <div>
-              <label class="mono" style="font-size:.72rem">TIPO DE SUPERFÍCIE</label>
-              <select id="simSurface">
-                <option value="white">Branca (Altamente Reflexiva)</option>
-                <option value="black_flat">Preta Lisa (Absorção Padrão)</option>
-                <option value="black_textured" selected>Preta Texturizada (Difração + Armadilha)</option>
-              </select>
-            </div>
-            <div>
-              <label class="mono" style="font-size:.72rem">PROTEÇÃO SUPERIOR</label>
-              <button id="simGlass" class="btn ghost" style="padding:.6rem 1rem; font-size:.75rem;">ATIVAR TAMPA DE VIDRO</button>
-            </div>
-            <div class="sim-stats-box">
-              <span class="label">EFICIÊNCIA DE CAPTAÇÃO</span>
-              <span class="value" id="simEfficiency">0%</span>
-            </div>
+            <div><label class="mono" style="font-size:.68rem">SUPERFÍCIE</label>
+              <select id="simSurface"><option value="white">Branca (Reflexiva)</option><option value="black_flat">Preta Lisa</option><option value="black_textured" selected>Preta Texturizada</option></select></div>
+            <div><label class="mono" style="font-size:.68rem">PROTEÇÃO</label>
+              <button id="simGlass" class="btn ghost sm">ATIVAR VIDRO</button></div>
+            <div class="sim-stats-box"><span class="label">EFICIÊNCIA</span><span class="value" id="simEfficiency">0%</span></div>
           </div>
-          <p class="mono" id="simFeedback" style="margin-top:1rem; font-size:.85rem; color:var(--ink2); border-left:3px solid var(--aqua); padding-left:.8rem;">
-            💡 <strong>Dica:</strong> A superfície texturizada usa a difração para espalhar a luz lateralmente, aumentando drasticamente a chance de absorção (armadilha de fótons).
-          </p>
+          <p class="mono" id="simFeedback" style="margin-top:.8rem;font-size:.82rem;color:var(--ink2);border-left:3px solid var(--aqua);padding-left:.7rem">💡 A superfície texturizada usa difração para criar uma armadilha de fótons.</p>
         </div>
-
-        <div class="concept-grid" style="margin-top:1.5rem;">
-          <div class="concept-card">
-            <h4>🔺 O Papel da Dispersão</h4>
-            <p>Ao entender que a luz branca contém infravermelho (calor), projetamos tintas "seletivas" que absorvem especificamente essas faixas de onda, em vez de refleti-las como uma superfície branca faria.</p>
-          </div>
-          <div class="concept-card">
-            <h4>🌊 O Papel da Difração</h4>
-            <p>Pelo Princípio de Huygens, ao atingir uma microtextura, a luz se espalha em múltiplas direções. Isso faz com que o fóton "quique" dentro da textura, sendo forçado a penetrar no material e virar calor, em vez de refletir de volta para o céu.</p>
-          </div>
+        <div class="concept-grid" style="margin-top:1.2rem">
+          <div class="concept-card"><h4>🔺 Dispersão</h4><p>Revela que a luz contém infravermelho. Tintas seletivas absorvem essas faixas em vez de refleti-las.</p></div>
+          <div class="concept-card"><h4>🌊 Difração</h4><p>Microtexturas espalham a luz lateralmente (Huygens), forçando o fóton a penetrar e virar calor.</p></div>
         </div>
       </div>
-
     </div>
   </div>
 </section>
 
-<!-- ================= 03 ROBÓTICA (COM PISCINA SIMULADA) ================= -->
+<!-- 03 ROBÓTICA -->
 <section id="robotica">
   <div class="wrap">
-    <div class="sec-head rv">
-      <p class="sec-num">03 / ROBÓTICA E LÓGICA</p>
-      <h2 class="lm"><span>Sentir, decidir, agir</span></h2>
-    </div>
+    <div class="sec-head rv"><p class="sec-num">03 / ROBÓTICA</p><h2 class="lm"><span>Sentir, decidir, agir</span></h2></div>
     <div class="bento rv">
-      <div class="hw"><span class="hw-tag">SENSOR</span><h3>DS18B20 ×2</h3><p>Medem T1 (piscina) e T2 (coletor). A diferença ΔT comanda tudo.</p></div>
-      <div class="hw"><span class="hw-tag">SENSOR</span><h3>LDR / Irradiância</h3><p>Identifica dia/noite e nuvens pesadas para proteger o sistema.</p></div>
-      <div class="hw"><span class="hw-tag">ATUADOR</span><h3>Bomba de Circulação</h3><p>Só liga quando ΔT ≥ 5 °C. Ligar sem calor disponível desperdiça energia.</p></div>
-      <div class="hw"><span class="hw-tag">CÉREBRO</span><h3>Microcontrolador</h3><p>Lê sensores, aplica lógica com histerese e registra dados para este site.</p></div>
+      <div class="hw"><span class="hw-tag">SENSOR</span><h3>DS18B20 ×2</h3><p>T1 (piscina) e T2 (coletor). ΔT comanda tudo.</p></div>
+      <div class="hw"><span class="hw-tag">SENSOR</span><h3>LDR</h3><p>Detecta dia/noite e nuvens.</p></div>
+      <div class="hw"><span class="hw-tag">ATUADOR</span><h3>Bomba</h3><p>Só liga com ΔT ≥ 5°C.</p></div>
+      <div class="hw"><span class="hw-tag">CÉREBRO</span><h3>Arduino</h3><p>Lógica com histerese + registro de dados.</p></div>
     </div>
-
     <div class="card rv">
-      <h3 style="margin-bottom:1.2rem">🏊 Bancada Interativa — Simulador da Piscina</h3>
-      <p style="color:var(--ink2);margin-bottom:1.2rem">Ajuste as temperaturas da piscina e do coletor. Observe em tempo real a decisão da bomba, a cor da água mudando e as bolhas de circulação aparecendo.</p>
-      
+      <h3 style="margin-bottom:1rem">🏊 Bancada Interativa</h3>
+      <p style="color:var(--ink2);margin-bottom:1rem;font-size:.95rem">Ajuste as temperaturas e veja a piscina reagir em tempo real.</p>
       <div class="bench-pool">
-        <!-- VISUALIZADOR DA PISCINA -->
         <div class="pool-viewer">
           <div class="pool-svg-wrap">
-            <svg viewBox="0 0 400 250" role="img" aria-label="Visualização da piscina térmica com temperatura variável">
+            <svg viewBox="0 0 400 250" aria-label="Piscina térmica simulada">
               <defs>
-                <linearGradient id="poolWaterGrad" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop id="poolColor1" offset="0%" stop-color="#38a3ff"/>
-                  <stop id="poolColor2" offset="100%" stop-color="#1e5fa8"/>
-                </linearGradient>
-                <linearGradient id="poolEdge" x1="0%" y1="0%" x2="0%" y2="100%">
-                  <stop offset="0%" stop-color="#3b537f"/>
-                  <stop offset="100%" stop-color="#1a2a4a"/>
-                </linearGradient>
-                <clipPath id="poolClip">
-                  <rect x="30" y="50" width="340" height="160" rx="16"/>
-                </clipPath>
+                <linearGradient id="pwG" x1="0%" y1="0%" x2="0%" y2="100%"><stop id="pc1" offset="0%" stop-color="#38bdf8"/><stop id="pc2" offset="100%" stop-color="#1e5fa8"/></linearGradient>
+                <clipPath id="pClip"><rect x="30" y="50" width="340" height="155" rx="14"/></clipPath>
               </defs>
-              
-              <!-- Borda da piscina -->
-              <rect x="20" y="40" width="360" height="180" rx="20" fill="url(#poolEdge)" stroke="#4a6490" stroke-width="2"/>
-              
-              <!-- Água -->
-              <g clip-path="url(#poolClip)">
-                <rect id="poolWater" x="30" y="50" width="340" height="160" fill="url(#poolWaterGrad)"/>
-                
-                <!-- Ondas animadas -->
-                <g class="pool-wave" opacity=".5">
-                  <path d="M 30 80 Q 80 70 130 80 T 230 80 T 330 80 T 430 80" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="2"/>
-                  <path d="M 30 110 Q 80 100 130 110 T 230 110 T 330 110 T 430 110" fill="none" stroke="rgba(255,255,255,.3)" stroke-width="2"/>
-                </g>
-                
-                <!-- Bolhas (aparecem quando bomba ligada) -->
-                <g id="poolBubbles" opacity="0">
-                  <circle class="pool-bubble" cx="80" cy="180" r="3" style="animation-delay:0s"/>
-                  <circle class="pool-bubble" cx="140" cy="190" r="4" style="animation-delay:.6s"/>
-                  <circle class="pool-bubble" cx="200" cy="175" r="3" style="animation-delay:1.2s"/>
-                  <circle class="pool-bubble" cx="260" cy="185" r="4" style="animation-delay:1.8s"/>
-                  <circle class="pool-bubble" cx="320" cy="180" r="3" style="animation-delay:2.4s"/>
-                  <circle class="pool-bubble" cx="110" cy="195" r="2" style="animation-delay:.3s"/>
-                  <circle class="pool-bubble" cx="230" cy="195" r="2" style="animation-delay:1.5s"/>
-                  <circle class="pool-bubble" cx="290" cy="190" r="3" style="animation-delay:2.1s"/>
-                </g>
-                
-                <!-- Vapor (aparece quando quente) -->
-                <g id="poolSteam" opacity="0">
-                  <path d="M 100 55 Q 105 45 100 35" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M 200 55 Q 205 45 200 35" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round"/>
-                  <path d="M 300 55 Q 305 45 300 35" fill="none" stroke="rgba(255,255,255,.5)" stroke-width="2" stroke-linecap="round"/>
-                </g>
+              <rect x="20" y="40" width="360" height="175" rx="18" fill="#111d33" stroke="#2a3f5f" stroke-width="2"/>
+              <g clip-path="url(#pClip)">
+                <rect id="poolWater" x="30" y="50" width="340" height="155" fill="url(#pwG)"/>
+                <g class="pool-wave" opacity=".4"><path d="M30 78 Q80 68 130 78T230 78T330 78T430 78" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="2"/><path d="M30 108 Q80 98 130 108T230 108T330 108T430 108" fill="none" stroke="rgba(255,255,255,.25)" stroke-width="2"/></g>
+                <g id="poolBubbles" opacity="0"><circle class="pool-bubble" cx="80" cy="175" r="3"/><circle class="pool-bubble" cx="140" cy="185" r="4" style="animation-delay:.5s"/><circle class="pool-bubble" cx="200" cy="170" r="3" style="animation-delay:1s"/><circle class="pool-bubble" cx="260" cy="180" r="4" style="animation-delay:1.5s"/><circle class="pool-bubble" cx="320" cy="175" r="3" style="animation-delay:2s"/><circle class="pool-bubble" cx="110" cy="190" r="2" style="animation-delay:.3s"/><circle class="pool-bubble" cx="290" cy="188" r="2" style="animation-delay:1.8s"/></g>
+                <g id="poolSteam" opacity="0"><path d="M100 52Q105 42 100 32" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="2" stroke-linecap="round"/><path d="M200 52Q205 42 200 32" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="2" stroke-linecap="round"/><path d="M300 52Q305 42 300 32" fill="none" stroke="rgba(255,255,255,.4)" stroke-width="2" stroke-linecap="round"/></g>
               </g>
-              
-              <!-- Ícone da bomba (canto inferior direito) -->
-              <g id="poolPumpIcon" transform="translate(340, 200)">
-                <circle cx="0" cy="0" r="18" fill="#1a2a4a" stroke="#3b537f" stroke-width="2"/>
-                <g class="pump-icon" id="pumpRotator">
-                  <line x1="-10" y1="0" x2="10" y2="0" stroke="#ffe14d" stroke-width="2"/>
-                  <line x1="0" y1="-10" x2="0" y2="10" stroke="#ffe14d" stroke-width="2"/>
-                  <line x1="-7" y1="-7" x2="7" y2="7" stroke="#ffe14d" stroke-width="2"/>
-                  <line x1="-7" y1="7" x2="7" y2="-7" stroke="#ffe14d" stroke-width="2"/>
-                </g>
-              </g>
-              
-              <!-- Tubo de saída (coletor) -->
-              <rect x="360" y="100" width="40" height="8" fill="#3b537f"/>
-              <text x="375" y="95" font-family="Space Mono" font-size="9" fill="#ffe14d" text-anchor="middle">→ COLETOR</text>
-              
-              <!-- Label -->
-              <text x="200" y="30" font-family="Unbounded" font-size="14" fill="#eaf2ff" text-anchor="middle" font-weight="700">PISCINA TÉRMICA · CEP</text>
+              <g transform="translate(345,195)"><circle r="16" fill="#111d33" stroke="#2a3f5f" stroke-width="1.5"/><g class="pump-icon" id="pumpRot"><line x1="-8" y1="0" x2="8" y2="0" stroke="#fbbf24" stroke-width="1.5"/><line x1="0" y1="-8" x2="0" y2="8" stroke="#fbbf24" stroke-width="1.5"/><line x1="-6" y1="-6" x2="6" y2="6" stroke="#fbbf24" stroke-width="1.5"/><line x1="-6" y1="6" x2="6" y2="-6" stroke="#fbbf24" stroke-width="1.5"/></g></g>
+              <text x="200" y="28" font-family="Unbounded" font-size="12" fill="#f0f4ff" text-anchor="middle" font-weight="700">PISCINA TÉRMICA · CEP</text>
             </svg>
           </div>
-          
           <div class="pool-info">
-            <div>
-              <span class="mono" style="font-size:.7rem;color:var(--ink2);letter-spacing:.1em">TEMPERATURA ATUAL</span>
-              <div class="pool-temp-big"><span id="poolTempDisplay">28.0</span><small>°C</small></div>
-            </div>
-            <div class="pool-status">
-              <span class="dot off" id="poolStatusDot"></span>
-              <span id="poolStatusText">BOMBA DESLIGADA</span>
-            </div>
+            <div><span class="mono" style="font-size:.65rem;color:var(--ink3)">TEMPERATURA</span><div class="pool-temp-big"><span id="poolTempDisplay">28.0</span><small>°C</small></div></div>
+            <div class="pool-status"><span class="dot" id="poolDot"></span><span id="poolStatusText">EM ESPERA</span></div>
           </div>
         </div>
-
-        <!-- CONTROLES DA BANCADA -->
         <div class="bench-controls">
-          <h3>Painel de Controle</h3>
-          
-          <div>
-            <label class="mono" style="font-size:.72rem">TEMP. PISCINA (T1) <output id="bPoolOut">28 °C</output></label>
-            <input type="range" id="bPool" min="20" max="38" value="28" step="0.5">
-          </div>
-          
-          <div>
-            <label class="mono" style="font-size:.72rem">TEMP. COLETOR (T2) <output id="bCollOut">41 °C</output></label>
-            <input type="range" id="bColl" min="20" max="75" value="41" step="0.5">
-          </div>
-
-          <div class="delta-display">
-            <div>
-              <span class="label">DIFERENÇA ΔT</span>
-              <div class="value" id="bDelta">13,0 °C</div>
-            </div>
-            <div style="text-align:right">
-              <span class="label">META</span>
-              <div class="value" style="color:var(--teal);font-size:1rem">≥ 5 °C</div>
-            </div>
-          </div>
-
+          <h3 style="font-size:1rem">Painel de Controle</h3>
+          <div><label class="mono" style="font-size:.7rem">T1 PISCINA <output id="bPoolOut">28°C</output></label><input type="range" id="bPool" min="20" max="38" value="28" step="0.5"></div>
+          <div><label class="mono" style="font-size:.7rem">T2 COLETOR <output id="bCollOut">41°C</output></label><input type="range" id="bColl" min="20" max="75" value="41" step="0.5"></div>
+          <div class="delta-display"><div><span class="label">ΔT</span><div class="value" id="bDelta">13,0°C</div></div><div style="text-align:right"><span class="label">META</span><div class="value" style="color:var(--teal);font-size:.95rem">≥5°C</div></div></div>
           <div class="lamp on" id="bLamp" role="status">● BOMBA LIGADA</div>
-          
-          <p style="font-size:.82rem;color:var(--ink2);line-height:1.6;margin-top:.4rem">
-            💡 A <strong>histerese</strong> evita "piscar": a bomba só liga com ΔT ≥ 5 °C e só desliga quando ΔT ≤ 1 °C — protegendo o sistema em dias nublados.
-          </p>
+          <p style="font-size:.8rem;color:var(--ink3)">Histerese: liga ≥5°C, desliga ≤1°C.</p>
         </div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================= 04 SIMULADOR ================= -->
+<!-- 04 SIMULADOR -->
 <section id="simulador">
   <div class="wrap">
-    <div class="sec-head rv">
-      <p class="sec-num">04 / SIMULADOR TÉRMICO MACRO</p>
-      <h2 class="lm"><span>Um dia de sol, em segundos</span></h2>
-    </div>
+    <div class="sec-head rv"><p class="sec-num">04 / SIMULADOR 24H</p><h2 class="lm"><span>Um dia de sol em segundos</span></h2></div>
     <div class="sim-grid">
       <div class="sim-controls rv">
-        <label>Placas coletoras <output id="sPlatesOut">6</output></label>
-        <input type="range" id="sPlates" min="0" max="12" value="6">
-        <label>Nebulosidade <output id="sCloudOut">10%</output></label>
-        <input type="range" id="sCloud" min="0" max="80" value="10">
-        <div class="check-row"><input type="checkbox" id="sCover" checked><label for="sCover" style="margin:0">Capa térmica na piscina</label></div>
-        <div class="check-row"><input type="checkbox" id="sAuto" checked><label for="sAuto" style="margin:0">Bomba automática (ΔT ≥ 5 °C)</label></div>
+        <label>Placas <output id="sPlatesOut">6</output></label><input type="range" id="sPlates" min="0" max="12" value="6">
+        <label>Nuvens <output id="sCloudOut">10%</output></label><input type="range" id="sCloud" min="0" max="80" value="10">
+        <div class="check-row"><input type="checkbox" id="sCover" checked><label for="sCover" style="margin:0">Capa térmica</label></div>
+        <div class="check-row"><input type="checkbox" id="sAuto" checked><label for="sAuto" style="margin:0">Bomba auto</label></div>
         <label>Velocidade</label>
-        <select id="sSpeed" class="mono" style="width:100%;padding:.5rem;border:2px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink)">
-          <option value="1">1× (Lento)</option>
-          <option value="2" selected>2× (Normal)</option>
-          <option value="4">4× (Rápido)</option>
-        </select>
-        <div style="display:flex;gap:.6rem;margin-top:1.2rem">
-          <button class="btn" id="btnPlay" style="flex:1">▶ Iniciar</button>
-          <button class="btn ghost" id="btnReset" style="flex:1">↺</button>
-        </div>
+        <select id="sSpeed" class="mono" style="width:100%;padding:.5rem;border:1px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink)"><option value="1">1×</option><option value="2" selected>2×</option><option value="4">4×</option></select>
+        <div style="display:flex;gap:.5rem;margin-top:1rem"><button class="btn" id="btnPlay" style="flex:1">▶ Iniciar</button><button class="btn ghost" id="btnReset" style="flex:1">↺</button></div>
       </div>
       <div class="sim-stage rv">
         <div class="sim-top">
-          <div><span class="mono" style="font-size:.68rem;letter-spacing:.15em;color:var(--ink2)">ÁGUA DA PISCINA</span>
-          <div class="sim-temp"><span id="simTemp">24.0</span>°C</div></div>
-          <div style="text-align:right">
-            <div class="sim-clock" id="simClock">Dia 1 · 06:00</div>
-            <div class="sim-state" id="simState" style="margin-top:.5rem">BOMBA EM ESPERA</div>
-          </div>
+          <div><span class="mono" style="font-size:.65rem;color:var(--ink3)">PISCINA</span><div class="sim-temp"><span id="simTemp">24.0</span>°C</div></div>
+          <div style="text-align:right"><div class="sim-clock" id="simClock">Dia 1 · 06:00</div><div class="sim-state" id="simState">ESPERA</div></div>
         </div>
-        <canvas id="simChart" role="img" aria-label="Gráfico da temperatura"></canvas>
-        <div class="sim-stats">
-          <div><b><span id="sKwh">0.0</span> kWh</b><span>poupados</span></div>
-          <div><b><span id="sCo2">0.0</span> kg</b><span>CO₂ evitados</span></div>
-          <div><b>R$ <span id="sMoney">0</span></b><span>economia</span></div>
-        </div>
+        <canvas id="simChart" aria-label="Gráfico de temperatura"></canvas>
+        <div class="sim-stats"><div><b><span id="sKwh">0.0</span> kWh</b><span>poupados</span></div><div><b><span id="sCo2">0.0</span> kg</b><span>CO₂</span></div><div><b>R$ <span id="sMoney">0</span></b><span>economia</span></div></div>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ================= 05 ACESSIBILIDADE ================= -->
+<!-- 05 IMPACTO -->
+<section id="impacto">
+  <div class="wrap">
+    <div class="sec-head rv"><p class="sec-num">05 / IMPACTO</p><h2 class="lm"><span>Sustentabilidade que se mede</span></h2></div>
+    <div class="counters rv">
+      <div class="counter"><b><span class="count" data-to="11500">0</span></b><span>kWh/ano poupados</span></div>
+      <div class="counter"><b><span class="count" data-to="1200">0</span> kg</b><span>CO₂ evitados</span></div>
+      <div class="counter"><b><span class="count" data-to="310">0</span></b><span>estudantes beneficiados</span></div>
+      <div class="counter"><b>R$ <span class="count" data-to="4800">0</span></b><span>economia anual</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 ACESSIBILIDADE -->
 <section id="acessibilidade">
   <div class="wrap">
-    <div class="sec-head rv">
-      <p class="sec-num">05 / ACESSIBILIDADE</p>
-      <h2 class="lm"><span>Requisito, não anexo</span></h2>
-    </div>
-    <div class="card rv" style="max-width:800px;margin:0 auto">
+    <div class="sec-head rv"><p class="sec-num">06 / ACESSIBILIDADE</p><h2 class="lm"><span>Requisito, não anexo</span></h2></div>
+    <div class="card rv" style="max-width:780px;margin:0 auto">
       <ul class="check-list">
-        <li><strong>Contraste AA:</strong> Paleta testada. Use o botão ◐ no topo para o modo de alto contraste.</li>
-        <li><strong>Tipografia:</strong> Space Grotesk e Space Mono, otimizadas para legibilidade. Use A− / A+ no topo.</li>
-        <li><strong>Navegação por teclado:</strong> Todos os elementos interativos (abas, sliders, diagramas) são focáveis via Tab.</li>
-        <li><strong>Movimento sob controle:</strong> Respeita `prefers-reduced-motion` e pode ser pausado com o botão ⏸.</li>
-        <li><strong>ARIA Live:</strong> Leitores de tela anunciam mudanças nos simuladores e estados do sistema.</li>
+        <li><strong>Contraste AA:</strong> Paleta testada 4.5:1. Modo alto contraste (◐) disponível.</li>
+        <li><strong>Tipografia:</strong> Space Grotesk + Space Mono. Ajuste A−/A+ funcional.</li>
+        <li><strong>Teclado:</strong> Todos os elementos focáveis via Tab com foco visível.</li>
+        <li><strong>Movimento:</strong> Respeita prefers-reduced-motion. Pausável com ⏸.</li>
+        <li><strong>ARIA:</strong> Labels, roles e live regions em todos os simuladores.</li>
       </ul>
     </div>
   </div>
 </section>
 
-<!-- ================= 06 EQUIPE ================= -->
+<!-- 07 EQUIPE -->
 <section id="equipe">
   <div class="wrap">
-    <div class="sec-head rv">
-      <p class="sec-num">06 / EQUIPE HÉLIOS</p>
-      <h2 class="lm"><span>Quem constrói o projeto</span></h2>
-    </div>
+    <div class="sec-head rv"><p class="sec-num">07 / EQUIPE</p><h2 class="lm"><span>Quem constrói o HÉLIOS</span></h2></div>
     <div class="team rv">
-      <article class="member"><img src="https://picsum.photos/seed/ana-optica/400/400" alt="Ana" loading="lazy"><h3>Guilherme Effgen</h3><p>Óptica & Conteúdo</p></article>
-      <article class="member"><img src="https://picsum.photos/seed/bruno-robotica/400/400" alt="Bruno" loading="lazy"><h3>Pedro Frois</h3><p>Robótica & Hardware</p></article>
-      <article class="member"><img src="https://picsum.photos/seed/caio-codigo/400/400" alt="Caio" loading="lazy"><h3>Davi Goss</h3><p>Programação & Dados</p></article>
-      <article class="member"><img src="https://picsum.photos/seed/dandara-design/400/400" alt="Dandara" loading="lazy"><h3>Gustavo Rodrigues</h3><p>Design & Acessibilidade</p></article>
-      <article class="member"><img src="https://picsum.photos/seed/prof-orientador/400/400" alt="Professor" loading="lazy"><h3>Eduardo França</h3><p>Orientação</p></article>
+      <article class="member"><img src="https://picsum.photos/seed/guilherme/400/400" alt="Guilherme" loading="lazy"><h3>Guilherme Effgen</h3><p>Óptica</p></article>
+      <article class="member"><img src="https://picsum.photos/seed/pedro/400/400" alt="Pedro" loading="lazy"><h3>Pedro Frois</h3><p>Robótica</p></article>
+      <article class="member"><img src="https://picsum.photos/seed/davi/400/400" alt="Davi" loading="lazy"><h3>Davi Goss</h3><p>Programação</p></article>
+      <article class="member"><img src="https://picsum.photos/seed/gustavo/400/400" alt="Gustavo" loading="lazy"><h3>Gustavo Rodrigues</h3><p>Design</p></article>
+      <article class="member"><img src="https://picsum.photos/seed/eduardo/400/400" alt="Eduardo" loading="lazy"><h3>Eduardo França</h3><p>Orientação</p></article>
     </div>
   </div>
 </section>
-
 </main>
 
-<!-- ================= RODAPÉ ================= -->
 <footer>
   <div class="wrap foot-grid">
-    <div>
-      <a class="brand" href="#topo"><span class="brand-sun" aria-hidden="true"></span>HÉLIOS<em style="color:var(--aqua)">·CEP</em></a>
-      <p style="max-width:34ch;font-size:.85rem;margin-top:.8rem;color:var(--ink2)">Projeto Integrador 2026. Ciência aberta, energia livre, site para todas as pessoas.</p>
-    </div>
-    <nav aria-label="Rodapé">
-      <a href="#desafio">Desafio</a><a href="#optica">Laboratório</a><a href="#robotica">Robótica</a><a href="#simulador">Simulador</a>
-    </nav>
-    <a class="btn" href="#topo" style="background:var(--amber)">↑ Topo</a>
+    <div><a class="brand" href="#topo"><span class="brand-sun"></span>HÉLIOS<em style="color:var(--aqua)">·CEP</em></a><p style="max-width:30ch;font-size:.82rem;margin-top:.6rem;color:var(--ink3)">Projeto Integrador 2026. Ciência aberta, energia livre.</p></div>
+    <nav aria-label="Rodapé"><a href="#desafio">Desafio</a><a href="#optica">Laboratório</a><a href="#robotica">Robótica</a><a href="#simulador">Simulador</a></nav>
+    <a class="btn sm" href="#topo">↑ Topo</a>
   </div>
-  <div class="wrap foot-fim">
-    <span>© 2026 Equipe HÉLIOS·CEP · CC BY-SA</span>
-    <span>HTML + CSS + JS puros, ☀ e teimosia.</span>
-  </div>
+  <div class="wrap foot-fim"><span>© 2026 HÉLIOS·CEP · CC BY-SA</span><span>HTML + CSS + JS puros ☀</span></div>
 </footer>
 
 <script>
-/* ================= UTILITÁRIOS ================= */
-const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const $=s=>document.querySelector(s),$$=s=>[...document.querySelectorAll(s)];
 const RM=matchMedia('(prefers-reduced-motion: reduce)');
 let nomotion=RM.matches;
-if(nomotion){document.body.classList.add('nomotion');$('#motionBtn').setAttribute('aria-pressed','true');}
+if(nomotion){document.body.classList.add('nomotion');$('#motionBtn').setAttribute('aria-pressed','true')}
 const motionOK=()=>!nomotion;
 const fmt=(n,d=1)=>n.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
 const hcOn=()=>document.body.classList.contains('hc');
 
-/* ================= ACESSIBILIDADE ================= */
-const scales=[.9,1,1.12,1.28]; let fsIdx=1;
-function applyFont(){document.documentElement.style.fontSize=(100*scales[fsIdx])+'%';}
-$('#fontPlus').addEventListener('click',()=>{fsIdx=Math.min(scales.length-1,fsIdx+1);applyFont();});
-$('#fontMinus').addEventListener('click',()=>{fsIdx=Math.max(0,fsIdx-1);applyFont();});
-$('#contrastBtn').addEventListener('click',e=>{
-  const on=document.body.classList.toggle('hc');
-  e.currentTarget.setAttribute('aria-pressed',on);
-});
-$('#motionBtn').addEventListener('click',e=>{
-  nomotion=!nomotion;document.body.classList.toggle('nomotion',nomotion);
-  e.currentTarget.setAttribute('aria-pressed',nomotion);
-});
+/* A11y */
+const scales=[.9,1,1.12,1.28];let fsIdx=1;
+function applyFont(){document.documentElement.style.fontSize=(100*scales[fsIdx])+'%'}
+$('#fontPlus').onclick=()=>{fsIdx=Math.min(3,fsIdx+1);applyFont()};
+$('#fontMinus').onclick=()=>{fsIdx=Math.max(0,fsIdx-1);applyFont()};
+$('#contrastBtn').onclick=e=>{const on=document.body.classList.toggle('hc');e.currentTarget.setAttribute('aria-pressed',on)};
+$('#motionBtn').onclick=e=>{nomotion=!nomotion;document.body.classList.toggle('nomotion',nomotion);e.currentTarget.setAttribute('aria-pressed',nomotion)};
 const hamb=$('#hambBtn'),nav=$('#mainnav');
-hamb.addEventListener('click',()=>{
-  const open=nav.classList.toggle('open');hamb.setAttribute('aria-expanded',open);
-});
-nav.addEventListener('click',e=>{if(e.target.tagName==='A'){nav.classList.remove('open');hamb.setAttribute('aria-expanded','false');}});
+hamb.onclick=()=>{const o=nav.classList.toggle('open');hamb.setAttribute('aria-expanded',o)};
+nav.onclick=e=>{if(e.target.tagName==='A'){nav.classList.remove('open');hamb.setAttribute('aria-expanded','false')}};
 
-/* ================= SCRAMBLE TITLE ================= */
-(function(){
-  const el=$('#scrambleTitle'),final=el.dataset.text;
-  if(!motionOK()){el.textContent=final;return;}
-  const chars='☀#%&/<>*+=ABCDEFG0123456789';let f=0,total=final.length*4+26;
-  (function step(){f++;
-    el.textContent=final.split('').map((c,i)=>c===' '||c==='·'?c:(i<(f-10)/2?c:chars[Math.random()*chars.length|0])).join('');
-    if(f<total)requestAnimationFrame(step);else el.textContent=final;
-  })();
-})();
+/* Scramble */
+(function(){const el=$('#scrambleTitle'),f=el.dataset.text;if(!motionOK()){el.textContent=f;return}
+const c='☀#%&/<>*+=0123456789';let i=0,t=f.length*4+20;
+(function s(){i++;el.textContent=f.split('').map((ch,j)=>ch===' '||ch==='·'?ch:(j<(i-10)/2?ch:c[Math.random()*c.length|0])).join('');
+if(i<t)requestAnimationFrame(s);else el.textContent=f)()})();
 
-/* ================= SCROLL & REVEAL ================= */
-const bar=$('#progressBar');
+/* Scroll */
+const bar=$('#progressBar'),sun=$('#sunDot');
 addEventListener('scroll',()=>{requestAnimationFrame(()=>{
-  bar.style.width=(scrollY/(document.documentElement.scrollHeight-innerHeight||1)*100)+'%';
-});},{passive:true});
-const rv=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');rv.unobserve(e.target);}}),{threshold:.12});
-$$('.rv, .lm').forEach(el=>rv.observe(el));
+  const p=scrollY/(document.documentElement.scrollHeight-innerHeight||1);
+  bar.style.width=(p*100)+'%';
+  if(sun){sun.style.left=(5+p*88)+'%';sun.style.top=(72-30*Math.sin(p*Math.PI))+'px'}
+})},{passive:true});
 
-/* ================= TELEMETRIA PAINEL ================= */
+/* Spy nav */
+const spy=new IntersectionObserver(es=>es.forEach(e=>{
+  if(e.isIntersecting)$$('.topbar nav a').forEach(a=>a.classList.toggle('active',a.getAttribute('href')==='#'+e.target.id))
+}),{rootMargin:'-40% 0px -55% 0px'});
+$$('main section[id]').forEach(s=>spy.observe(s));
+
+/* Reveal */
+const rv=new IntersectionObserver(es=>es.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');rv.unobserve(e.target)}}),{threshold:.1});
+$$('.rv,.lm').forEach(el=>rv.observe(el));
+
+/* Counters */
+const cnt=new IntersectionObserver(es=>es.forEach(e=>{
+  if(!e.isIntersecting)return;cnt.unobserve(e.target);
+  const el=e.target,to=+el.dataset.to;if(!motionOK()||!to){el.textContent=to.toLocaleString('pt-BR');return}
+  const t0=performance.now();
+  (function r(t){const k=Math.min(1,(t-t0)/1800);el.textContent=Math.round(to*(1-Math.pow(1-k,3))).toLocaleString('pt-BR');if(k<1)requestAnimationFrame(r)})(t0)
+}),{threshold:.5});
+$$('.count').forEach(el=>cnt.observe(el));
+
+/* Telemetria */
 const telem={pool:30.6,coll:46,irr:812,flow:5.4,pump:true,auto:true,hist:[]};
 const spark=$('#spark'),sctx=spark.getContext('2d');
-function drawSpark(){
-  const w=spark.width=spark.clientWidth*2,h=spark.height=112;
-  sctx.clearRect(0,0,w,h);
-  if(telem.hist.length<2)return;
-  const min=24,max=42;
-  sctx.strokeStyle=hcOn()?'#ffd23f':'#ffe14d';sctx.lineWidth=3;sctx.beginPath();
-  telem.hist.forEach((v,i)=>{const x=i/(telem.hist.length-1)*w,y=h-(v-min)/(max-min)*h;i?sctx.lineTo(x,y):sctx.moveTo(x,y);});
-  sctx.stroke();
-}
+function drawSpark(){const w=spark.width=spark.clientWidth*2,h=spark.height=100;sctx.clearRect(0,0,w,h);
+  if(telem.hist.length<2)return;const mn=24,mx=42;
+  sctx.strokeStyle=hcOn()?'#ffd23f':'#fbbf24';sctx.lineWidth=2.5;sctx.beginPath();
+  telem.hist.forEach((v,i)=>{const x=i/(telem.hist.length-1)*w,y=h-(v-mn)/(mx-mn)*h;i?sctx.lineTo(x,y):sctx.moveTo(x,y)});sctx.stroke();
+  const grd=sctx.createLinearGradient(0,0,0,h);grd.addColorStop(0,'rgba(251,191,36,.15)');grd.addColorStop(1,'transparent');
+  sctx.lineTo(w,h);sctx.lineTo(0,h);sctx.fillStyle=grd;sctx.fill()}
 function tickTelem(){
-  if(telem.auto) telem.pump=(telem.coll-telem.pool)>4;
+  if(telem.auto)telem.pump=(telem.coll-telem.pool)>4;
   telem.irr=Math.max(300,Math.min(980,telem.irr+(Math.random()*80-40)));
-  const target=telem.pump?telem.pool+17:telem.irr/14+26;
-  telem.coll+=(target-telem.coll)*.14;
-  telem.pool+= telem.pump? .03 : -.015;
-  telem.flow=telem.pump? 5.2+Math.random()*.5 : 0;
-  telem.hist.push(telem.pool); if(telem.hist.length>42)telem.hist.shift();
+  const tgt=telem.pump?telem.pool+17:telem.irr/14+26;
+  telem.coll+=(tgt-telem.coll)*.14;telem.pool+=telem.pump?.03:-.015;
+  telem.flow=telem.pump?5.2+Math.random()*.5:0;
+  telem.hist.push(telem.pool);if(telem.hist.length>42)telem.hist.shift();
   $('#pPool').textContent=fmt(telem.pool);$('#pColl').textContent=fmt(telem.coll);
   $('#pIrr').textContent=Math.round(telem.irr);$('#pFlow').textContent=fmt(telem.flow);
   $('#pumpState').textContent=telem.pump?'LIGADA':'DESLIGADA';
-  $('#pumpIcon').classList.toggle('on',telem.pump);
-  $('#panelMode').textContent=telem.auto?'AUTO':'MANUAL';
-  drawSpark();
-}
+  $('#pumpIcon').classList.toggle('on',telem.pump);$('#panelMode').textContent=telem.auto?'AUTO':'MANUAL';drawSpark()}
 for(let i=0;i<40;i++)telem.hist.push(30+Math.sin(i/5)*.4);
 setInterval(tickTelem,2000);tickTelem();
-$('#btnMode').addEventListener('click',()=>{telem.auto=!telem.auto;});
-$('#btnPump').addEventListener('click',()=>{telem.auto=false;telem.pump=!telem.pump;});
+$('#btnMode').onclick=()=>{telem.auto=!telem.auto};
+$('#btnPump').onclick=()=>{telem.auto=false;telem.pump=!telem.pump};
 
-/* ================= TABS DO LABORATÓRIO ================= */
-$$('.opt-tab').forEach(tab=>{
-  tab.addEventListener('click',()=>{
-    $$('.opt-tab').forEach(t=>{t.classList.remove('active');t.setAttribute('aria-selected','false');});
-    $$('.opt-content').forEach(c=>c.classList.remove('active'));
-    tab.classList.add('active');tab.setAttribute('aria-selected','true');
-    $('#'+tab.dataset.tab).classList.add('active');
-    if(tab.dataset.tab==='tab3') drawSlit(performance.now());
-    if(tab.dataset.tab==='tab5') startCollectorSim();
-    else stopCollectorSim();
-  });
-});
+/* Tabs */
+$$('.opt-tab').forEach(tab=>{tab.onclick=()=>{
+  $$('.opt-tab').forEach(t=>{t.classList.remove('active');t.setAttribute('aria-selected','false')});
+  $$('.opt-content').forEach(c=>c.classList.remove('active'));
+  tab.classList.add('active');tab.setAttribute('aria-selected','true');
+  $('#'+tab.dataset.tab).classList.add('active');
+  if(tab.dataset.tab==='tab3')drawSlit(performance.now());
+  if(tab.dataset.tab==='tab5')startCollector();else stopCollector()}});
 
-/* ================= 1. ESPECTRO ================= */
+/* Espectro */
 function wl2rgb(w){let r,g,b;
   if(w<440){r=(440-w)/60;g=0;b=1}else if(w<490){r=0;g=(w-440)/50;b=1}
   else if(w<510){r=0;g=1;b=(510-w)/20}else if(w<580){r=(w-510)/70;g=1;b=0}
   else if(w<645){r=1;g=(645-w)/65;b=0}else{r=1;g=0;b=0}
-  return `rgb(${Math.round(r*255)},${Math.round(g*255)},${Math.round(b*255)})`;}
-$('#wlSlider').addEventListener('input',e=>{
-  const w=+e.target.value, col=wl2rgb(w);
-  $('#beamSpectrum').setAttribute('fill',col);
-  $('#beamSpectrum').style.filter=`drop-shadow(0 0 14px ${col})`;
-  let nome='Vermelho (próximo ao Infravermelho térmico)', emoji='🔴';
-  if(w<450){nome='Violeta';emoji='🟣'}else if(w<500){nome='Azul';emoji='🔵'}
-  else if(w<560){nome='Verde';emoji='🟢'}else if(w<620){nome='Amarelo/Laranja';emoji='🟡'}
-  $('#wlRead').textContent=`λ = ${w} nm · ${emoji} ${nome}`;
-});
+  return`rgb(${Math.round(r*255)},${Math.round(g*255)},${Math.round(b*255)})`}
+$('#wlSlider').oninput=e=>{const w=+e.target.value,c=wl2rgb(w);
+  $('#beamSpectrum').setAttribute('fill',c);$('#beamSpectrum').style.filter=`drop-shadow(0 0 12px ${c})`;
+  let n='🔴 Vermelho (≈Infravermelho)',em='🔴';
+  if(w<450){n='Violeta';em='🟣'}else if(w<500){n='Azul';em='🔵'}else if(w<560){n='Verde';em='🟢'}else if(w<620){n='Amarelo/Laranja';em='🟡'}
+  $('#wlRead').textContent=`λ = ${w} nm · ${em} ${n}`};
 
-/* ================= 2. DISPERSÃO ================= */
-const prism={x:400,y:150};let dispers=false;
-const raysG=$('#raysG'),SVG=$('#prismSvg');
-const RAYC=['#ff4d3d','#ff9f1c','#ffe14d','#3ddc84','#38a3ff','#b06bff'];
-RAYC.forEach((c,i)=>{
-  const l=document.createElementNS('http://www.w3.org/2000/svg','line');
-  l.setAttribute('class','rayline');l.setAttribute('stroke',c);l.setAttribute('stroke-width','4');
-  raysG.appendChild(l);
+/* Dispersão */
+const prism={x:400,y:140};let dispers=false;const raysG=$('#raysG'),SVG=$('#prismSvg');
+const RC=['#ff4d3d','#ff9f1c','#ffe14d','#3ddc84','#38bdf8','#a78bfa'];
+RC.forEach((c,i)=>{const l=document.createElementNS('http://www.w3.org/2000/svg','line');
+  l.setAttribute('class','rayline');l.setAttribute('stroke',c);l.setAttribute('stroke-width','3.5');raysG.appendChild(l);
   const h=document.createElementNS('http://www.w3.org/2000/svg','line');
-  h.setAttribute('class','hitline');h.setAttribute('role','button');h.setAttribute('tabindex','0');
-  h.addEventListener('click',()=>{
-    $('#p2fb').className='fb ok';
-    $('#p2fb').innerHTML=`<strong>Por que separa?</strong> Cada comprimento de onda desvia de forma diferente no material. O violeta desvia mais, o vermelho menos. Isso revela o espectro escondido na luz branca!`;
-  });
-  raysG.appendChild(h);
-});
-function renderPrism(){
-  $('#prismPoly').setAttribute('points',`${prism.x},${prism.y-50} ${prism.x+50},${prism.y+50} ${prism.x-50},${prism.y+50}`);
+  h.setAttribute('class','hitline');h.setAttribute('tabindex','0');h.setAttribute('role','button');
+  h.onclick=()=>{$('#p2fb').className='fb ok';$('#p2fb').innerHTML='<strong>Dispersão:</strong> Cada λ desvia diferente. Violeta desvia mais, vermelho menos.'};
+  raysG.appendChild(h)});
+function renderPrism(){$('#prismPoly').setAttribute('points',`${prism.x},${prism.y-50} ${prism.x+50},${prism.y+50} ${prism.x-50},${prism.y+50}`);
   $('#beamIn').setAttribute('x2',prism.x-8);$('#beamIn').setAttribute('y2',prism.y);
-  if(dispers){
-    $('#beamOut').style.display='none';raysG.style.display='';
-    const lines=raysG.querySelectorAll('line');
-    for(let i=0;i<6;i++){
-      const yEnd=prism.y+10+(i-2.5)*25;
-      lines[i*2].setAttribute('x1',prism.x+30);lines[i*2].setAttribute('y1',prism.y+5);
-      lines[i*2].setAttribute('x2',850);lines[i*2].setAttribute('y2',Math.max(20,Math.min(280,yEnd)));
-      lines[i*2+1].setAttribute('x1',prism.x+30);lines[i*2+1].setAttribute('y1',prism.y+5);
-      lines[i*2+1].setAttribute('x2',850);lines[i*2+1].setAttribute('y2',Math.max(20,Math.min(280,yEnd)));
-    }
-  }else{
-    raysG.style.display='none';$('#beamOut').style.display='';
-    $('#beamOut').setAttribute('x1',prism.x+30);$('#beamOut').setAttribute('y1',prism.y+5);
-    $('#beamOut').setAttribute('x2',850);$('#beamOut').setAttribute('y2',prism.y+15);
-  }
-}
-$('#btnDispers').addEventListener('click',e=>{
-  dispers=!dispers;e.currentTarget.textContent=dispers?'[ DESATIVAR DISPERSÃO ]':'[ ATIVAR DISPERSÃO ]';
-  renderPrism();
-});
-let dragP=false;
-const svgPt=e=>{const p=SVG.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(SVG.getScreenCTM().inverse());};
-$('#prismG').addEventListener('pointerdown',e=>{dragP=true;$('#prismG').setPointerCapture(e.pointerId);});
-SVG.addEventListener('pointermove',e=>{if(!dragP)return;const p=svgPt(e);
-  prism.x=Math.max(200,Math.min(600,p.x));prism.y=Math.max(80,Math.min(220,p.y));renderPrism();});
-addEventListener('pointerup',()=>dragP=false);
-renderPrism();
+  if(dispers){$('#beamOut').style.display='none';raysG.style.display='';
+    const ls=raysG.querySelectorAll('line');
+    for(let i=0;i<6;i++){const yE=prism.y+8+(i-2.5)*22;
+      ls[i*2].setAttribute('x1',prism.x+28);ls[i*2].setAttribute('y1',prism.y+4);ls[i*2].setAttribute('x2',850);ls[i*2].setAttribute('y2',Math.max(15,Math.min(265,yE)));
+      ls[i*2+1].setAttribute('x1',prism.x+28);ls[i*2+1].setAttribute('y1',prism.y+4);ls[i*2+1].setAttribute('x2',850);ls[i*2+1].setAttribute('y2',Math.max(15,Math.min(265,yE)))}}
+  else{raysG.style.display='none';$('#beamOut').style.display='';
+    $('#beamOut').setAttribute('x1',prism.x+28);$('#beamOut').setAttribute('y1',prism.y+4);$('#beamOut').setAttribute('x2',850);$('#beamOut').setAttribute('y2',prism.y+12)}}
+$('#btnDispers').onclick=e=>{dispers=!dispers;e.target.textContent=dispers?'[ DESATIVAR ]':'[ ATIVAR DISPERSÃO ]';renderPrism()};
+let dragP=false;const svgPt=e=>{const p=SVG.createSVGPoint();p.x=e.clientX;p.y=e.clientY;return p.matrixTransform(SVG.getScreenCTM().inverse())};
+$('#prismG').onpointerdown=e=>{dragP=true;$('#prismG').setPointerCapture(e.pointerId)};
+SVG.onpointermove=e=>{if(!dragP)return;const p=svgPt(e);prism.x=Math.max(200,Math.min(600,p.x));prism.y=Math.max(70,Math.min(210,p.y));renderPrism()};
+addEventListener('pointerup',()=>dragP=false);renderPrism();
 
-/* ================= 3. DIFRAÇÃO ================= */
+/* Difração */
 const sc=$('#slitCanvas'),sx=sc.getContext('2d');
-function sizeSC(){sc.width=sc.clientWidth*2;sc.height=250*2;}
-function drawSlit(t){
-  sizeSC();const w=sc.width,h=sc.height,bx=w*.4,cy=h/2,slit=(+$('#slitSlider').value)/150;
-  const gap=20+slit*(h*.6);
-  sx.clearRect(0,0,w,h);
-  const speed=motionOK()?t*.15:t*.0+40;
-  sx.strokeStyle='rgba(56,163,255,.6)';sx.lineWidth=3;
-  for(let x=((speed)%60);x<bx-8;x+=60){sx.beginPath();sx.moveTo(x,20);sx.lineTo(x,h-20);sx.stroke();}
-  sx.fillStyle='#0a1226';sx.strokeStyle='#3b537f';
-  sx.fillRect(bx-8,0,16,cy-gap/2);sx.fillRect(bx-8,cy+gap/2,16,h-(cy+gap/2));
-  const spread=1.3-(slit)*1.1;
-  const R0=(speed*1.4)%80;
-  for(let r=R0+20;r<w*.6;r+=70){
-    sx.beginPath();sx.strokeStyle=`rgba(56,163,255,${Math.max(0,.7-r/(w*.7))})`;sx.lineWidth=3;
-    sx.arc(bx+6,cy,r,-spread,spread);sx.stroke();
-  }
+function sizeSC(){sc.width=sc.clientWidth*2;sc.height=240*2}
+function drawSlit(t){sizeSC();const w=sc.width,h=sc.height,bx=w*.4,cy=h/2,slit=(+$('#slitSlider').value)/150,gap=20+slit*(h*.6);
+  sx.clearRect(0,0,w,h);const sp=motionOK()?t*.15:40;
+  sx.strokeStyle='rgba(56,189,248,.5)';sx.lineWidth=2.5;
+  for(let x=sp%55;x<bx-8;x+=55){sx.beginPath();sx.moveTo(x,15);sx.lineTo(x,h-15);sx.stroke()}
+  sx.fillStyle='#0a1628';sx.fillRect(bx-7,0,14,cy-gap/2);sx.fillRect(bx-7,cy+gap/2,14,h);
+  const spread=1.3-slit*1.1,R0=(sp*1.4)%75;
+  for(let r=R0+18;r<w*.58;r+=65){sx.beginPath();sx.strokeStyle=`rgba(56,189,248,${Math.max(0,.65-r/(w*.65))})`;sx.lineWidth=2.5;sx.arc(bx+5,cy,r,-spread,spread);sx.stroke()}
   const v=+$('#slitSlider').value;
-  $('#slitRead').textContent=v<50?'Fenda PEQUENA — a luz se espalha MUITO! (Difração forte)':v<100?'Fenda média — espalhamento moderado.':'Fenda GRANDE — a luz segue quase em linha reta.';
-}
-(function slitLoop(t){if($('#tab3').classList.contains('active')&&motionOK())drawSlit(t);requestAnimationFrame(slitLoop)})(0);
-$('#slitSlider').addEventListener('input',()=>{if(!motionOK())drawSlit(performance.now());});
+  $('#slitRead').textContent=v<50?'Fenda PEQUENA — difração forte!':v<100?'Fenda média — espalhamento moderado.':'Fenda GRANDE — luz quase reta.'}
+(function sl(t){if($('#tab3').classList.contains('active')&&motionOK())drawSlit(t);requestAnimationFrame(sl)})(0);
+$('#slitSlider').oninput=()=>{if(!motionOK())drawSlit(performance.now())};
 
-/* ================= 4. CD ================= */
-const cdArea=$('#cdArea'),cdL=$('#cdLight');let lx=0,ly=0,cdDrag=false;
-function cdPos(x,y){
-  const r=cdArea.getBoundingClientRect();
-  lx=Math.max(10,Math.min(r.width-40,x));ly=Math.max(8,Math.min(r.height-44,y));
-  cdL.style.left=lx+'px';cdL.style.top=ly+'px';
-  const cx=r.width/2,cy=r.height*.52;
-  const ang=Math.round(Math.atan2(ly+16-cy,lx+16-cx)*180/Math.PI);
-  $('#cdDisc').style.setProperty('--sheen',ang+'deg');
-  $('#cdRays').style.transform=`rotate(${ang+180}deg)`;
-  $('#cdRays').style.filter=`blur(1.5px) hue-rotate(${ang}deg) drop-shadow(0 0 8px #fff)`;
-}
-cdL.addEventListener('pointerdown',e=>{cdDrag=true;cdL.setPointerCapture(e.pointerId);e.preventDefault();});
-cdArea.addEventListener('pointermove',e=>{if(!cdDrag)return;const r=cdArea.getBoundingClientRect();cdPos(e.clientX-r.left-16,e.clientY-r.top-16);});
-addEventListener('pointerup',()=>cdDrag=false);
-function cdWhy(){
-  const f=$('#cdFb');f.style.display='block';f.className='fb ok';
-  f.innerHTML='<strong>🌈 O segredo:</strong> As trilhas microscópicas do CD agem como uma <strong>rede de difração</strong>. Elas espalham a luz (difração), e como cada cor tem um comprimento de onda diferente, elas são espalhadas em ângulos diferentes, causando a <strong>dispersão</strong> das cores que você vê!';
-}
-$('#cdDisc').addEventListener('click',cdWhy);
-$('#btnCdWhy').addEventListener('click',cdWhy);
+/* CD */
+const cdArea=$('#cdArea'),cdL=$('#cdLight');let lx=0,ly=0,cdD=false;
+function cdPos(x,y){const r=cdArea.getBoundingClientRect();lx=Math.max(8,Math.min(r.width-36,x));ly=Math.max(6,Math.min(r.height-40,y));
+  cdL.style.left=lx+'px';cdL.style.top=ly+'px';const cx=r.width/2,cy=r.height*.52;
+  const a=Math.round(Math.atan2(ly+14-cy,lx+14-cx)*180/Math.PI);
+  $('#cdDisc').style.setProperty('--sheen',a+'deg');$('#cdRays').style.transform=`rotate(${a+180}deg)`;$('#cdRays').style.filter=`blur(1.5px) hue-rotate(${a}deg) drop-shadow(0 0 6px #fff)`}
+cdL.onpointerdown=e=>{cdD=true;cdL.setPointerCapture(e.pointerId);e.preventDefault()};
+cdArea.onpointermove=e=>{if(!cdD)return;const r=cdArea.getBoundingClientRect();cdPos(e.clientX-r.left-14,e.clientY-r.top-14)};
+addEventListener('pointerup',()=>cdD=false);
+function cdWhy(){$('#cdFb').style.display='block';$('#cdFb').className='fb ok';
+  $('#cdFb').innerHTML='<strong>🌈 Segredo:</strong> Trilhas microscópicas = rede de difração. Espalham a luz (difração), e cada λ sai num ângulo diferente (dispersão).'}
+$('#cdDisc').onclick=cdWhy;$('#btnCdWhy').onclick=cdWhy;
 setTimeout(()=>{const r=cdArea.getBoundingClientRect();cdPos(r.width*.12,r.height*.18)},100);
 
-/* ================= 5. SIMULADOR DO COLETOR ================= */
-let collectorAnimId=null;
-let photons=[];
-let heatParticles=[];
-let simStats={total:0, absorbed:0};
-let simConfig={surface:'black_textured', glass:false};
-
-function startCollectorSim(){
-  if(collectorAnimId) return;
-  const canvas=$('#collectorCanvas');
-  const ctx=canvas.getContext('2d');
-  
-  function loop(){
-    ctx.clearRect(0,0,800,300);
-    
-    if(simConfig.glass){
-      ctx.fillStyle='rgba(100,200,255,0.1)';
-      ctx.fillRect(0,0,800,60);
-      ctx.strokeStyle='rgba(100,200,255,0.4)';
-      ctx.lineWidth=2;
-      ctx.beginPath();ctx.moveTo(0,60);ctx.lineTo(800,60);ctx.stroke();
-      ctx.fillStyle='rgba(100,200,255,0.6)';
-      ctx.font='12px Space Mono';
-      ctx.fillText('TAMPA DE VIDRO (Efeito Estufa)',10,25);
-    }
-
-    const surfaceY=250;
-    ctx.fillStyle= simConfig.surface==='white' ? '#e2e8f0' : '#0f172a';
-    ctx.fillRect(0,surfaceY,800,50);
-    
-    if(simConfig.surface==='black_textured'){
-      ctx.strokeStyle='#1e293b';
-      ctx.lineWidth=2;
-      for(let i=0;i<800;i+=20){
-        ctx.beginPath();ctx.moveTo(i,surfaceY);ctx.lineTo(i+10,surfaceY+10);ctx.lineTo(i+20,surfaceY);ctx.stroke();
-      }
-    }
-
-    if(Math.random()<0.15){
-      photons.push({
-        x: Math.random()*200, y: 0,
-        vx: 2 + Math.random(), vy: 2 + Math.random(),
-        state: 'falling', life: 100
-      });
-      simStats.total++;
-    }
-
-    ctx.fillStyle='#ffe14d';
+/* Coletor Sim */
+let cAnim=null,photons=[],heatP=[],cStats={t:0,a:0},cCfg={s:'black_textured',g:false};
+function startCollector(){if(cAnim)return;const cv=$('#collectorCanvas'),cx=cv.getContext('2d');
+  (function loop(){cx.clearRect(0,0,800,280);
+    if(cCfg.g){cx.fillStyle='rgba(56,189,248,.08)';cx.fillRect(0,0,800,55);cx.strokeStyle='rgba(56,189,248,.3)';cx.lineWidth=1.5;cx.beginPath();cx.moveTo(0,55);cx.lineTo(800,55);cx.stroke();cx.fillStyle='rgba(56,189,248,.5)';cx.font='11px Space Mono';cx.fillText('VIDRO (Efeito Estufa)',8,22)}
+    const sY=235;cx.fillStyle=cCfg.s==='white'?'#cbd5e1':'#0f172a';cx.fillRect(0,sY,800,45);
+    if(cCfg.s==='black_textured'){cx.strokeStyle='#1e293b';cx.lineWidth=1.5;for(let i=0;i<800;i+=18){cx.beginPath();cx.moveTo(i,sY);cx.lineTo(i+9,sY+8);cx.lineTo(i+18,sY);cx.stroke()}}
+    if(Math.random()<.14){photons.push({x:Math.random()*180,y:0,vx:1.8+Math.random(),vy:1.8+Math.random(),st:'f',l:100});cStats.t++}
+    cx.fillStyle='#fbbf24';
     photons=photons.filter(p=>{
-      if(p.state==='falling'){
-        p.x+=p.vx; p.y+=p.vy;
-        if(p.y>=surfaceY-2){
-          if(simConfig.surface==='white'){
-            p.state='reflected'; p.vy=-Math.abs(p.vy)*0.9; p.vx+= (Math.random()-0.5);
-          } else if(simConfig.surface==='black_flat'){
-            if(Math.random()>0.2){ p.state='absorbed'; simStats.absorbed++; spawnHeat(p.x, surfaceY); }
-            else { p.state='reflected'; p.vy=-Math.abs(p.vy)*0.8; }
-          } else if(simConfig.surface==='black_textured'){
-            if(Math.random()>0.05){ 
-              p.state='trapped'; 
-              p.vx=(Math.random()-0.5)*4; p.vy=-Math.abs(p.vy)*0.3;
-              simStats.absorbed++; spawnHeat(p.x, surfaceY);
-            } else {
-              p.state='reflected'; p.vy=-Math.abs(p.vy)*0.5; p.vx=(Math.random()-0.5)*2;
-            }
-          }
-        }
-      } else if(p.state==='reflected'){
-        p.x+=p.vx; p.y+=p.vy;
-        if(simConfig.glass && p.y<=60 && p.vy<0){
-          if(Math.random()>0.2){ p.vy=Math.abs(p.vy); p.state='falling'; }
-          else { p.life=0; }
-        }
-        if(p.y>300 || p.x>800 || p.x<0) p.life=0;
-      } else if(p.state==='trapped'){
-        p.x+=p.vx; p.y+=p.vy;
-        if(p.y>=surfaceY-2){ p.vy=-Math.abs(p.vy)*0.2; p.vx*=0.8; }
-        if(Math.random()>0.9) p.life=0;
-      }
-      
-      if(p.state!=='absorbed' && p.life>0){
-        ctx.globalAlpha=p.life/100;
-        ctx.beginPath();ctx.arc(p.x,p.y,3,0,Math.PI*2);ctx.fill();
-      }
-      p.life-=0.5;
-      return p.life>0;
-    });
-    ctx.globalAlpha=1;
+      if(p.st==='f'){p.x+=p.vx;p.y+=p.vy;if(p.y>=sY-2){
+        if(cCfg.s==='white'){p.st='r';p.vy=-Math.abs(p.vy)*.9;p.vx+=(Math.random()-.5)}
+        else if(cCfg.s==='black_flat'){if(Math.random()>.2){p.st='a';cStats.a++;spH(p.x,sY)}else{p.st='r';p.vy=-Math.abs(p.vy)*.8}}
+        else{if(Math.random()>.05){p.st='t';p.vx=(Math.random()-.5)*4;p.vy=-Math.abs(p.vy)*.3;cStats.a++;spH(p.x,sY)}else{p.st='r';p.vy=-Math.abs(p.vy)*.5;p.vx=(Math.random()-.5)*2}}}}
+      else if(p.st==='r'){p.x+=p.vx;p.y+=p.vy;if(cCfg.g&&p.y<=55&&p.vy<0){if(Math.random()>.2){p.vy=Math.abs(p.vy);p.st='f'}else p.l=0}if(p.y>280||p.x>800||p.x<0)p.l=0}
+      else if(p.st==='t'){p.x+=p.vx;p.y+=p.vy;if(p.y>=sY-2){p.vy=-Math.abs(p.vy)*.2;p.vx*=.8}if(Math.random()>.9)p.l=0}
+      if(p.st!=='a'&&p.l>0){cx.globalAlpha=p.l/100;cx.beginPath();cx.arc(p.x,p.y,2.5,0,7);cx.fill()}p.l-=.5;return p.l>0});
+    cx.globalAlpha=1;
+    heatP=heatP.filter(h=>{h.y-=h.vy;h.x+=(Math.random()-.5);h.l--;cx.fillStyle=`rgba(255,100,50,${h.l/45})`;cx.beginPath();cx.arc(h.x,h.y,h.s,0,7);cx.fill();return h.l>0});
+    const ef=cStats.t>0?Math.round(cStats.a/cStats.t*100):0;$('#simEfficiency').textContent=ef+'%';$('#simEfficiency').style.color=ef>80?'var(--teal)':ef>40?'var(--amber)':'var(--orange)';
+    cAnim=requestAnimationFrame(loop)})()}
+function stopCollector(){if(cAnim){cancelAnimationFrame(cAnim);cAnim=null}}
+function spH(x,y){for(let i=0;i<2;i++)heatP.push({x:x+(Math.random()-.5)*8,y,vy:.4+Math.random(),s:2+Math.random()*2.5,l:45})}
+$('#simSurface').onchange=e=>{cCfg.s=e.target.value;photons=[];heatP=[];cStats={t:0,a:0};
+  const m={white:'Branca: maioria reflete. Baixa eficiência.',black_flat:'Preta lisa: boa absorção, alguma reflexão.',black_textured:'Texturizada: difração cria armadilha de fótons. Máxima absorção!'};
+  $('#simFeedback').innerHTML='💡 '+m[e.target.value]};
+$('#simGlass').onclick=e=>{cCfg.g=!cCfg.g;e.target.textContent=cCfg.g?'DESATIVAR VIDRO':'ATIVAR VIDRO';e.target.classList.toggle('active-toggle',cCfg.g);
+  photons=[];heatP=[];cStats={t:0,a:0};$('#simFeedback').innerHTML=cCfg.g?'💡 Efeito Estufa: vidro bloqueia infravermelho, devolvendo calor à placa.':'💡 Sem tampa: calor escapa por convecção e radiação.'};
 
-    heatParticles=heatParticles.filter(h=>{
-      h.y-=h.vy; h.x+=(Math.random()-0.5); h.life-=1;
-      ctx.fillStyle=`rgba(255, 100, 50, ${h.life/50})`;
-      ctx.beginPath();ctx.arc(h.x,h.y,h.size,0,Math.PI*2);ctx.fill();
-      return h.life>0;
-    });
+/* Bancada Piscina */
+let pumpB=true;
+function getPoolColor(t){const k=Math.max(0,Math.min(1,(t-20)/18));
+  let r,g,b;if(k<.5){const kk=k*2;r=56+kk*40;g=163+kk*40;b=255}else{const kk=(k-.5)*2;r=96+kk*159;g=203-kk*80;b=255-kk*100}
+  return{top:`rgb(${Math.round(r)},${Math.round(g)},${Math.round(b)})`,bot:`rgb(${Math.round(r*.5)},${Math.round(g*.5)},${Math.round(b*.7)})`}}
+function updatePool(t,on){const c=getPoolColor(t);$('#pc1').setAttribute('stop-color',c.top);$('#pc2').setAttribute('stop-color',c.bot);
+  $('#poolTempDisplay').textContent=fmt(t);$('#poolBubbles').style.opacity=on?'1':'0';
+  $('#poolSteam').style.opacity=Math.max(0,Math.min(1,(t-32)/4));
+  $('#pumpRot').classList.toggle('on',on);$('#poolDot').classList.toggle('on',on);
+  $('#poolStatusText').textContent=on?'CIRCULANDO → COLETOR':'EM ESPERA'}
+function benchUpdate(){const p=+$('#bPool').value,c=+$('#bColl').value,d=c-p;
+  $('#bPoolOut').textContent=fmt(p)+'°C';$('#bCollOut').textContent=fmt(c)+'°C';$('#bDelta').textContent=fmt(d)+'°C';
+  if(!pumpB&&d>=5)pumpB=true;if(pumpB&&d<=1)pumpB=false;
+  const l=$('#bLamp');l.className='lamp '+(pumpB?'on':'off');l.textContent=pumpB?'● BOMBA LIGADA':'○ BOMBA DESLIGADA';updatePool(p,pumpB)}
+$('#bPool').oninput=benchUpdate;$('#bColl').oninput=benchUpdate;benchUpdate();
 
-    const eff=simStats.total>0 ? Math.round((simStats.absorbed/simStats.total)*100) : 0;
-    $('#simEfficiency').textContent=eff+'%';
-    $('#simEfficiency').style.color=eff>80?'var(--teal)':(eff>40?'var(--amber)':'var(--orange)');
-
-    collectorAnimId=requestAnimationFrame(loop);
-  }
-  loop();
-}
-
-function stopCollectorSim(){
-  if(collectorAnimId){
-    cancelAnimationFrame(collectorAnimId);
-    collectorAnimId=null;
-  }
-}
-
-function spawnHeat(x,y){
-  for(let i=0;i<3;i++){
-    heatParticles.push({x:x+(Math.random()-0.5)*10, y:y, vy:0.5+Math.random(), size:2+Math.random()*3, life:50});
-  }
-}
-
-$('#simSurface').addEventListener('change',e=>{
-  simConfig.surface=e.target.value;
-  photons=[];heatParticles=[];simStats={total:0,absorbed:0};
-  const msgs={
-    'white':'Superfície branca: A maior parte da luz é refletida de volta. Baixa eficiência térmica.',
-    'black_flat':'Superfície preta lisa: Boa absorção, mas parte da luz ainda reflete em ângulo igual.',
-    'black_textured':'Superfície texturizada: A difração espalha a luz lateralmente, criando uma "armadilha" que maximiza a absorção.'
-  };
-  $('#simFeedback').innerHTML='💡 <strong>Nota:</strong> '+msgs[e.target.value];
-});
-
-$('#simGlass').addEventListener('click',e=>{
-  simConfig.glass=!simConfig.glass;
-  e.target.textContent=simConfig.glass?'DESATIVAR TAMPA DE VIDRO':'ATIVAR TAMPA DE VIDRO';
-  e.target.classList.toggle('active-toggle',simConfig.glass);
-  photons=[];heatParticles=[];simStats={total:0,absorbed:0};
-  $('#simFeedback').innerHTML=simConfig.glass ? 
-    '💡 <strong>Efeito Estufa:</strong> A luz visível entra, mas o calor (infravermelho) refletido pela superfície é bloqueado pelo vidro e devolvido para a placa, aumentando drasticamente a eficiência.' : 
-    '💡 <strong>Sem tampa:</strong> O calor irradiado pela placa escapa facilmente para a atmosfera (convecção e radiação).';
-});
-
-/* ================= BANCADA COM PISCINA (NOVO!) ================= */
-let pumpBench=true;
-
-// Função para interpolar cor da água baseado na temperatura
-function getPoolColor(temp){
-  // 20°C = azul frio, 28°C = azul médio, 34°C = ciano, 38°C = laranja-rosado
-  const t=Math.max(20,Math.min(38,temp));
-  const k=(t-20)/18; // 0 a 1
-  
-  // Cor superior (mais clara)
-  let r1,g1,b1;
-  if(k<0.5){
-    // Azul frio para azul médio
-    const kk=k*2;
-    r1=Math.round(56+kk*40);
-    g1=Math.round(163+kk*40);
-    b1=Math.round(255);
-  } else {
-    // Azul médio para ciano/alaranjado
-    const kk=(k-0.5)*2;
-    r1=Math.round(96+kk*159);
-    g1=Math.round(203-kk*80);
-    b1=Math.round(255-kk*100);
-  }
-  
-  // Cor inferior (mais escura)
-  const r2=Math.round(r1*0.5);
-  const g2=Math.round(g1*0.5);
-  const b2=Math.round(b1*0.7);
-  
-  return {
-    top:`rgb(${r1},${g1},${b1})`,
-    bottom:`rgb(${r2},${g2},${b2})`
-  };
-}
-
-function updatePoolVisual(temp, pumpOn){
-  // Atualiza cor da água
-  const colors=getPoolColor(temp);
-  $('#poolColor1').setAttribute('stop-color',colors.top);
-  $('#poolColor2').setAttribute('stop-color',colors.bottom);
-  
-  // Atualiza display de temperatura
-  $('#poolTempDisplay').textContent=fmt(temp);
-  
-  // Bolhas (circulação)
-  const bubbles=$('#poolBubbles');
-  bubbles.style.opacity=pumpOn?'1':'0';
-  
-  // Vapor (aparece quando > 32°C)
-  const steam=$('#poolSteam');
-  const steamOpacity=Math.max(0,Math.min(1,(temp-32)/4));
-  steam.style.opacity=steamOpacity;
-  
-  // Ícone da bomba girando
-  const pumpRotator=$('#pumpRotator');
-  pumpRotator.classList.toggle('on',pumpOn);
-  
-  // Status dot
-  const dot=$('#poolStatusDot');
-  dot.classList.toggle('on',pumpOn);
-  dot.classList.toggle('off',!pumpOn);
-  
-  // Status text
-  $('#poolStatusText').textContent=pumpOn?'CIRCULANDO → COLETOR':'EM ESPERA';
-}
-
-function benchUpdate(){
-  const p=+$('#bPool').value,c=+$('#bColl').value,delta=c-p;
-  $('#bPoolOut').textContent=fmt(p)+' °C';
-  $('#bCollOut').textContent=fmt(c)+' °C';
-  $('#bDelta').textContent=fmt(delta)+' °C';
-  
-  // Lógica com histerese
-  if(!pumpBench&&delta>=5)pumpBench=true;
-  if(pumpBench&&delta<=1)pumpBench=false;
-  
-  // Atualiza lâmpada
-  const lamp=$('#bLamp');
-  lamp.className='lamp '+(pumpBench?'on':'off');
-  lamp.textContent=pumpBench?'● BOMBA LIGADA':'○ BOMBA DESLIGADA';
-  
-  // NOVO: Atualiza visual da piscina
-  updatePoolVisual(p, pumpBench);
-}
-
-$('#bPool').addEventListener('input',benchUpdate);
-$('#bColl').addEventListener('input',benchUpdate);
-benchUpdate();
-
-/* ================= SIMULADOR TÉRMICO MACRO ================= */
-let sim={T:24,mins:360,day:1,kwh:0,hist:[],timer:null,playing:false};
+/* Sim 24h */
+let sim={T:24,m:360,d:1,k:0,h:[],t:null,p:false};
 const chart=$('#simChart'),cctx=chart.getContext('2d');
-const irr=m=>{const x=(m/60-6)/14;return(x<0||x>1)?0:Math.sin(Math.PI*x);};
-function simTick(){
-  sim.mins+=10;if(sim.mins>=1440){sim.mins=0;sim.day++;}
-  const cloud=+$('#sCloud').value/100,I=1000*irr(sim.mins)*(1-cloud);
-  const air=18+9*irr(sim.mins)+3*(1-cloud*.5),plates=+$('#sPlates').value;
-  const Tc=air+(I/1000)*34;
-  const pump=plates>0&&($('#sAuto').checked?(Tc-sim.T>=4):true);
-  if(pump){sim.T+=plates*(I/1000)*0.08;sim.kwh+=plates*1.5*I*0.55*(10/60)/1000;}
-  const dT=Math.max(0,sim.T-air);
-  sim.T-=0.012*dT+($('#sCover').checked?0.004:0.02)*dT;
-  sim.T=Math.max(16,Math.min(42,sim.T));
-  sim.hist.push(sim.T);if(sim.hist.length>160)sim.hist.shift();
-  const hh=String(Math.floor(sim.mins/60)).padStart(2,'0'),mm=String(sim.mins%60).padStart(2,'0');
-  $('#simClock').textContent=`Dia ${sim.day} · ${hh}:${mm}`;
-  $('#simTemp').textContent=fmt(sim.T);
-  $('#simState').textContent=pump?'☀ COLETANDO CALOR':'○ BOMBA EM ESPERA';
-  $('#sKwh').textContent=fmt(sim.kwh);$('#sCo2').textContent=fmt(sim.kwh*0.09);$('#sMoney').textContent=Math.round(sim.kwh*0.92).toLocaleString('pt-BR');
-  drawChart();
-}
-function drawChart(){
-  const w=chart.width=chart.clientWidth*2,h=chart.height=340;
-  cctx.clearRect(0,0,w,h);
-  const min=16,max=44,l=52,r=w-14,t=14,b=h-30;
-  cctx.font='20px Space Mono';cctx.fillStyle=hcOn()?'#ffd23f':'#93a4c3';
-  for(let v=20;v<=40;v+=10){const y=t+(max-v)/(max-min)*(b-t);
-    cctx.fillText(v+'°',6,y+6);cctx.strokeStyle=hcOn()?'rgba(255,210,63,.2)':'rgba(147,164,195,.2)';cctx.beginPath();cctx.moveTo(l,y);cctx.lineTo(r,y);cctx.stroke();}
-  if(sim.hist.length>1){
-    cctx.strokeStyle=hcOn()?'#ffd23f':'#ffe14d';cctx.lineWidth=4;cctx.beginPath();
-    sim.hist.forEach((v,i)=>{const x=l+i/(sim.hist.length-1)*(r-l),y=t+(max-v)/(max-min)*(b-t);
-      i?cctx.lineTo(x,y):cctx.moveTo(x,y);});
-    cctx.stroke();
-  }
-}
-function setPlay(on){
-  sim.playing=on;$('#btnPlay').textContent=on?'⏸ Pausar':'▶ Iniciar';
-  clearInterval(sim.timer);
-  if(on)sim.timer=setInterval(simTick,650/+$('#sSpeed').value);
-}
-$('#btnPlay').addEventListener('click',()=>setPlay(!sim.playing));
-$('#sSpeed').addEventListener('change',()=>{if(sim.playing)setPlay(true);});
-$('#btnReset').addEventListener('click',()=>{setPlay(false);sim={T:24,mins:360,day:1,kwh:0,hist:[],timer:null,playing:false};simTick();});
-$('#sPlates').addEventListener('input',e=>$('#sPlatesOut').textContent=e.target.value);
-$('#sCloud').addEventListener('input',e=>$('#sCloudOut').textContent=e.target.value+'%');
+const irr=m=>{const x=(m/60-6)/14;return(x<0||x>1)?0:Math.sin(Math.PI*x)};
+function simTick(){sim.m+=10;if(sim.m>=1440){sim.m=0;sim.d++}
+  const cl=+$('#sCloud').value/100,I=1000*irr(sim.m)*(1-cl),air=18+9*irr(sim.m)+3*(1-cl*.5),pl=+$('#sPlates').value;
+  const Tc=air+(I/1000)*34,pump=pl>0&&($('#sAuto').checked?(Tc-sim.T>=4):true);
+  if(pump){sim.T+=pl*(I/1000)*.08;sim.k+=pl*1.5*I*.55*(10/60)/1000}
+  const dT=Math.max(0,sim.T-air);sim.T-=.012*dT+($('#sCover').checked?.004:.02)*dT;
+  sim.T=Math.max(16,Math.min(42,sim.T));sim.h.push(sim.T);if(sim.h.length>160)sim.h.shift();
+  const hh=String(Math.floor(sim.m/60)).padStart(2,'0'),mm=String(sim.m%60).padStart(2,'0');
+  $('#simClock').textContent=`Dia ${sim.d} · ${hh}:${mm}`;$('#simTemp').textContent=fmt(sim.T);
+  $('#simState').textContent=pump?'☀ COLETANDO':'○ ESPERA';
+  $('#sKwh').textContent=fmt(sim.k);$('#sCo2').textContent=fmt(sim.k*.09);$('#sMoney').textContent=Math.round(sim.k*.92).toLocaleString('pt-BR');drawChart()}
+function drawChart(){const w=chart.width=chart.clientWidth*2,h=chart.height=320;cctx.clearRect(0,0,w,h);
+  const mn=16,mx=44,l=48,r=w-12,t=12,b=h-25;
+  cctx.font='18px Space Mono';cctx.fillStyle=hcOn()?'#ffd23f':'#5a6f94';
+  for(let v=20;v<=40;v+=10){const y=t+(mx-v)/(mx-mn)*(b-t);cctx.fillText(v+'°',4,y+5);cctx.strokeStyle=hcOn()?'rgba(255,210,63,.15)':'rgba(139,158,194,.1)';cctx.beginPath();cctx.moveTo(l,y);cctx.lineTo(r,y);cctx.stroke()}
+  if(sim.h.length>1){cctx.strokeStyle=hcOn()?'#ffd23f':'#fbbf24';cctx.lineWidth=3;cctx.beginPath();
+    sim.h.forEach((v,i)=>{const x=l+i/(sim.h.length-1)*(r-l),y=t+(mx-v)/(mx-mn)*(b-t);i?cctx.lineTo(x,y):cctx.moveTo(x,y)});cctx.stroke();
+    const grd=cctx.createLinearGradient(0,t,0,b);grd.addColorStop(0,'rgba(251,191,36,.12)');grd.addColorStop(1,'transparent');
+    cctx.lineTo(r,b);cctx.lineTo(l,b);cctx.fillStyle=grd;cctx.fill()}}
+function setPlay(on){sim.p=on;$('#btnPlay').textContent=on?'⏸ Pausar':'▶ Iniciar';clearInterval(sim.t);if(on)sim.t=setInterval(simTick,650/+$('#sSpeed').value)}
+$('#btnPlay').onclick=()=>setPlay(!sim.p);
+$('#sSpeed').onchange=()=>{if(sim.p)setPlay(true)};
+$('#btnReset').onclick=()=>{setPlay(false);sim={T:24,m:360,d:1,k:0,h:[],t:null,p:false};simTick()};
+$('#sPlates').oninput=e=>$('#sPlatesOut').textContent=e.target.value;
+$('#sCloud').oninput=e=>$('#sCloudOut').textContent=e.target.value+'%';
 simTick();
-addEventListener('resize',()=>{drawSpark();drawChart();if($('#tab3').classList.contains('active'))drawSlit(performance.now());});
+addEventListener('resize',()=>{drawSpark();drawChart();if($('#tab3').classList.contains('active'))drawSlit(performance.now())});
 </script>
 </body>
 </html>
