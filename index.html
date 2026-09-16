@@ -149,7 +149,7 @@ section{padding:5.5rem 0}
 .fb.ok{border-left-color:var(--teal);background:rgba(61,220,132,.05)}
 #prismSvg{max-height:300px}
 .hitline{stroke:transparent;stroke-width:22;cursor:pointer}
-#slitCanvas{width:100%;height:320px;border-radius:8px;background:#000;border:1px solid var(--line)}
+#slitCanvas{width:100%;height:320px;border-radius:8px;background:#050a14;border:1px solid var(--line)}
 input[type=range]{appearance:none;width:100%;height:10px;border-radius:99px;border:1px solid var(--line);
   background:linear-gradient(90deg,var(--teal),var(--aqua),var(--amber),var(--orange));cursor:pointer;margin:.8rem 0}
 input[type=range]::-webkit-slider-thumb{appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid #000}
@@ -431,11 +431,11 @@ footer nav a:hover{color:var(--amber)}
         <p>Quando a luz passa por uma fenda pequena, ela se espalha como uma onda (Princípio de Huygens). O gráfico à direita mostra o padrão de intensidade real (sinc²), com um máximo central brilhante e máximos secundários mais fracos.</p>
         <div class="lab-stage">
           <span class="hint">AJUSTE A FENDA ↕</span>
-          <canvas id="slitCanvas" width="900" height="320" aria-label="Simulação de difração em fenda única mostrando ondas e gráfico de intensidade" aria-describedby="slitDesc" style="width:100%; height:320px;"></canvas>
+          <canvas id="slitCanvas" aria-label="Simulação de difração em fenda única mostrando ondas e gráfico de intensidade" aria-describedby="slitDesc" style="width:100%; height:320px; border-radius:8px; background:#050a14; border:1px solid var(--line);"></canvas>
           <div id="slitDesc" class="sr-only">Simulação de difração: ondas de luz passando por uma fenda variável, projetando um padrão de intensidade em uma tela à direita. Fendas menores causam maior espalhamento.</div>
-          <label class="mono" style="font-size:.72rem;display:block;margin-top:.5rem">FENDA ESTREITA ─────────── FENDA LARGA</label>
+          <label class="mono" style="font-size:.72rem;display:block;margin-top:.5rem">FENDA ESTREITA (Mais Difração) ─────────── FENDA LARGA (Menos Difração)</label>
           <input type="range" class="plain" id="slitSlider" min="10" max="120" value="40" aria-label="Controle de tamanho da fenda">
-          <p class="mono" id="slitRead" style="font-size:.85rem;text-align:center;margin-top:.5rem">Fenda estreita: alto espalhamento (difração forte).</p>
+          <p class="mono" id="slitRead" style="font-size:.85rem;text-align:center;margin-top:.5rem; color: var(--ink2);"></p>
         </div>
       </div>
       <div id="tab4" class="opt-content">
@@ -739,6 +739,7 @@ for(let i=0;i<40;i++) telem.hist.push(30 + Math.sin(i/5)*.4);
 setInterval(tickTelem, 2000); tickTelem();
 $('#btnMode').addEventListener('click', () => {telem.auto = !telem.auto;});
 $('#btnPump').addEventListener('click', () => {telem.auto = false; telem.pump = !telem.pump;});
+
 $$('.opt-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     $$('.opt-tab').forEach(t => {t.classList.remove('active'); t.setAttribute('aria-selected','false');});
@@ -746,10 +747,14 @@ $$('.opt-tab').forEach(tab => {
     tab.classList.add('active'); tab.setAttribute('aria-selected','true');
     const target = $('#'+tab.dataset.tab);
     target.classList.add('active');
-    if(tab.dataset.tab === 'tab3') { slitAnimId = requestAnimationFrame(drawDiffraction); }
+    if(tab.dataset.tab === 'tab3') { 
+      resizeSlitCanvas();
+      slitAnimId = requestAnimationFrame(drawDiffraction); 
+    }
     if(tab.dataset.tab === 'tab5') startCollectorSim(); else stopCollectorSim();
   });
 });
+
 function wl2rgb(w){
   let r,g,b;
   if(w<440){r=(440-w)/60;g=0;b=1}else if(w<490){r=0;g=(w-440)/50;b=1}
@@ -766,6 +771,7 @@ $('#wlSlider').addEventListener('input', e => {
   else if(w<560){nome='Verde';emoji='🟢'}else if(w<620){nome='Amarelo/Laranja';emoji='🟡'}
   $('#wlRead').textContent = `λ = ${w} nm · ${emoji} ${nome}`;
 });
+
 const prism = {x:400, y:150}; let dispers = false;
 const raysG = $('#raysG'), SVG = $('#prismSvg');
 const RAYC = ['#ff4d3d','#ff9f1c','#ffe14d','#3ddc84','#38a3ff','#b06bff'];
@@ -813,140 +819,170 @@ SVG.addEventListener('pointermove', e => {
 });
 addEventListener('pointerup', () => dragP = false);
 renderPrism();
-const sc = $('#slitCanvas'), sx = sc.getContext('2d');
+
+// --- SLIT DIFFRACTION SIMULATION (REFATORADA) ---
+const slitCanvas = $('#slitCanvas');
+const sctx = slitCanvas ? slitCanvas.getContext('2d') : null;
 let slitAnimId = null;
 let slitTime = 0;
 
+function resizeSlitCanvas() {
+  if (!slitCanvas) return;
+  const rect = slitCanvas.getBoundingClientRect();
+  const dpr = window.devicePixelRatio || 1;
+  slitCanvas.width = rect.width * dpr;
+  slitCanvas.height = rect.height * dpr;
+  sctx.scale(dpr, dpr);
+  slitCanvas.logicalWidth = rect.width;
+  slitCanvas.logicalHeight = rect.height;
+}
+
 function drawDiffraction() {
-  if (!$('#tab3').classList.contains('active')) {
+  if (!$('#tab3') || !$('#tab3').classList.contains('active')) {
     slitAnimId = null;
     return;
   }
   
   slitAnimId = requestAnimationFrame(drawDiffraction);
   
-  const w = sc.width;
-  const h = sc.height;
+  const w = slitCanvas.logicalWidth;
+  const h = slitCanvas.logicalHeight;
   const barrierX = w * 0.35;
   const cy = h / 2;
   
-  const slitVal = +$('#slitSlider').value;
-  const gap = 15 + (slitVal / 120) * (h * 0.55);
+  const slitVal = +$('#slitSlider').value; // 10 to 120
+  const gap = 20 + (slitVal / 120) * (h * 0.5); 
   
-  sx.clearRect(0, 0, w, h);
+  sctx.clearRect(0, 0, w, h);
   
-  // Fundo
-  sx.fillStyle = '#000';
-  sx.fillRect(0, 0, w, h);
+  // 1. Background
+  sctx.fillStyle = '#050a14';
+  sctx.fillRect(0, 0, w, h);
   
-  // Barreira com fenda
-  sx.fillStyle = '#1a2a4a';
-  sx.fillRect(barrierX - 8, 0, 16, cy - gap/2);
-  sx.fillRect(barrierX - 8, cy + gap/2, 16, h - (cy + gap/2));
+  // 2. Barrier
+  const barrierColor = hcOn() ? '#222' : '#0f172a';
+  const barrierStroke = hcOn() ? '#fff' : '#38a3ff';
   
-  sx.strokeStyle = hcOn() ? '#fff' : '#38a3ff';
-  sx.lineWidth = 2;
-  sx.strokeRect(barrierX - 8, 0, 16, cy - gap/2);
-  sx.strokeRect(barrierX - 8, cy + gap/2, 16, h - (cy + gap/2));
+  sctx.fillStyle = barrierColor;
+  sctx.fillRect(barrierX - 8, 0, 16, cy - gap/2);
+  sctx.fillRect(barrierX - 8, cy + gap/2, 16, h - (cy + gap/2));
   
-  // Ondas incidentes (linhas verticais à esquerda)
-  if (motionOK()) slitTime += 0.03;
-  const waveSpacing = 35;
-  const offset = (slitTime * 30) % waveSpacing;
+  sctx.strokeStyle = barrierStroke;
+  sctx.lineWidth = 2;
+  sctx.strokeRect(barrierX - 8, 0, 16, cy - gap/2);
+  sctx.strokeRect(barrierX - 8, cy + gap/2, 16, h - (cy + gap/2));
   
-  sx.strokeStyle = hcOn() ? 'rgba(255,255,255,0.5)' : 'rgba(56,163,255,0.5)';
-  sx.lineWidth = 2;
+  // 3. Incident Waves
+  if (motionOK()) slitTime += 0.04;
+  const wavelength = 25;
+  const offset = (slitTime * 40) % wavelength;
   
-  for (let x = barrierX - 20 - offset; x > 0; x -= waveSpacing) {
-    sx.beginPath();
-    sx.moveTo(x, cy - gap/2 - 15);
-    sx.lineTo(x, cy + gap/2 + 15);
-    sx.stroke();
+  sctx.strokeStyle = hcOn() ? 'rgba(255,255,255,0.5)' : 'rgba(56,163,255,0.5)';
+  sctx.lineWidth = 2;
+  sctx.shadowBlur = 6;
+  sctx.shadowColor = hcOn() ? '#fff' : '#38a3ff';
+  
+  for (let x = barrierX - 15 - offset; x > 0; x -= wavelength) {
+    sctx.beginPath();
+    sctx.moveTo(x, cy - gap/2 - 15);
+    sctx.lineTo(x, cy + gap/2 + 15);
+    sctx.stroke();
   }
+  sctx.shadowBlur = 0;
   
-  // Ondas difratadas (arcos saindo da fenda)
-  const maxRadius = w * 0.5;
-  const numArcs = 8;
+  // 4. Diffracted Waves (with intensity envelope)
+  const maxRadius = w * 0.65;
+  const numArcs = 12;
   
   for (let i = 0; i < numArcs; i++) {
-    const r = ((slitTime * 40 + i * (maxRadius / numArcs)) % maxRadius);
-    const alpha = Math.max(0, 1 - r / maxRadius) * 0.6;
+    const r = ((slitTime * 50 + i * (maxRadius / numArcs)) % maxRadius);
+    const alphaBase = Math.max(0, 1 - r / maxRadius) * 0.7;
     
-    sx.strokeStyle = hcOn() ? `rgba(255,255,255,${alpha})` : `rgba(56,163,255,${alpha})`;
-    sx.lineWidth = 2;
-    sx.beginPath();
-    sx.arc(barrierX, cy, r, -Math.PI/2 - 0.6, Math.PI/2 + 0.6);
-    sx.stroke();
+    const steps = 30;
+    for (let j = 0; j <= steps; j++) {
+      const angle = -Math.PI/2 + (Math.PI / steps) * j;
+      
+      const a_visual = gap * 0.15; 
+      const beta = (Math.PI * a_visual * Math.sin(angle)) / wavelength;
+      let intensity = 1;
+      if (Math.abs(beta) > 0.01) {
+        intensity = Math.pow(Math.sin(beta) / beta, 2);
+      }
+      
+      const alpha = alphaBase * intensity;
+      if (alpha > 0.04) {
+        sctx.strokeStyle = hcOn() ? `rgba(255,255,255,${alpha})` : `rgba(56,163,255,${alpha})`;
+        sctx.lineWidth = 3;
+        sctx.beginPath();
+        sctx.arc(barrierX, cy, r, angle - (Math.PI/steps/2), angle + (Math.PI/steps/2));
+        sctx.stroke();
+      }
+    }
   }
   
-  // Tela de projeção (linha vertical à direita)
-  const screenX = w * 0.85;
-  sx.strokeStyle = hcOn() ? '#fff' : '#93a4c3';
-  sx.lineWidth = 3;
-  sx.beginPath();
-  sx.moveTo(screenX, 20);
-  sx.lineTo(screenX, h - 20);
-  sx.stroke();
+  // 5. Intensity Graph
+  const screenX = w * 0.82;
+  const graphWidth = 100;
   
-  // Gráfico de intensidade (sinc²)
-  const lambda = 35;
-  const a = gap;
+  sctx.strokeStyle = hcOn() ? '#fff' : '#93a4c3';
+  sctx.lineWidth = 2;
+  sctx.beginPath();
+  sctx.moveTo(screenX, 20);
+  sctx.lineTo(screenX, h - 20);
+  sctx.stroke();
   
-  sx.beginPath();
-  sx.strokeStyle = hcOn() ? '#ffd23f' : '#ffe14d';
-  sx.lineWidth = 4;
+  sctx.beginPath();
+  sctx.fillStyle = hcOn() ? 'rgba(255,210,63,0.15)' : 'rgba(255,225,77,0.15)';
+  sctx.strokeStyle = hcOn() ? '#ffd23f' : '#ffe14d';
+  sctx.lineWidth = 3;
+  sctx.shadowBlur = 8;
+  sctx.shadowColor = hcOn() ? '#ffd23f' : '#ffe14d';
   
   for (let y = 20; y <= h - 20; y += 2) {
-    const theta = Math.atan2(y - cy, screenX - barrierX);
-    const beta = (Math.PI * a * Math.sin(theta)) / lambda;
-    let intensity = 0;
-    
-    if (Math.abs(beta) < 0.01) {
-      intensity = 1;
-    } else {
+    const angle = Math.atan2(y - cy, screenX - barrierX);
+    const a_visual = gap * 0.15;
+    const beta = (Math.PI * a_visual * Math.sin(angle)) / wavelength;
+    let intensity = 1;
+    if (Math.abs(beta) > 0.01) {
       intensity = Math.pow(Math.sin(beta) / beta, 2);
     }
     
-    const graphWidth = 100;
     const xVal = screenX + (intensity * graphWidth);
-    
-    if (y === 20) sx.moveTo(xVal, y);
-    else sx.lineTo(xVal, y);
+    if (y === 20) sctx.moveTo(xVal, y);
+    else sctx.lineTo(xVal, y);
   }
-  sx.stroke();
+  sctx.lineTo(screenX, h - 20);
+  sctx.closePath();
+  sctx.fill();
+  sctx.stroke();
+  sctx.shadowBlur = 0;
   
-  // Preenchimento do gráfico
-  sx.lineTo(screenX, h - 20);
-  sx.lineTo(screenX, 20);
-  sx.closePath();
-  sx.fillStyle = hcOn() ? 'rgba(255,210,63,0.15)' : 'rgba(255,225,77,0.15)';
-  sx.fill();
+  // 6. Labels
+  sctx.font = 'bold 12px "Space Mono", monospace';
+  sctx.fillStyle = hcOn() ? '#fff' : '#93a4c3';
+  sctx.textAlign = 'center';
+  sctx.fillText('ONDA INCIDENTE', barrierX / 2, 25);
+  sctx.fillText('DIFRAÇÃO', barrierX + (screenX - barrierX)/2, 25);
+  sctx.fillText('INTENSIDADE', screenX + graphWidth/2, 25);
+  sctx.textAlign = 'start';
   
-  // Labels
-  sx.font = '14px Space Mono';
-  sx.fillStyle = hcOn() ? '#fff' : '#93a4c3';
-  sx.fillText('ONDAS INCIDENTES', 20, 30);
-  sx.fillText('DIFRAÇÃO', barrierX + 40, 30);
-  sx.fillText('INTENSIDADE', screenX + 10, 30);
-  
-  // Texto explicativo
-  const v = +$('#slitSlider').value;
+  // 7. Update text feedback
   const readEl = $('#slitRead');
-  if (v < 40) {
-    readEl.textContent = 'Fenda ESTREITA: Alto espalhamento. O máximo central é largo e os secundários são bem visíveis (Difração forte).';
-  } else if (v < 80) {
-    readEl.textContent = 'Fenda MÉDIA: Espalhamento moderado. O máximo central começa a se estreitar.';
+  if (slitVal < 40) {
+    readEl.innerHTML = '<strong>Fenda ESTREITA:</strong> Alto espalhamento. O máximo central é largo e os secundários são bem visíveis (Difração forte).';
+  } else if (slitVal < 80) {
+    readEl.innerHTML = '<strong>Fenda MÉDIA:</strong> Espalhamento moderado. O máximo central começa a se estreitar e a luz se concentra mais no centro.';
   } else {
-    readEl.textContent = 'Fenda LARGA: Baixo espalhamento. A luz comporta-se quase como um raio geométrico (comportamento corpuscular dominante).';
+    readEl.innerHTML = '<strong>Fenda LARGA:</strong> Baixo espalhamento. A luz comporta-se quase como um raio geométrico, concentrando-se fortemente no centro.';
   }
 }
 
 $('#slitSlider').addEventListener('input', () => { 
-  slitTime = 0;
   if (!$('#tab3').classList.contains('active')) {
     drawDiffraction();
   }
 });
+// --- FIM DA SIMULAÇÃO DE DIFRAÇÃO ---
 
 const cdArea = $('#cdArea'), cdL = $('#cdLight'); let lx = 0, ly = 0, cdDrag = false;
 function cdPos(x,y){
@@ -971,6 +1007,7 @@ function cdWhy(){
 $('#cdDisc').addEventListener('click', cdWhy);
 $('#btnCdWhy').addEventListener('click', cdWhy);
 setTimeout(() => {const r = cdArea.getBoundingClientRect(); cdPos(r.width * 0.12, r.height * 0.18)}, 100);
+
 let collectorAnimId = null;
 let photons = [], heatParticles = [];
 let simStats = {total: 0, absorbed: 0};
@@ -1214,8 +1251,13 @@ $('#sCloud').addEventListener('input', e => $('#sCloudOut').textContent = e.targ
 simTick();
 
 addEventListener('resize', () => {
-  drawSpark(); drawChart();
+  resizeSlitCanvas();
+  drawSpark(); 
+  drawChart();
 });
+
+// Inicializa o canvas de fenda
+resizeSlitCanvas();
 
 });
 </script>
