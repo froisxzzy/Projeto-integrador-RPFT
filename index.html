@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="description" content="HÉLIOS·CEP — Projeto Integrador: sistema autônomo de aquecimento solar, integrando óptica (dispersão/difração), robótica e acessibilidade digital.">
+<meta name="description" content="HÉLIOS·CEP — Projeto Integrador: sistema autônomo de aquecimento solar, integrando óptica, robótica, tecnologia e programação.">
 <title>HÉLIOS·CEP · Aquecimento Solar Inteligente & Óptica Aplicada</title>
 <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>☀️</text></svg>">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -130,8 +130,25 @@ section{padding:5.5rem 0}
 .stat b{font-family:var(--f-mono);font-size:1.35rem;color:var(--orange);display:block}
 .stat span{font-size:.8rem;color:var(--ink2)}
 
-/* ================= 02 LABORATÓRIO DE ÓPTICA ================= */
-#optica{background:var(--bg)}
+/* ================= 02 OS 4 PILARES ================= */
+#pilares{background:var(--bg)}
+.pillars-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:1.5rem}
+.pillar-card{background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:1.5rem;transition:transform .2s, border-color .2s; position: relative; overflow: hidden;}
+.pillar-card:hover{transform:translateY(-5px);border-color:var(--aqua)}
+.pillar-card::before{content:"";position:absolute;top:0;left:0;width:100%;height:4px;background:var(--accent,var(--aqua))}
+.pillar-card.physics{--accent:var(--orange)}
+.pillar-card.robotics{--accent:var(--teal)}
+.pillar-card.tech{--accent:var(--aqua)}
+.pillar-card.code{--accent:var(--amber)}
+.pillar-icon{font-size:2rem;margin-bottom:1rem;display:block}
+.pillar-card h3{font-size:1.1rem;margin-bottom:.8rem;color:var(--accent)}
+.pillar-card p{font-size:.9rem;color:var(--ink2);line-height:1.6}
+.pillar-card ul{list-style:none;margin-top:1rem;padding:0}
+.pillar-card ul li{font-size:.85rem;color:var(--ink);padding:.3rem 0;padding-left:1.2rem;position:relative}
+.pillar-card ul li::before{content:"▹";position:absolute;left:0;color:var(--accent)}
+
+/* ================= 03 LABORATÓRIO DE ÓPTICA ================= */
+#optica{background:var(--bg2)}
 .opt-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem;border-bottom:2px solid var(--line);padding-bottom:.5rem}
 .opt-tab{font-family:var(--f-mono);font-size:.8rem;padding:.6rem 1rem;border-radius:8px 8px 0 0;cursor:pointer;color:var(--ink2);border:2px solid transparent;border-bottom:none;transition:all .2s}
 .opt-tab.active{background:var(--paper);color:var(--ink);border-color:var(--line);border-bottom-color:var(--paper);font-weight:700}
@@ -139,7 +156,7 @@ section{padding:5.5rem 0}
 .opt-content.active{display:block}
 @keyframes stageIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
 
-.lab-stage{background:var(--bg2);border:1px solid var(--line);border-radius:14px;padding:1.6rem;margin-top:1rem;position:relative}
+.lab-stage{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:1.6rem;margin-top:1rem;position:relative}
 .lab-stage .hint{position:absolute;top:.8rem;right:1.2rem;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.18em;color:var(--ink2);background:var(--paper);padding:.3rem .6rem;border-radius:4px}
 .scene{width:100%;height:auto}
 .rayline{filter:drop-shadow(0 0 6px currentColor);transition:all .3s}
@@ -151,18 +168,18 @@ section{padding:5.5rem 0}
 #prismSvg{max-height:300px}
 .hitline{stroke:transparent;stroke-width:22;cursor:pointer}
 
-#slitCanvas{width:100%;height:250px;border-radius:8px;background:#000}
+#slitCanvas{width:100%;height:280px;border-radius:8px;background:#000;border:1px solid var(--line)}
 input[type=range]{appearance:none;width:100%;height:10px;border-radius:99px;border:1px solid var(--line);
   background:linear-gradient(90deg,var(--teal),var(--aqua),var(--amber),var(--orange));cursor:pointer;margin:.8rem 0}
 input[type=range]::-webkit-slider-thumb{appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid #000}
 input[type=range].plain{background:var(--paper)}
 
-#cdArea{position:relative;height:320px;border-radius:14px;overflow:hidden;background:radial-gradient(400px 200px at 50% 60%,rgba(56,163,255,.1),transparent),var(--bg2);border:1px solid var(--line)}
+#cdArea{position:relative;height:320px;border-radius:14px;overflow:hidden;background:radial-gradient(400px 200px at 50% 60%,rgba(56,163,255,.1),transparent),var(--bg);border:1px solid var(--line)}
 #cdDisc{position:absolute;left:50%;top:52%;width:200px;height:200px;transform:translate(-50%,-50%);border-radius:50%;cursor:pointer;
   background:conic-gradient(from var(--sheen,0deg),#ff4d3d,#ff9f1c,#ffe14d,#3ddc84,#38a3ff,#b06bff,#ff4d3d);
   box-shadow:0 0 30px rgba(255,255,255,.15),inset 0 0 40px rgba(0,0,0,.6);animation:cdspin 20s linear infinite}
 #cdDisc::before{content:"";position:absolute;inset:0;border-radius:50%;background:repeating-radial-gradient(circle,transparent 0 3px,rgba(255,255,255,.14) 3px 4px)}
-#cdDisc::after{content:"";position:absolute;left:50%;top:50%;width:50px;height:50px;transform:translate(-50%,-50%);border-radius:50%;background:var(--bg2);border:5px solid rgba(255,255,255,.35)}
+#cdDisc::after{content:"";position:absolute;left:50%;top:50%;width:50px;height:50px;transform:translate(-50%,-50%);border-radius:50%;background:var(--bg);border:5px solid rgba(255,255,255,.35)}
 @keyframes cdspin{to{transform:translate(-50%,-50%) rotate(360deg)}}
 #cdLight{position:absolute;left:12%;top:18%;font-size:2rem;cursor:grab;filter:drop-shadow(0 0 16px #ffe14d);user-select:none;touch-action:none;z-index:2}
 #cdRays{position:absolute;left:50%;top:52%;width:280px;height:6px;transform-origin:0 50%;pointer-events:none;
@@ -175,9 +192,6 @@ input[type=range].plain{background:var(--paper)}
 .concept-card:hover{transform:translateY(-4px);border-color:var(--aqua)}
 .concept-card h4{font-family:var(--f-disp);color:var(--amber);font-size:1.1rem;margin-bottom:.6rem;display:flex;align-items:center;gap:.5rem}
 .concept-card p{font-size:.95rem;color:var(--ink2);line-height:1.7;margin-bottom:.8rem}
-.concept-card ul{list-style:none;padding-left:0}
-.concept-card ul li{position:relative;padding-left:1.5rem;margin-bottom:.5rem;font-size:.9rem;color:var(--ink)}
-.concept-card ul li::before{content:"▹";position:absolute;left:0;color:var(--teal)}
 
 .sim-controls-row{display:flex; gap:1rem; flex-wrap:wrap; margin-top:1rem; align-items:flex-end;}
 .sim-controls-row > div{display:flex; flex-direction:column; gap:.4rem;}
@@ -186,7 +200,7 @@ input[type=range].plain{background:var(--paper)}
 .sim-stats-box .label{font-family:var(--f-mono); font-size:.7rem; color:var(--ink2); text-transform:uppercase;}
 .sim-stats-box .value{font-family:var(--f-disp); font-size:1.8rem; color:var(--teal); font-variant-numeric:tabular-nums; transition: color 0.3s ease;}
 
-/* ================= 03 ROBÓTICA - BANCADA RENOVADA ================= */
+/* ================= 04 ROBÓTICA - BANCADA ================= */
 .bento{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-bottom:3rem}
 .hw{border:2px solid var(--line);border-radius:12px;background:var(--paper);box-shadow:4px 4px 0 var(--line);padding:1.1rem;transition:transform .2s}
 .hw:hover{transform:translateY(-5px)}
@@ -197,7 +211,7 @@ input[type=range].plain{background:var(--paper)}
 .bench-pool{margin-top:2rem;display:grid;grid-template-columns:1.1fr 1fr;gap:2rem;align-items:start}
 @media(max-width:900px){.bench-pool{grid-template-columns:1fr}}
 
-.system-diagram{background:var(--bg2);border:2px solid var(--line);border-radius:14px;padding:1.5rem;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
+.system-diagram{background:var(--bg);border:2px solid var(--line);border-radius:14px;padding:1.5rem;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
 .system-diagram svg{width:100%;height:auto;max-height:320px}
 .pipe-flow{opacity:0.2;transition:opacity 0.4s ease, stroke 0.4s ease}
 .pipe-flow.active{opacity:1;animation:flowDash 1s linear infinite}
@@ -229,8 +243,8 @@ input[type=range].plain{background:var(--paper)}
 
 .logic-explanation{font-size:0.85rem;color:var(--ink2);line-height:1.6;background:rgba(56,163,255,0.05);border-left:3px solid var(--aqua);padding:0.8rem;border-radius:0 8px 8px 0;margin-top:0.5rem;transition:border-color 0.3s ease}
 
-/* ================= 04 SIMULADOR ================= */
-#simulador{background:var(--bg2)}
+/* ================= 05 SIMULADOR MACRO ================= */
+#simulador{background:var(--bg)}
 .sim-grid{display:grid;grid-template-columns:340px 1fr;gap:2rem;align-items:start}
 .sim-controls{background:var(--paper);color:var(--ink);border:2px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:1.4rem}
 .sim-controls label{display:block;font-family:var(--f-mono);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;margin:1rem 0 .3rem;color:var(--ink2)}
@@ -248,12 +262,11 @@ input[type=range].plain{background:var(--paper)}
 .sim-stats b{font-family:var(--f-mono);font-size:1.15rem;color:var(--amber);display:block}
 .sim-stats span{font-size:.72rem;color:var(--ink2)}
 
-/* ================= 05 ACESSIBILIDADE & IMPACTO ================= */
+/* ================= 06 ACESSIBILIDADE & EQUIPE ================= */
 .check-list{list-style:none;margin-top:1.2rem}
 .check-list li{padding:.75rem 0 .75rem 2.4rem;border-bottom:1px dashed var(--line);position:relative}
 .check-list li::before{content:"✔";position:absolute;left:0;top:.7rem;font-family:var(--f-mono);font-weight:700;color:var(--teal);font-size:1.1rem}
 
-/* ================= EQUIPE & RODAPÉ ================= */
 .team{display:flex;flex-wrap:wrap;gap:1.6rem;justify-content:center;margin:2.2rem 0 3.5rem}
 .member{background:var(--paper);border:2px solid var(--line);box-shadow:var(--shadow);padding:.9rem;width:196px;transition:transform .3s;text-align:center}
 .member:nth-child(odd){transform:rotate(-2deg)}
@@ -284,16 +297,15 @@ footer nav a:hover{color:var(--amber)}
 <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
 <div class="noise" aria-hidden="true"></div>
 
-<!-- ================= CABEÇALHO ================= -->
 <header class="topbar">
   <a class="brand" href="#topo" aria-label="HÉLIOS CEP — início"><span class="brand-sun" aria-hidden="true"></span>HÉLIOS<em>·CEP</em></a>
   <nav id="mainnav" aria-label="Navegação principal">
     <a href="#desafio">Desafio</a>
+    <a href="#pilares">Pilares</a>
     <a href="#optica">Laboratório</a>
     <a href="#robotica">Robótica</a>
     <a href="#simulador">Simulador</a>
     <a href="#acessibilidade">Acessibilidade</a>
-    <a href="#equipe">Equipe</a>
   </nav>
   <div class="a11y-tools" role="group" aria-label="Ferramentas de acessibilidade">
     <button id="fontMinus" aria-label="Diminuir texto" title="Diminuir texto">A−</button>
@@ -306,7 +318,6 @@ footer nav a:hover{color:var(--amber)}
 
 <main id="conteudo">
 
-<!-- ================= HERO ================= -->
 <section class="hero" aria-label="Apresentação do projeto">
   <div class="wrap hero-grid">
     <div>
@@ -318,10 +329,9 @@ footer nav a:hover{color:var(--amber)}
         <span class="chip">🤖 Automação</span>
         <span class="chip">♿ Acessível</span>
       </div>
-      <a class="btn" href="#optica">Entrar no Laboratório</a>
+      <a class="btn" href="#pilares">Conhecer os Pilares</a>
       <a class="btn ghost" href="#desafio" style="margin-left:.6rem">O Desafio</a>
     </div>
-
     <div class="panel" aria-label="Painel de controle simulado">
       <div class="panel-head"><span class="led" aria-hidden="true"></span> UNIDADE DE CONTROLE · HÉLIOS v1.0 · <span id="panelMode">AUTO</span></div>
       <div class="panel-body">
@@ -342,7 +352,6 @@ footer nav a:hover{color:var(--amber)}
   </div>
 </section>
 
-<!-- ================= 01 DESAFIO ================= -->
 <section id="desafio">
   <div class="wrap">
     <div class="sec-head rv">
@@ -366,11 +375,58 @@ footer nav a:hover{color:var(--amber)}
   </div>
 </section>
 
-<!-- ================= 02 LABORATÓRIO DE ÓPTICA ================= -->
+<section id="pilares">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="sec-num">02 / FUNDAMENTAÇÃO</p>
+      <h2 class="lm"><span>Os 4 Pilares do HÉLIOS</span></h2>
+      <p class="lead">Um projeto integrador exige a convergência de múltiplas áreas do conhecimento.</p>
+    </div>
+    <div class="pillars-grid rv">
+      <div class="pillar-card physics">
+        <span class="pillar-icon">⚛️</span>
+        <h3>Física</h3>
+        <p>A base teórica que explica o comportamento da energia.</p>
+        <ul>
+          <li><strong>Óptica Ondulatória:</strong> Dispersão (prisma) e Difração (fendas) explicam como manipular a luz.</li>
+          <li><strong>Termodinâmica:</strong> Leis da condução, convecção e radiação (corpo negro) que regem a perda e ganho de calor.</li>
+        </ul>
+      </div>
+      <div class="pillar-card robotics">
+        <span class="pillar-icon">🤖</span>
+        <h3>Robótica</h3>
+        <p>O sistema que sente o ambiente e age sobre ele.</p>
+        <ul>
+          <li><strong>Sensores:</strong> DS18B20 (temperatura) e LDR (luz) fornecem os dados de entrada.</li>
+          <li><strong>Atuadores:</strong> A bomba de circulação é o "músculo" que move a água quando necessário.</li>
+        </ul>
+      </div>
+      <div class="pillar-card tech">
+        <span class="pillar-icon">⚙️</span>
+        <h3>Tecnologia</h3>
+        <p>Os materiais e hardware que tornam o projeto viável.</p>
+        <ul>
+          <li><strong>Materiais Seletivos:</strong> Superfícies escuras texturizadas que maximizam a absorção e minimizam a reflexão.</li>
+          <li><strong>Efeito Estufa:</strong> Uso de vidro temperado para permitir a entrada de luz visível e bloquear a saída de infravermelho.</li>
+        </ul>
+      </div>
+      <div class="pillar-card code">
+        <span class="pillar-icon">💻</span>
+        <h3>Programação</h3>
+        <p>A lógica que une tudo, garantindo eficiência e acesso.</p>
+        <ul>
+          <li><strong>Algoritmos de Controle:</strong> Lógica de histerese para evitar que a bomba ligue e desligue constantemente.</li>
+          <li><strong>Acessibilidade Digital:</strong> HTML semântico, ARIA e contraste para garantir que o conhecimento seja universal.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="optica">
   <div class="wrap">
     <div class="sec-head rv">
-      <p class="sec-num">02 / LABORATÓRIO HÉLIOS</p>
+      <p class="sec-num">03 / LABORATÓRIO HÉLIOS</p>
       <h2 class="lm"><span>A Física por trás do Aquecimento</span></h2>
       <p class="lead">Interaja com os fenômenos abaixo para entender como dominamos a luz para aquecer a piscina.</p>
     </div>
@@ -420,14 +476,14 @@ footer nav a:hover{color:var(--amber)}
 
       <div id="tab3" class="opt-content">
         <h3>Difração: A Luz Contorna Obstáculos</h3>
-        <p>Quando a luz passa por uma fenda pequena, ela se espalha como uma onda. O padrão de intensidade resultante segue uma função <em>sinc</em>². Controle o tamanho da fenda:</p>
+        <p>Quando a luz passa por uma fenda pequena, ela se espalha como uma onda (Princípio de Huygens). O gráfico à direita mostra o padrão de intensidade real ($sinc^2$), com um máximo central brilhante e máximos secundários mais fracos.</p>
         <div class="lab-stage">
-          <span class="hint">FENDA ↕</span>
-          <canvas id="slitCanvas" height="250" aria-label="Simulação de difração em fenda única mostrando padrão de interferência" aria-describedby="slitDesc" style="width:100%; height:250px;"></canvas>
+          <span class="hint">AJUSTE A FENDA ↕</span>
+          <canvas id="slitCanvas" width="800" height="280" aria-label="Simulação de difração em fenda única mostrando padrão de interferência e gráfico de intensidade" aria-describedby="slitDesc" style="width:100%; height:280px;"></canvas>
           <div id="slitDesc" class="sr-only">Simulação de difração: ondas de luz passando por uma fenda variável, projetando um padrão de intensidade em uma tela à direita. Fendas menores causam maior espalhamento.</div>
-          <label class="mono" style="font-size:.72rem;display:block;margin-top:.5rem">PEQUENA ─────────── GRANDE</label>
-          <input type="range" class="plain" id="slitSlider" min="8" max="150" value="60" aria-label="Controle de tamanho da fenda">
-          <p class="mono" id="slitRead" style="font-size:.85rem;text-align:center;margin-top:.5rem">Fenda média — espalhamento moderado.</p>
+          <label class="mono" style="font-size:.72rem;display:block;margin-top:.5rem">FENDA ESTREITA ─────────── FENDA LARGA</label>
+          <input type="range" class="plain" id="slitSlider" min="10" max="120" value="40" aria-label="Controle de tamanho da fenda">
+          <p class="mono" id="slitRead" style="font-size:.85rem;text-align:center;margin-top:.5rem">Fenda estreita: alto espalhamento (difração forte).</p>
         </div>
       </div>
 
@@ -477,28 +533,16 @@ footer nav a:hover{color:var(--amber)}
             💡 <strong>Dica:</strong> A superfície texturizada usa a difração para espalhar a luz lateralmente, aumentando drasticamente a chance de absorção (armadilha de fótons).
           </p>
         </div>
-
-        <div class="concept-grid" style="margin-top:1.5rem;">
-          <div class="concept-card">
-            <h4>🔺 O Papel da Dispersão</h4>
-            <p>Ao entender que a luz branca contém infravermelho (calor), projetamos tintas "seletivas" que absorvem especificamente essas faixas de onda, em vez de refleti-las como uma superfície branca faria.</p>
-          </div>
-          <div class="concept-card">
-            <h4>🌊 O Papel da Difração</h4>
-            <p>Pelo Princípio de Huygens, ao atingir uma microtextura, a luz se espalha em múltiplas direções. Isso faz com que o fóton "quique" dentro da textura, sendo forçado a penetrar no material e virar calor, em vez de refletir de volta para o céu.</p>
-          </div>
-        </div>
       </div>
 
     </div>
   </div>
 </section>
 
-<!-- ================= 03 ROBÓTICA (BANCADA RENOVADA) ================= -->
 <section id="robotica">
   <div class="wrap">
     <div class="sec-head rv">
-      <p class="sec-num">03 / ROBÓTICA E LÓGICA</p>
+      <p class="sec-num">04 / ROBÓTICA E LÓGICA</p>
       <h2 class="lm"><span>Sentir, decidir, agir</span></h2>
     </div>
     <div class="bento rv">
@@ -516,20 +560,15 @@ footer nav a:hover{color:var(--amber)}
       </p>
       
       <div class="bench-pool">
-        <!-- DIAGRAMA DO SISTEMA -->
         <div class="system-diagram">
           <svg viewBox="0 0 400 300" role="img" aria-label="Diagrama do sistema de aquecimento solar" aria-describedby="diagramDesc">
             <desc id="diagramDesc">Diagrama mostrando a piscina conectada a um coletor solar por meio de uma bomba. Setas indicam o fluxo de água quando a bomba está ligada.</desc>
-            
-            <!-- Tubulações (Fundo) -->
             <path d="M 80 200 L 80 150 L 200 150" fill="none" stroke="#3b537f" stroke-width="8" stroke-linecap="round"/>
             <path d="M 280 150 L 320 150 L 320 200" fill="none" stroke="#3b537f" stroke-width="8" stroke-linecap="round"/>
             
-            <!-- Tubulações (Fluxo Animado) -->
             <path id="flow1" class="pipe-flow" d="M 80 200 L 80 150 L 200 150" fill="none" stroke="var(--aqua)" stroke-width="4" stroke-dasharray="8 8" stroke-linecap="round"/>
             <path id="flow2" class="pipe-flow" d="M 280 150 L 320 150 L 320 200" fill="none" stroke="var(--orange)" stroke-width="4" stroke-dasharray="8 8" stroke-linecap="round"/>
 
-            <!-- Piscina -->
             <g transform="translate(40, 180)">
               <rect x="0" y="0" width="80" height="60" rx="8" fill="var(--bg2)" stroke="var(--line)" stroke-width="2"/>
               <rect id="diagPoolWater" x="4" y="4" width="72" height="52" rx="4" fill="var(--pool-c1)" style="transition: fill 0.5s ease"/>
@@ -537,7 +576,6 @@ footer nav a:hover{color:var(--amber)}
               <text id="diagT1" x="40" y="35" text-anchor="middle" fill="#fff" font-family="Unbounded" font-size="16" font-weight="900">28°C</text>
             </g>
 
-            <!-- Bomba -->
             <g transform="translate(180, 130)">
               <circle cx="20" cy="20" r="20" fill="var(--paper)" stroke="var(--line)" stroke-width="2"/>
               <g id="diagPumpIcon" class="pump-icon-svg">
@@ -546,7 +584,6 @@ footer nav a:hover{color:var(--amber)}
               <text x="20" y="55" text-anchor="middle" fill="var(--ink2)" font-family="Space Mono" font-size="10">BOMBA</text>
             </g>
 
-            <!-- Coletor Solar -->
             <g transform="translate(280, 80)">
               <rect x="0" y="0" width="80" height="60" rx="4" fill="var(--paper)" stroke="var(--line)" stroke-width="2"/>
               <line x1="10" y1="10" x2="70" y2="10" stroke="var(--orange)" stroke-width="2"/>
@@ -555,8 +592,6 @@ footer nav a:hover{color:var(--amber)}
               <line x1="10" y1="50" x2="70" y2="50" stroke="var(--orange)" stroke-width="2"/>
               <text x="40" y="-10" text-anchor="middle" fill="var(--ink)" font-family="Space Mono" font-size="12" font-weight="bold">COLETOR</text>
               <text id="diagT2" x="40" y="35" text-anchor="middle" fill="#fff" font-family="Unbounded" font-size="16" font-weight="900">41°C</text>
-              
-              <!-- Ícone de Sol -->
               <g id="diagSun" transform="translate(40, -35)" opacity="0.8">
                 <circle cx="0" cy="0" r="8" fill="var(--amber)"/>
                 <path d="M 0 -14 L 0 -10 M 0 10 L 0 14 M -14 0 L -10 0 M 10 0 L 14 0 M -10 -10 L -7 -7 M 10 10 L 7 7 M -10 10 L -7 7 M 10 -10 L 7 -7" stroke="var(--amber)" stroke-width="2" stroke-linecap="round"/>
@@ -565,7 +600,6 @@ footer nav a:hover{color:var(--amber)}
           </svg>
         </div>
 
-        <!-- CONTROLES DA BANCADA -->
         <div class="bench-controls">
           <h3 style="margin-bottom:1rem">Painel de Controle</h3>
           
@@ -615,11 +649,10 @@ footer nav a:hover{color:var(--amber)}
   </div>
 </section>
 
-<!-- ================= 04 SIMULADOR ================= -->
 <section id="simulador">
   <div class="wrap">
     <div class="sec-head rv">
-      <p class="sec-num">04 / SIMULADOR TÉRMICO MACRO</p>
+      <p class="sec-num">05 / SIMULADOR TÉRMICO MACRO</p>
       <h2 class="lm"><span>Um dia de sol, em segundos</span></h2>
     </div>
     <div class="sim-grid">
@@ -661,11 +694,10 @@ footer nav a:hover{color:var(--amber)}
   </div>
 </section>
 
-<!-- ================= 05 ACESSIBILIDADE ================= -->
 <section id="acessibilidade">
   <div class="wrap">
     <div class="sec-head rv">
-      <p class="sec-num">05 / ACESSIBILIDADE</p>
+      <p class="sec-num">06 / ACESSIBILIDADE</p>
       <h2 class="lm"><span>Requisito, não anexo</span></h2>
     </div>
     <div class="card rv" style="max-width:800px;margin:0 auto">
@@ -680,26 +712,8 @@ footer nav a:hover{color:var(--amber)}
   </div>
 </section>
 
-<!-- ================= 06 EQUIPE ================= -->
-<section id="equipe">
-  <div class="wrap">
-    <div class="sec-head rv">
-      <p class="sec-num">06 / EQUIPE HÉLIOS</p>
-      <h2 class="lm"><span>Quem constrói o projeto</span></h2>
-    </div>
-    <div class="team rv">
-      <article class="member"><img src="https://picsum.photos/seed/ana-optica/400/400" alt="Foto de perfil de Guilherme" loading="lazy"><h3>Guilherme Effgen</h3><p>Óptica & Conteúdo</p></article>
-      <article class="member"><img src="https://picsum.photos/seed/bruno-robotica/400/400" alt="Foto de perfil de Pedro" loading="lazy"><h3>Pedro Frois</h3><p>Robótica & Hardware</p></article>
-      <article class="member"><img src="https://picsum.photos/seed/caio-codigo/400/400" alt="Foto de perfil de Davi" loading="lazy"><h3>Davi Goss</h3><p>Programação & Dados</p></article>
-      <article class="member"><img src="https://picsum.photos/seed/dandara-design/400/400" alt="Foto de perfil de Gustavo" loading="lazy"><h3>Gustavo Rodrigues</h3><p>Design & Acessibilidade</p></article>
-      <article class="member"><img src="https://picsum.photos/seed/prof-orientador/400/400" alt="Foto de perfil de Eduardo" loading="lazy"><h3>Eduardo França</h3><p>Orientação</p></article>
-    </div>
-  </div>
-</section>
-
 </main>
 
-<!-- ================= RODAPÉ ================= -->
 <footer>
   <div class="wrap foot-grid">
     <div>
@@ -707,7 +721,7 @@ footer nav a:hover{color:var(--amber)}
       <p style="max-width:34ch;font-size:.85rem;margin-top:.8rem;color:var(--ink2)">Projeto Integrador 2026. Ciência aberta, energia livre, site para todas as pessoas.</p>
     </div>
     <nav aria-label="Rodapé">
-      <a href="#desafio">Desafio</a><a href="#optica">Laboratório</a><a href="#robotica">Robótica</a><a href="#simulador">Simulador</a>
+      <a href="#desafio">Desafio</a><a href="#pilares">Pilares</a><a href="#optica">Laboratório</a><a href="#robotica">Robótica</a><a href="#simulador">Simulador</a>
     </nav>
     <a class="btn" href="#topo" style="background:var(--amber)">↑ Topo</a>
   </div>
@@ -816,7 +830,7 @@ $$('.opt-tab').forEach(tab => {
     tab.classList.add('active'); tab.setAttribute('aria-selected','true');
     const target = $('#'+tab.dataset.tab);
     target.classList.add('active');
-    if(tab.dataset.tab === 'tab3') { slitNeedsResize = true; drawSlit(performance.now()); }
+    if(tab.dataset.tab === 'tab3') { drawDiffraction(performance.now()); }
     if(tab.dataset.tab === 'tab5') startCollectorSim(); else stopCollectorSim();
   });
 });
@@ -888,69 +902,126 @@ SVG.addEventListener('pointermove', e => {
 addEventListener('pointerup', () => dragP = false);
 renderPrism();
 
-/* ================= 3. DIFRAÇÃO ================= */
+/* ================= 3. DIFRAÇÃO (CORRIGIDA E MELHORADA) ================= */
 const sc = $('#slitCanvas'), sx = sc.getContext('2d');
-let slitNeedsResize = true;
-function sizeSC(){
-  if(slitNeedsResize){
-    sc.width = sc.clientWidth * 2; sc.height = 250 * 2;
-    slitNeedsResize = false;
+let slitTime = 0;
+
+function drawDiffraction(timestamp) {
+  if (!$('#tab3').classList.contains('active')) return;
+  
+  if (!nomotion) {
+    requestAnimationFrame(drawDiffraction);
   }
-}
-function drawSlit(t){
-  sizeSC(); 
-  const w = sc.width, h = sc.height, bx = w * 0.35, cy = h / 2;
+  
+  const w = sc.width;
+  const h = sc.height;
+  const cx = w * 0.3; // Posição X da barreira
+  const cy = h / 2;
+  
   const slitVal = +$('#slitSlider').value;
-  const gap = 20 + (slitVal / 150) * (h * 0.6);
+  const gap = 10 + (slitVal / 120) * (h * 0.5); // Tamanho da fenda
   
   sx.clearRect(0, 0, w, h);
-  sx.fillStyle = '#0a1226'; sx.strokeStyle = hcOn() ? '#fff' : '#3b537f'; sx.lineWidth = 2;
-  sx.fillRect(bx - 8, 0, 16, cy - gap/2);
-  sx.fillRect(bx - 8, cy + gap/2, 16, h - (cy + gap/2));
-  sx.strokeRect(bx - 8, 0, 16, cy - gap/2);
-  sx.strokeRect(bx - 8, cy + gap/2, 16, h - (cy + gap/2));
   
-  const speed = motionOK() ? t * 0.15 : 40;
-  sx.strokeStyle = hcOn() ? 'rgba(255,255,255,.6)' : 'rgba(56,163,255,.6)'; sx.lineWidth = 3;
-  for(let x = ((speed) % 60); x < bx - 8; x += 60){
-    sx.beginPath(); sx.moveTo(x, 20); sx.lineTo(x, h - 20); sx.stroke();
-  }
-  
-  const screenX = w * 0.85;
-  const a = gap;
-  const lambda = 40;
-  
-  sx.beginPath();
-  sx.strokeStyle = hcOn() ? '#ffd23f' : '#38a3ff';
+  // 1. Barreira com fenda
+  sx.fillStyle = '#0f172a';
+  sx.strokeStyle = hcOn() ? '#fff' : '#38a3ff';
   sx.lineWidth = 3;
   
-  for(let y = 0; y < h; y += 2){
-    const theta = Math.atan2(y - cy, screenX - bx);
-    const alpha = (Math.PI * a * Math.sin(theta)) / lambda;
+  // Parte superior da barreira
+  sx.fillRect(cx - 5, 0, 10, cy - gap/2);
+  sx.strokeRect(cx - 5, 0, 10, cy - gap/2);
+  // Parte inferior da barreira
+  sx.fillRect(cx - 5, cy + gap/2, 10, h - (cy + gap/2));
+  sx.strokeRect(cx - 5, cy + gap/2, 10, h - (cy + gap/2));
+  
+  // 2. Ondas incidentes (lado esquerdo)
+  if (motionOK()) slitTime += 0.05;
+  sx.strokeStyle = hcOn() ? 'rgba(255,255,255,0.4)' : 'rgba(56,163,255,0.4)';
+  sx.lineWidth = 2;
+  const waveSpacing = 30;
+  const offset = (slitTime * 20) % waveSpacing;
+  for (let x = cx - 10 - offset; x > 0; x -= waveSpacing) {
+    sx.beginPath();
+    sx.moveTo(x, cy - gap/2 - 10);
+    sx.lineTo(x, cy + gap/2 + 10);
+    sx.stroke();
+  }
+  
+  // 3. Ondas difratadas (Princípio de Huygens, lado direito)
+  sx.strokeStyle = hcOn() ? 'rgba(255,210,63,0.3)' : 'rgba(255,159,28,0.3)';
+  const maxRadius = w - cx - 20;
+  const numWaves = 6;
+  for (let i = 0; i < numWaves; i++) {
+    const r = ((slitTime * 30 + i * (maxRadius / numWaves)) % maxRadius);
+    const alpha = Math.max(0, 1 - r / maxRadius);
+    sx.strokeStyle = hcOn() ? `rgba(255,255,255,${alpha * 0.5})` : `rgba(56,163,255,${alpha * 0.5})`;
+    sx.beginPath();
+    // Desenha arco da fenda
+    sx.arc(cx, cy, r, -Math.PI/2 - 0.8, Math.PI/2 + 0.8);
+    sx.stroke();
+  }
+  
+  // 4. Tela de Projeção e Gráfico de Intensidade (sinc^2)
+  const screenX = w * 0.85;
+  const lambda = 30; // Comprimento de onda arbitrário para visualização
+  const a = gap; // Largura da fenda
+  
+  // Desenha a tela física
+  sx.strokeStyle = hcOn() ? '#fff' : '#93a4c3';
+  sx.lineWidth = 2;
+  sx.beginPath();
+  sx.moveTo(screenX, 20);
+  sx.lineTo(screenX, h - 20);
+  sx.stroke();
+  
+  // Desenha o gráfico de intensidade
+  sx.beginPath();
+  sx.strokeStyle = hcOn() ? '#ffd23f' : '#ffe14d';
+  sx.lineWidth = 3;
+  
+  for (let y = 20; y <= h - 20; y += 2) {
+    const theta = Math.atan2(y - cy, screenX - cx);
+    const beta = (Math.PI * a * Math.sin(theta)) / lambda;
     let intensity = 0;
-    if(Math.abs(alpha) < 0.01) intensity = 1;
-    else intensity = Math.pow(Math.sin(alpha) / alpha, 2);
-    intensity *= Math.max(0, 1 - (Math.abs(y - cy) / (h * 0.6)));
-    const xVal = screenX + (intensity * w * 0.15);
-    if(y === 0) sx.moveTo(xVal, y);
+    if (Math.abs(beta) < 0.01) {
+      intensity = 1;
+    } else {
+      intensity = Math.pow(Math.sin(beta) / beta, 2);
+    }
+    
+    // Escala o gráfico para caber na tela
+    const graphWidth = 80;
+    const xVal = screenX + (intensity * graphWidth);
+    
+    if (y === 20) sx.moveTo(xVal, y);
     else sx.lineTo(xVal, y);
   }
   sx.stroke();
   
-  sx.lineTo(screenX, h); sx.lineTo(screenX, 0); sx.closePath();
-  sx.fillStyle = hcOn() ? 'rgba(255,210,63,0.1)' : 'rgba(56,163,255,0.1)';
+  // Preenche a área sob o gráfico
+  sx.lineTo(screenX, h - 20);
+  sx.lineTo(screenX, 20);
+  sx.closePath();
+  sx.fillStyle = hcOn() ? 'rgba(255,210,63,0.1)' : 'rgba(255,225,77,0.1)';
   sx.fill();
   
+  // Texto explicativo dinâmico
   const v = +$('#slitSlider').value;
-  $('#slitRead').textContent = v < 50 ? 'Fenda PEQUENA — a luz se espalha MUITO! (Difração forte, padrão largo)' : 
-                                 v < 100 ? 'Fenda média — espalhamento moderado.' : 
-                                 'Fenda GRANDE — a luz segue quase em linha reta (comportamento geométrico).';
+  const readEl = $('#slitRead');
+  if (v < 40) {
+    readEl.textContent = 'Fenda ESTREITA: Alto espalhamento. O máximo central é largo e os secundários são bem visíveis (Difração forte).';
+  } else if (v < 80) {
+    readEl.textContent = 'Fenda MÉDIA: Espalhamento moderado. O máximo central começa a se estreitar.';
+  } else {
+    readEl.textContent = 'Fenda LARGA: Baixo espalhamento. A luz comporta-se quase como um raio geométrico (comportamento corpuscular dominante).';
+  }
 }
-(function slitLoop(t){
-  if($('#tab3').classList.contains('active') && motionOK()) drawSlit(t);
-  requestAnimationFrame(slitLoop);
-})(0);
-$('#slitSlider').addEventListener('input', () => { if(!motionOK()) drawSlit(performance.now()); });
+
+$('#slitSlider').addEventListener('input', () => { 
+  slitTime = 0; // Reseta animação para feedback visual imediato
+  drawDiffraction(performance.now()); 
+});
 
 /* ================= 4. CD ================= */
 const cdArea = $('#cdArea'), cdL = $('#cdLight'); let lx = 0, ly = 0, cdDrag = false;
@@ -1084,7 +1155,7 @@ $('#simGlass').addEventListener('click', e => {
   $('#simFeedback').innerHTML = simConfig.glass ? '💡 <strong>Efeito Estufa:</strong> A luz visível entra, mas o calor (infravermelho) refletido pela superfície é bloqueado pelo vidro e devolvido para a placa, aumentando drasticamente a eficiência.' : '💡 <strong>Sem tampa:</strong> O calor irradiado pela placa escapa facilmente para a atmosfera (convecção e radiação).';
 });
 
-/* ================= BANCADA COM PISCINA (RENOVADA) ================= */
+/* ================= BANCADA COM PISCINA ================= */
 let pumpBench = true;
 
 function updateBenchVisuals(t1, t2) {
@@ -1223,9 +1294,8 @@ $('#sCloud').addEventListener('input', e => $('#sCloudOut').textContent = e.targ
 simTick();
 
 addEventListener('resize', () => {
-  slitNeedsResize = true;
   drawSpark(); drawChart();
-  if($('#tab3').classList.contains('active')) drawSlit(performance.now());
+  if($('#tab3').classList.contains('active')) drawDiffraction(performance.now());
 });
 
 });
