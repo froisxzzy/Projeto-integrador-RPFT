@@ -266,6 +266,7 @@ footer nav a:hover{color:var(--amber)}
     <a href="#optica">Laboratório</a>
     <a href="#robotica">Robótica</a>
     <a href="#simulador">Simulador</a>
+    <a href="#equipe">Equipe</a>
     <a href="#acessibilidade">Acessibilidade</a>
   </nav>
   <div class="a11y-tools" role="group" aria-label="Ferramentas de acessibilidade">
@@ -625,10 +626,49 @@ footer nav a:hover{color:var(--amber)}
     </div>
   </div>
 </section>
+
+<!-- SEÇÃO DA EQUIPE ADICIONADA AQUI -->
+<section id="equipe">
+  <div class="wrap">
+    <div class="sec-head rv">
+      <p class="sec-num">07 / A EQUIPE</p>
+      <h2 class="lm"><span>Mentes por trás do HÉLIOS</span></h2>
+      <p class="lead">Projeto Integrador CEP 2026. (Substitua os nomes e funções abaixo pelos integrantes reais do seu grupo).</p>
+    </div>
+    <div class="team rv">
+      <div class="member">
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Ana&backgroundColor=b6e3f4" alt="Avatar de Ana">
+        <h3>Ana Silva</h3>
+        <p>Óptica & Física</p>
+      </div>
+      <div class="member">
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Bruno&backgroundColor=c0aede" alt="Avatar de Bruno">
+        <h3>Bruno Souza</h3>
+        <p>Robótica & Hardware</p>
+      </div>
+      <div class="member">
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Carla&backgroundColor=ffd5dc" alt="Avatar de Carla">
+        <h3>Carla Dias</h3>
+        <p>Programação & Lógica</p>
+      </div>
+      <div class="member">
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Daniel&backgroundColor=d1d4f9" alt="Avatar de Daniel">
+        <h3>Daniel Oliveira</h3>
+        <p>Design & Acessibilidade</p>
+      </div>
+      <div class="member">
+        <img src="https://api.dicebear.com/7.x/avataaars/svg?seed=Elena&backgroundColor=ffdfbf" alt="Avatar de Elena">
+        <h3>Elena Costa</h3>
+        <p>Pesquisa & Documentação</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <section id="acessibilidade">
   <div class="wrap">
     <div class="sec-head rv">
-      <p class="sec-num">06 / ACESSIBILIDADE</p>
+      <p class="sec-num">08 / ACESSIBILIDADE</p>
       <h2 class="lm"><span>Requisito, não anexo</span></h2>
     </div>
     <div class="card rv" style="max-width:800px;margin:0 auto">
@@ -650,7 +690,7 @@ footer nav a:hover{color:var(--amber)}
       <p style="max-width:34ch;font-size:.85rem;margin-top:.8rem;color:var(--ink2)">Projeto Integrador 2026. Ciência aberta, energia livre, site para todas as pessoas.</p>
     </div>
     <nav aria-label="Rodapé">
-      <a href="#desafio">Desafio</a><a href="#pilares">Pilares</a><a href="#optica">Laboratório</a><a href="#robotica">Robótica</a><a href="#simulador">Simulador</a>
+      <a href="#desafio">Desafio</a><a href="#pilares">Pilares</a><a href="#optica">Laboratório</a><a href="#robotica">Robótica</a><a href="#simulador">Simulador</a><a href="#equipe">Equipe</a>
     </nav>
     <a class="btn" href="#topo" style="background:var(--amber)">↑ Topo</a>
   </div>
@@ -748,25 +788,13 @@ $$('.opt-tab').forEach(tab => {
     const target = $('#'+tab.dataset.tab);
     target.classList.add('active');
     
-    // Gerenciamento seguro da animação de difração
     if(tab.dataset.tab === 'tab3') { 
       resizeSlitCanvas();
-      if (!slitAnimId) {
-        slitAnimId = requestAnimationFrame(drawDiffraction); 
-      }
+      if (!slitAnimId) slitAnimId = requestAnimationFrame(drawDiffraction); 
     } else {
-      if (slitAnimId) {
-        cancelAnimationFrame(slitAnimId);
-        slitAnimId = null;
-      }
+      if (slitAnimId) { cancelAnimationFrame(slitAnimId); slitAnimId = null; }
     }
-
-    // Gerenciamento seguro da simulação do coletor
-    if(tab.dataset.tab === 'tab5') {
-      startCollectorSim();
-    } else {
-      stopCollectorSim();
-    }
+    if(tab.dataset.tab === 'tab5') startCollectorSim(); else stopCollectorSim();
   });
 });
 
@@ -835,7 +863,7 @@ SVG.addEventListener('pointermove', e => {
 addEventListener('pointerup', () => dragP = false);
 renderPrism();
 
-// --- SLIT DIFFRACTION SIMULATION (CORRIGIDA E ESTÁVEL) ---
+// --- SLIT DIFFRACTION SIMULATION ---
 const slitCanvas = $('#slitCanvas');
 const sctx = slitCanvas ? slitCanvas.getContext('2d') : null;
 let slitAnimId = null;
@@ -848,7 +876,6 @@ function resizeSlitCanvas() {
   const dpr = window.devicePixelRatio || 1;
   slitCanvas.width = rect.width * dpr;
   slitCanvas.height = rect.height * dpr;
-  // CRÍTICO: Resetar a transformação antes de escalar para evitar acumulação infinita
   sctx.setTransform(1, 0, 0, 1, 0, 0);
   sctx.scale(dpr, dpr);
   slitCanvas.logicalWidth = rect.width;
@@ -861,74 +888,52 @@ function drawDiffraction() {
     slitAnimId = null;
     return;
   }
-  
   slitAnimId = requestAnimationFrame(drawDiffraction);
-  
-  // Fallbacks de segurança caso logicalWidth não esteja definido
   const w = slitCanvas.logicalWidth || slitCanvas.clientWidth || 900;
   const h = slitCanvas.logicalHeight || slitCanvas.clientHeight || 320;
   const barrierX = w * 0.35;
   const cy = h / 2;
-  
   const slitVal = +$('#slitSlider').value;
   const gap = 20 + (slitVal / 120) * (h * 0.5); 
   
   sctx.clearRect(0, 0, w, h);
-  
-  // 1. Fundo
   sctx.fillStyle = '#050a14';
   sctx.fillRect(0, 0, w, h);
   
-  // 2. Barreira
   const barrierColor = hcOn() ? '#222' : '#0f172a';
   const barrierStroke = hcOn() ? '#fff' : '#38a3ff';
-  
   sctx.fillStyle = barrierColor;
   sctx.fillRect(barrierX - 8, 0, 16, cy - gap/2);
   sctx.fillRect(barrierX - 8, cy + gap/2, 16, h - (cy + gap/2));
-  
   sctx.strokeStyle = barrierStroke;
   sctx.lineWidth = 2;
   sctx.strokeRect(barrierX - 8, 0, 16, cy - gap/2);
   sctx.strokeRect(barrierX - 8, cy + gap/2, 16, h - (cy + gap/2));
   
-  // 3. Ondas incidentes
   if (motionOK()) slitTime += 0.04;
   const wavelength = 25;
   const offset = (slitTime * 40) % wavelength;
-  
   sctx.strokeStyle = hcOn() ? 'rgba(255,255,255,0.5)' : 'rgba(56,163,255,0.5)';
   sctx.lineWidth = 2;
   sctx.shadowBlur = 6;
   sctx.shadowColor = hcOn() ? '#fff' : '#38a3ff';
-  
   for (let x = barrierX - 15 - offset; x > 0; x -= wavelength) {
-    sctx.beginPath();
-    sctx.moveTo(x, cy - gap/2 - 15);
-    sctx.lineTo(x, cy + gap/2 + 15);
-    sctx.stroke();
+    sctx.beginPath(); sctx.moveTo(x, cy - gap/2 - 15); sctx.lineTo(x, cy + gap/2 + 15); sctx.stroke();
   }
   sctx.shadowBlur = 0;
   
-  // 4. Ondas difratadas (com envelope de intensidade sinc²)
   const maxRadius = w * 0.65;
   const numArcs = 12;
-  
   for (let i = 0; i < numArcs; i++) {
     const r = ((slitTime * 50 + i * (maxRadius / numArcs)) % maxRadius);
     const alphaBase = Math.max(0, 1 - r / maxRadius) * 0.7;
-    
     const steps = 30;
     for (let j = 0; j <= steps; j++) {
       const angle = -Math.PI/2 + (Math.PI / steps) * j;
-      
       const a_visual = gap * 0.15; 
       const beta = (Math.PI * a_visual * Math.sin(angle)) / wavelength;
       let intensity = 1;
-      if (Math.abs(beta) > 0.01) {
-        intensity = Math.pow(Math.sin(beta) / beta, 2);
-      }
-      
+      if (Math.abs(beta) > 0.01) intensity = Math.pow(Math.sin(beta) / beta, 2);
       const alpha = alphaBase * intensity;
       if (alpha > 0.04) {
         sctx.strokeStyle = hcOn() ? `rgba(255,255,255,${alpha})` : `rgba(56,163,255,${alpha})`;
@@ -940,16 +945,11 @@ function drawDiffraction() {
     }
   }
   
-  // 5. Gráfico de intensidade
   const screenX = w * 0.82;
   const graphWidth = 100;
-  
   sctx.strokeStyle = hcOn() ? '#fff' : '#93a4c3';
   sctx.lineWidth = 2;
-  sctx.beginPath();
-  sctx.moveTo(screenX, 20);
-  sctx.lineTo(screenX, h - 20);
-  sctx.stroke();
+  sctx.beginPath(); sctx.moveTo(screenX, 20); sctx.lineTo(screenX, h - 20); sctx.stroke();
   
   sctx.beginPath();
   sctx.fillStyle = hcOn() ? 'rgba(255,210,63,0.15)' : 'rgba(255,225,77,0.15)';
@@ -957,27 +957,18 @@ function drawDiffraction() {
   sctx.lineWidth = 3;
   sctx.shadowBlur = 8;
   sctx.shadowColor = hcOn() ? '#ffd23f' : '#ffe14d';
-  
   for (let y = 20; y <= h - 20; y += 2) {
     const angle = Math.atan2(y - cy, screenX - barrierX);
     const a_visual = gap * 0.15;
     const beta = (Math.PI * a_visual * Math.sin(angle)) / wavelength;
     let intensity = 1;
-    if (Math.abs(beta) > 0.01) {
-      intensity = Math.pow(Math.sin(beta) / beta, 2);
-    }
-    
+    if (Math.abs(beta) > 0.01) intensity = Math.pow(Math.sin(beta) / beta, 2);
     const xVal = screenX + (intensity * graphWidth);
-    if (y === 20) sctx.moveTo(xVal, y);
-    else sctx.lineTo(xVal, y);
+    if (y === 20) sctx.moveTo(xVal, y); else sctx.lineTo(xVal, y);
   }
-  sctx.lineTo(screenX, h - 20);
-  sctx.closePath();
-  sctx.fill();
-  sctx.stroke();
+  sctx.lineTo(screenX, h - 20); sctx.closePath(); sctx.fill(); sctx.stroke();
   sctx.shadowBlur = 0;
   
-  // 6. Rótulos
   sctx.font = 'bold 12px "Space Mono", monospace';
   sctx.fillStyle = hcOn() ? '#fff' : '#93a4c3';
   sctx.textAlign = 'center';
@@ -986,23 +977,15 @@ function drawDiffraction() {
   sctx.fillText('INTENSIDADE', screenX + graphWidth/2, 25);
   sctx.textAlign = 'start';
   
-  // 7. Texto explicativo dinâmico
   const readEl = $('#slitRead');
   if (readEl) {
-    if (slitVal < 40) {
-      readEl.innerHTML = '<strong>Fenda ESTREITA:</strong> Alto espalhamento. O máximo central é largo e os secundários são bem visíveis (Difração forte).';
-    } else if (slitVal < 80) {
-      readEl.innerHTML = '<strong>Fenda MÉDIA:</strong> Espalhamento moderado. O máximo central começa a se estreitar e a luz se concentra mais no centro.';
-    } else {
-      readEl.innerHTML = '<strong>Fenda LARGA:</strong> Baixo espalhamento. A luz comporta-se quase como um raio geométrico, concentrando-se fortemente no centro.';
-    }
+    if (slitVal < 40) readEl.innerHTML = '<strong>Fenda ESTREITA:</strong> Alto espalhamento. O máximo central é largo e os secundários são bem visíveis.';
+    else if (slitVal < 80) readEl.innerHTML = '<strong>Fenda MÉDIA:</strong> Espalhamento moderado. O máximo central começa a se estreitar.';
+    else readEl.innerHTML = '<strong>Fenda LARGA:</strong> Baixo espalhamento. A luz comporta-se quase como um raio geométrico.';
   }
 }
 
-$('#slitSlider').addEventListener('input', () => { 
-  // O loop de animação (requestAnimationFrame) já captura o novo valor automaticamente no próximo frame.
-});
-// --- FIM DA SIMULAÇÃO DE DIFRAÇÃO ---
+$('#slitSlider').addEventListener('input', () => {});
 
 const cdArea = $('#cdArea'), cdL = $('#cdLight'); let lx = 0, ly = 0, cdDrag = false;
 function cdPos(x,y){
@@ -1037,7 +1020,6 @@ function startCollectorSim(){
   if(collectorAnimId) return;
   const canvas = $('#collectorCanvas');
   const ctx = canvas.getContext('2d');
-  
   function loop(){
     ctx.clearRect(0, 0, 800, 300);
     if(simConfig.glass){
@@ -1050,11 +1032,9 @@ function startCollectorSim(){
       ctx.font = '12px Space Mono';
       ctx.fillText('TAMPA DE VIDRO (Efeito Estufa)', 10, 25);
     }
-
     const surfaceY = 250;
     ctx.fillStyle = simConfig.surface === 'white' ? (hcOn() ? '#fff' : '#e2e8f0') : '#0f172a';
     ctx.fillRect(0, surfaceY, 800, 50);
-    
     if(simConfig.surface === 'black_textured'){
       ctx.strokeStyle = hcOn() ? '#fff' : '#1e293b';
       ctx.lineWidth = 2;
@@ -1062,12 +1042,10 @@ function startCollectorSim(){
         ctx.beginPath(); ctx.moveTo(i, surfaceY); ctx.lineTo(i + 10, surfaceY + 10); ctx.lineTo(i + 20, surfaceY); ctx.stroke();
       }
     }
-
     if(Math.random() < 0.15){
       photons.push({x: Math.random() * 200, y: 0, vx: 2 + Math.random(), vy: 2 + Math.random(), state: 'falling', life: 100});
       simStats.total++;
     }
-
     ctx.fillStyle = hcOn() ? '#ffd23f' : '#ffe14d';
     photons = photons.filter(p => {
       if(p.state === 'falling'){
@@ -1096,14 +1074,12 @@ function startCollectorSim(){
       return p.life > 0;
     });
     ctx.globalAlpha = 1;
-
     heatParticles = heatParticles.filter(h => {
       h.y -= h.vy; h.x += (Math.random() - 0.5); h.life -= 1;
       ctx.fillStyle = hcOn() ? `rgba(255,210,63,${h.life/50})` : `rgba(255,100,50,${h.life/50})`;
       ctx.beginPath(); ctx.arc(h.x, h.y, h.size, 0, Math.PI * 2); ctx.fill();
       return h.life > 0;
     });
-
     const eff = simStats.total > 0 ? Math.round((simStats.absorbed / simStats.total) * 100) : 0;
     $('#simEfficiency').textContent = eff + '%';
     $('#simEfficiency').style.color = eff > 80 ? 'var(--teal)' : (eff > 40 ? 'var(--amber)' : 'var(--orange)');
@@ -1111,20 +1087,17 @@ function startCollectorSim(){
   }
   loop();
 }
-
 function stopCollectorSim(){
   if(collectorAnimId){ cancelAnimationFrame(collectorAnimId); collectorAnimId = null; }
 }
 function spawnHeat(x, y){
   for(let i = 0; i < 3; i++) heatParticles.push({x: x + (Math.random() - 0.5) * 10, y: y, vy: 0.5 + Math.random(), size: 2 + Math.random() * 3, life: 50});
 }
-
 $('#simSurface').addEventListener('change', e => {
   simConfig.surface = e.target.value; photons = []; heatParticles = []; simStats = {total: 0, absorbed: 0};
   const msgs = {'white': 'Superfície branca: A maior parte da luz é refletida de volta. Baixa eficiência térmica.', 'black_flat': 'Superfície preta lisa: Boa absorção, mas parte da luz ainda reflete em ângulo igual.', 'black_textured': 'Superfície texturizada: A difração espalha a luz lateralmente, criando uma "armadilha" que maximiza a absorção.'};
   $('#simFeedback').innerHTML = '💡 <strong>Nota:</strong> ' + msgs[e.target.value];
 });
-
 $('#simGlass').addEventListener('click', e => {
   simConfig.glass = !simConfig.glass;
   e.target.textContent = simConfig.glass ? 'DESATIVAR TAMPA DE VIDRO' : 'ATIVAR TAMPA DE VIDRO';
@@ -1135,56 +1108,39 @@ $('#simGlass').addEventListener('click', e => {
 });
 
 let pumpBench = true;
-
 function updateBenchVisuals(t1, t2) {
   $('#bPoolOut').textContent = fmt(t1) + ' °C';
   $('#bCollOut').textContent = fmt(t2) + ' °C';
   $('#diagT1').textContent = fmt(t1, 0) + '°C';
   $('#diagT2').textContent = fmt(t2, 0) + '°C';
-  
   const delta = t2 - t1;
   $('#bDelta').textContent = fmt(delta) + ' °C';
-  
   const ruleEl = $('#bRule');
-  if (delta >= 5) {
-    ruleEl.textContent = 'ΔT ≥ 5 °C (LIGAR)';
-    ruleEl.className = 'value rule-ok';
-  } else {
-    ruleEl.textContent = 'ΔT < 5 °C (DESLIGAR)';
-    ruleEl.className = 'value rule-fail';
-  }
-  
+  if (delta >= 5) { ruleEl.textContent = 'ΔT ≥ 5 °C (LIGAR)'; ruleEl.className = 'value rule-ok'; } 
+  else { ruleEl.textContent = 'ΔT < 5 °C (DESLIGAR)'; ruleEl.className = 'value rule-fail'; }
   if (!pumpBench && delta >= 5) pumpBench = true;
   if (pumpBench && delta <= 1) pumpBench = false;
-  
   const lamp = $('#bLamp');
   lamp.className = 'lamp ' + (pumpBench ? 'on' : 'off');
   lamp.innerHTML = pumpBench ? '<span class="lamp-icon">●</span> BOMBA LIGADA' : '<span class="lamp-icon">○</span> BOMBA DESLIGADA';
-  
   const flow1 = $('#flow1'), flow2 = $('#flow2'), pumpIcon = $('#diagPumpIcon');
   if (pumpBench) { flow1.classList.add('active'); flow2.classList.add('active'); pumpIcon.classList.add('active'); } 
   else { flow1.classList.remove('active'); flow2.classList.remove('active'); pumpIcon.classList.remove('active'); }
-  
   const k = Math.max(0, Math.min(1, (t1 - 20) / 18));
   let r, g, b;
   if (k < 0.5) { const kk = k * 2; r = Math.round(56 + kk * 40); g = Math.round(163 + kk * 40); b = 255; } 
   else { const kk = (k - 0.5) * 2; r = Math.round(96 + kk * 159); g = Math.round(203 - kk * 80); b = Math.round(255 - kk * 100); }
   $('#diagPoolWater').setAttribute('fill', `rgb(${r},${g},${b})`);
-  
   const logicText = $('#logicText');
   if (pumpBench) {
-    logicText.textContent = `O coletor está ${fmt(delta)} °C mais quente que a piscina. Como ΔT ≥ 5 °C, a bomba é acionada para transferir o calor para a água.`;
+    logicText.textContent = `O coletor está ${fmt(delta)} °C mais quente que a piscina. Como ΔT ≥ 5 °C, a bomba é acionada para transferir o calor.`;
     logicText.style.borderLeftColor = 'var(--teal)';
   } else {
-    if (delta < 0) {
-      logicText.textContent = `O coletor está ${fmt(Math.abs(delta))} °C mais FRIO que a piscina. Ligar a bomba agora esfriaria a água. Sistema protegido.`;
-    } else {
-      logicText.textContent = `A diferença de temperatura é de apenas ${fmt(delta)} °C. Para evitar desperdício de energia com ganho mínimo, a bomba permanece desligada (histerese).`;
-    }
+    if (delta < 0) logicText.textContent = `O coletor está ${fmt(Math.abs(delta))} °C mais FRIO que a piscina. Ligar a bomba agora esfriaria a água. Sistema protegido.`;
+    else logicText.textContent = `A diferença de temperatura é de apenas ${fmt(delta)} °C. Para evitar desperdício de energia, a bomba permanece desligada (histerese).`;
     logicText.style.borderLeftColor = '#ff4d3d';
   }
 }
-
 function benchUpdate() {
   const p = +$('#bPool').value, c = +$('#bColl').value;
   updateBenchVisuals(p, c);
@@ -1193,37 +1149,30 @@ function benchUpdate() {
     else btn.classList.remove('active');
   });
 }
-
 $('#bPool').addEventListener('input', benchUpdate);
 $('#bColl').addEventListener('input', benchUpdate);
-
 $$('.scenario-btn').forEach(btn => {
   btn.addEventListener('click', () => {
-    $('#bPool').value = btn.dataset.t1;
-    $('#bColl').value = btn.dataset.t2;
+    $('#bPool').value = btn.dataset.t1; $('#bColl').value = btn.dataset.t2;
     pumpBench = (+btn.dataset.t2 - +btn.dataset.t1) >= 5;
     benchUpdate();
   });
 });
-
 benchUpdate();
 
 let sim = {T: 24, mins: 360, day: 1, kwh: 0, hist: [], timer: null, playing: false};
 const chart = $('#simChart'), cctxChart = chart.getContext('2d');
 const irr = m => {const x = (m/60 - 6)/14; return (x < 0 || x > 1) ? 0 : Math.sin(Math.PI * x);};
-
 function simTick(){
   sim.mins += 10; if(sim.mins >= 1440){sim.mins = 0; sim.day++;}
   const cloud = +$('#sCloud').value / 100, I = 1000 * irr(sim.mins) * (1 - cloud);
   const air = 18 + 9 * irr(sim.mins) + 3 * (1 - cloud * 0.5), plates = +$('#sPlates').value;
   const Tc = air + (I / 1000) * 34;
   const pump = plates > 0 && ($('#sAuto').checked ? (Tc - sim.T >= 4) : true);
-  
   if(pump){ sim.T += plates * (I / 1000) * 0.08; sim.kwh += plates * 1.5 * I * 0.55 * (10 / 60) / 1000; }
   const dT = Math.max(0, sim.T - air);
   sim.T -= 0.012 * dT + ($('#sCover').checked ? 0.004 : 0.02) * dT;
   sim.T = Math.max(16, Math.min(42, sim.T));
-  
   sim.hist.push(sim.T); if(sim.hist.length > 160) sim.hist.shift();
   const hh = String(Math.floor(sim.mins / 60)).padStart(2, '0'), mm = String(sim.mins % 60).padStart(2, '0');
   $('#simClock').textContent = `Dia ${sim.day} · ${hh}:${mm}`;
@@ -1232,7 +1181,6 @@ function simTick(){
   $('#sKwh').textContent = fmt(sim.kwh); $('#sCo2').textContent = fmt(sim.kwh * 0.09); $('#sMoney').textContent = Math.round(sim.kwh * 0.92).toLocaleString('pt-BR');
   drawChart();
 }
-
 function drawChart(){
   const w = chart.width = chart.clientWidth * 2, h = chart.height = 340;
   cctxChart.clearRect(0, 0, w, h);
@@ -1253,13 +1201,11 @@ function drawChart(){
     cctxChart.stroke();
   }
 }
-
 function setPlay(on){
   sim.playing = on; $('#btnPlay').textContent = on ? '⏸ Pausar' : '▶ Iniciar';
   clearInterval(sim.timer);
   if(on) sim.timer = setInterval(simTick, 650 / +$('#sSpeed').value);
 }
-
 $('#btnPlay').addEventListener('click', () => setPlay(!sim.playing));
 $('#sSpeed').addEventListener('change', () => {if(sim.playing) setPlay(true);});
 $('#btnReset').addEventListener('click', () => {
@@ -1267,7 +1213,6 @@ $('#btnReset').addEventListener('click', () => {
 });
 $('#sPlates').addEventListener('input', e => $('#sPlatesOut').textContent = e.target.value);
 $('#sCloud').addEventListener('input', e => $('#sCloudOut').textContent = e.target.value + '%');
-
 simTick();
 
 addEventListener('resize', () => {
@@ -1275,10 +1220,7 @@ addEventListener('resize', () => {
   drawSpark(); 
   drawChart();
 });
-
-// Inicializa o canvas de fenda com segurança
 resizeSlitCanvas();
-
 });
 </script>
 </body>
