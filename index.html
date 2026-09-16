@@ -10,7 +10,6 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@500;700;900&family=Space+Grotesk:wght@400;500;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
 <style>
-/* ================= VARIÁVEIS E BASE ================= */
 :root{
   --bg:#04070f; --bg2:#0a1226; --paper:#0f172a; --ink:#eaf2ff; --ink2:#93a4c3;
   --teal:#3ddc84; --teal-dk:#2a9d5c; --aqua:#38a3ff; --orange:#ff9f1c; --amber:#ffe14d;
@@ -39,8 +38,6 @@ h1,h2,h3{font-family:var(--f-disp);line-height:1.12;letter-spacing:-.01em}
 .skip{position:absolute;left:-999px;top:0;background:var(--ink);color:#000;padding:.8rem 1.2rem;z-index:300;font-family:var(--f-mono);font-weight:700}
 .skip:focus{left:12px;top:12px}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border-width:0}
-
-/* ================= UTILITÁRIOS ================= */
 .noise{position:fixed;inset:0;pointer-events:none;z-index:120;opacity:.03;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='140' height='140'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");}
 .progress{position:fixed;top:0;left:0;right:0;height:4px;background:transparent;z-index:210}
@@ -50,8 +47,6 @@ h1,h2,h3{font-family:var(--f-disp);line-height:1.12;letter-spacing:-.01em}
 .lm{overflow:hidden;display:block}
 .lm>span{display:block;transform:translateY(112%);transition:transform .8s cubic-bezier(.2,.7,.2,1)}
 .in .lm>span,.lm.in>span{transform:none}
-
-/* ================= CABEÇALHO ================= */
 .topbar{position:sticky;top:0;z-index:200;display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
   padding:.7rem 4%;background:rgba(4,7,15,.92);backdrop-filter:blur(12px);border-bottom:2px solid var(--line)}
 .brand{font-family:var(--f-disp);font-weight:900;font-size:1.15rem;color:var(--ink);display:flex;align-items:center;gap:.5rem}
@@ -71,8 +66,6 @@ body.hc .topbar nav a.active{background:var(--amber);color:#000}
 body.hc .a11y-tools button[aria-pressed="true"]{background:var(--amber);color:#000}
 .hamb{display:none;font-family:var(--f-mono);background:var(--paper);border:2px solid var(--line);border-radius:8px;padding:.5rem .8rem;cursor:pointer;color:var(--ink)}
 @media(max-width:1020px){.hamb{display:block}.topbar nav{display:none;width:100%;flex-direction:column;border-top:2px dashed var(--line);padding-top:.6rem}.topbar nav.open{display:flex}}
-
-/* ================= HERO / PAINEL ================= */
 .hero{padding:4.5rem 0 3.5rem;background:radial-gradient(circle at 82% 8%,rgba(255,159,28,.15),transparent 42%),radial-gradient(circle at 10% 90%,rgba(56,163,255,.12),transparent 45%)}
 .hero-grid{display:grid;grid-template-columns:1.1fr .95fr;gap:3rem;align-items:center}
 .kicker{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.18em;text-transform:uppercase;display:flex;align-items:center;gap:.8rem;color:var(--ink2)}
@@ -90,7 +83,6 @@ body.hc .a11y-tools button[aria-pressed="true"]{background:var(--amber);color:#0
 .btn.ghost{background:transparent;color:var(--ink);border-color:var(--ink2)}
 .btn.ghost:hover{background:var(--paper);color:var(--ink)}
 .btn.active-toggle{background:var(--teal);color:#000;border-color:var(--teal)}
-
 .panel{background:var(--paper);color:var(--ink);border:2px solid var(--line);border-radius:14px;box-shadow:var(--shadow);overflow:hidden}
 .panel-head{display:flex;align-items:center;gap:.6rem;padding:.8rem 1.1rem;border-bottom:1px dashed var(--line);font-family:var(--f-mono);font-size:.72rem;letter-spacing:.12em}
 .led{width:10px;height:10px;border-radius:50%;background:var(--teal);box-shadow:0 0 8px var(--teal);animation:blink 1.6s infinite}
@@ -109,8 +101,6 @@ body.hc .led{background:var(--amber);box-shadow:0 0 8px var(--amber)}
 .panel-btns{display:flex;gap:.5rem;margin-top:.9rem;flex-wrap:wrap}
 .panel-btns button{font-family:var(--f-mono);font-size:.7rem;padding:.5rem .8rem;background:transparent;border:1.5px solid var(--line);color:var(--ink);border-radius:7px;cursor:pointer}
 .panel-btns button:hover{border-color:var(--amber);color:var(--amber)}
-
-/* ================= SEÇÕES GERAIS ================= */
 section{padding:5.5rem 0}
 .sec-head{margin-bottom:2.6rem}
 .sec-num{font-family:var(--f-mono);font-size:.75rem;letter-spacing:.2em;color:var(--orange);display:flex;align-items:center;gap:.8rem;margin-bottom:.7rem}
@@ -118,8 +108,6 @@ section{padding:5.5rem 0}
 .sec-head h2{font-size:clamp(1.9rem,4.4vw,3rem);max-width:22ch}
 .sec-head p.lead{margin-top:.9rem;max-width:56ch;color:var(--ink2);font-size:1.1rem}
 .card{background:var(--paper);border:2px solid var(--line);border-radius:12px;box-shadow:var(--shadow);padding:1.5rem}
-
-/* ================= 01 DESAFIO ================= */
 #desafio{background:var(--bg2)}
 .desafio-grid{display:grid;grid-template-columns:1fr 1fr;gap:2.6rem;align-items:start}
 .desafio-left{position:sticky;top:96px}
@@ -129,8 +117,6 @@ section{padding:5.5rem 0}
 .stat{background:var(--paper);border:2px solid var(--line);border-radius:10px;padding:1rem;box-shadow:4px 4px 0 var(--line)}
 .stat b{font-family:var(--f-mono);font-size:1.35rem;color:var(--orange);display:block}
 .stat span{font-size:.8rem;color:var(--ink2)}
-
-/* ================= 02 OS 4 PILARES ================= */
 #pilares{background:var(--bg)}
 .pillars-grid{display:grid;grid-template-columns:repeat(auto-fit, minmax(260px, 1fr));gap:1.5rem}
 .pillar-card{background:var(--paper);border:2px solid var(--line);border-radius:12px;padding:1.5rem;transition:transform .2s, border-color .2s; position: relative; overflow: hidden;}
@@ -146,8 +132,6 @@ section{padding:5.5rem 0}
 .pillar-card ul{list-style:none;margin-top:1rem;padding:0}
 .pillar-card ul li{font-size:.85rem;color:var(--ink);padding:.3rem 0;padding-left:1.2rem;position:relative}
 .pillar-card ul li::before{content:"▹";position:absolute;left:0;color:var(--accent)}
-
-/* ================= 03 LABORATÓRIO DE ÓPTICA ================= */
 #optica{background:var(--bg2)}
 .opt-tabs{display:flex;gap:.5rem;flex-wrap:wrap;margin-bottom:1.5rem;border-bottom:2px solid var(--line);padding-bottom:.5rem}
 .opt-tab{font-family:var(--f-mono);font-size:.8rem;padding:.6rem 1rem;border-radius:8px 8px 0 0;cursor:pointer;color:var(--ink2);border:2px solid transparent;border-bottom:none;transition:all .2s}
@@ -155,7 +139,6 @@ section{padding:5.5rem 0}
 .opt-content{display:none;animation:stageIn .5s ease}
 .opt-content.active{display:block}
 @keyframes stageIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
-
 .lab-stage{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:1.6rem;margin-top:1rem;position:relative}
 .lab-stage .hint{position:absolute;top:.8rem;right:1.2rem;font-family:var(--f-mono);font-size:.62rem;letter-spacing:.18em;color:var(--ink2);background:var(--paper);padding:.3rem .6rem;border-radius:4px}
 .scene{width:100%;height:auto}
@@ -164,16 +147,13 @@ section{padding:5.5rem 0}
 .draggable:active{cursor:grabbing}
 .fb{padding:.8rem;border-radius:8px;background:rgba(255,255,255,.03);border-left:3px solid var(--aqua);font-size:.9rem;line-height:1.6}
 .fb.ok{border-left-color:var(--teal);background:rgba(61,220,132,.05)}
-
 #prismSvg{max-height:300px}
 .hitline{stroke:transparent;stroke-width:22;cursor:pointer}
-
-#slitCanvas{width:100%;height:280px;border-radius:8px;background:#000;border:1px solid var(--line)}
+#slitCanvas{width:100%;height:320px;border-radius:8px;background:#000;border:1px solid var(--line)}
 input[type=range]{appearance:none;width:100%;height:10px;border-radius:99px;border:1px solid var(--line);
   background:linear-gradient(90deg,var(--teal),var(--aqua),var(--amber),var(--orange));cursor:pointer;margin:.8rem 0}
 input[type=range]::-webkit-slider-thumb{appearance:none;width:24px;height:24px;border-radius:50%;background:#fff;border:3px solid #000}
 input[type=range].plain{background:var(--paper)}
-
 #cdArea{position:relative;height:320px;border-radius:14px;overflow:hidden;background:radial-gradient(400px 200px at 50% 60%,rgba(56,163,255,.1),transparent),var(--bg);border:1px solid var(--line)}
 #cdDisc{position:absolute;left:50%;top:52%;width:200px;height:200px;transform:translate(-50%,-50%);border-radius:50%;cursor:pointer;
   background:conic-gradient(from var(--sheen,0deg),#ff4d3d,#ff9f1c,#ffe14d,#3ddc84,#38a3ff,#b06bff,#ff4d3d);
@@ -185,32 +165,26 @@ input[type=range].plain{background:var(--paper)}
 #cdRays{position:absolute;left:50%;top:52%;width:280px;height:6px;transform-origin:0 50%;pointer-events:none;
   background:linear-gradient(90deg,transparent,#ff4d3d 20%,#ffe14d 40%,#3ddc84 60%,#38a3ff 80%,#b06bff);
   filter:blur(1.5px) drop-shadow(0 0 8px #fff);opacity:.85}
-
 .concept-grid{display:grid;grid-template-columns:1fr;gap:1.5rem;margin-top:1rem}
 @media(min-width: 768px){.concept-grid{grid-template-columns:1fr 1fr}}
 .concept-card{background:rgba(255,255,255,.03);border:1px solid var(--line);border-radius:10px;padding:1.4rem;transition:transform .2s}
 .concept-card:hover{transform:translateY(-4px);border-color:var(--aqua)}
 .concept-card h4{font-family:var(--f-disp);color:var(--amber);font-size:1.1rem;margin-bottom:.6rem;display:flex;align-items:center;gap:.5rem}
 .concept-card p{font-size:.95rem;color:var(--ink2);line-height:1.7;margin-bottom:.8rem}
-
 .sim-controls-row{display:flex; gap:1rem; flex-wrap:wrap; margin-top:1rem; align-items:flex-end;}
 .sim-controls-row > div{display:flex; flex-direction:column; gap:.4rem;}
 .sim-controls-row select{padding:.6rem; border-radius:8px; background:var(--paper); color:var(--ink); border:1px solid var(--line); font-family:var(--f-mono); font-size:.85rem; cursor:pointer;}
 .sim-stats-box{margin-left:auto; text-align:right; background:rgba(0,0,0,.2); padding:.8rem 1.2rem; border-radius:8px; border:1px solid var(--line);}
 .sim-stats-box .label{font-family:var(--f-mono); font-size:.7rem; color:var(--ink2); text-transform:uppercase;}
 .sim-stats-box .value{font-family:var(--f-disp); font-size:1.8rem; color:var(--teal); font-variant-numeric:tabular-nums; transition: color 0.3s ease;}
-
-/* ================= 04 ROBÓTICA - BANCADA ================= */
 .bento{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1rem;margin-bottom:3rem}
 .hw{border:2px solid var(--line);border-radius:12px;background:var(--paper);box-shadow:4px 4px 0 var(--line);padding:1.1rem;transition:transform .2s}
 .hw:hover{transform:translateY(-5px)}
 .hw .hw-tag{font-family:var(--f-mono);font-size:.6rem;letter-spacing:.15em;padding:.2rem .5rem;border-radius:5px;background:var(--aqua);color:#000}
 .hw h3{font-size:1rem;margin:.7rem 0 .3rem}
 .hw p{font-size:.85rem;color:var(--ink2)}
-
 .bench-pool{margin-top:2rem;display:grid;grid-template-columns:1.1fr 1fr;gap:2rem;align-items:start}
 @media(max-width:900px){.bench-pool{grid-template-columns:1fr}}
-
 .system-diagram{background:var(--bg);border:2px solid var(--line);border-radius:14px;padding:1.5rem;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden}
 .system-diagram svg{width:100%;height:auto;max-height:320px}
 .pipe-flow{opacity:0.2;transition:opacity 0.4s ease, stroke 0.4s ease}
@@ -218,32 +192,25 @@ input[type=range].plain{background:var(--paper)}
 @keyframes flowDash{to{stroke-dashoffset:-16}}
 .pump-icon-svg{transform-origin:20px 20px;transition:transform 0.3s ease}
 .pump-icon-svg.active{animation:spin 1.5s linear infinite}
-
 .scenario-btns{display:flex;gap:0.5rem;margin-bottom:1.2rem;flex-wrap:wrap}
 .scenario-btn{flex:1;font-family:var(--f-mono);font-size:0.75rem;padding:0.6rem;background:var(--bg2);border:1px solid var(--line);border-radius:6px;color:var(--ink2);cursor:pointer;transition:all 0.2s;text-align:center}
 .scenario-btn:hover{border-color:var(--aqua);color:var(--ink)}
 .scenario-btn.active{background:var(--aqua);color:#000;border-color:var(--aqua);font-weight:700}
-
 .control-group{margin-bottom:1.2rem}
 .slider-row{display:flex;align-items:center;gap:1rem}
 .slider-row input[type=range]{flex:1;margin:0}
 .val-badge{font-family:var(--f-mono);font-size:0.9rem;font-weight:700;color:var(--amber);min-width:75px;text-align:right}
-
 .delta-display-large{background:rgba(0,0,0,.2);border:1px solid var(--line);border-radius:10px;padding:1rem;display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin:1rem 0}
 .delta-main .label, .delta-rule .label{font-family:var(--f-mono);font-size:0.7rem;color:var(--ink2);text-transform:uppercase;letter-spacing:0.1em;display:block;margin-bottom:0.3rem}
 .delta-main .value{font-family:var(--f-disp);font-size:1.8rem;color:var(--orange);font-variant-numeric:tabular-nums}
 .delta-rule .value{font-family:var(--f-mono);font-size:0.85rem;color:var(--ink2)}
 .delta-rule .value.rule-ok{color:var(--teal);font-weight:700}
 .delta-rule .value.rule-fail{color:#ff4d3d;font-weight:700}
-
 .lamp{font-family:var(--f-mono);font-weight:700;font-size:1rem;padding:1rem;border:2px solid var(--line);border-radius:10px;text-align:center;transition:all 0.3s;display:flex;align-items:center;justify-content:center;gap:0.5rem}
 .lamp.on{background:var(--teal);color:#000;border-color:var(--teal);box-shadow:0 0 15px rgba(61,220,132,0.3)}
 .lamp.off{background:var(--bg2);color:var(--ink2);border-color:var(--line)}
 .lamp-icon{font-size:1.2rem}
-
 .logic-explanation{font-size:0.85rem;color:var(--ink2);line-height:1.6;background:rgba(56,163,255,0.05);border-left:3px solid var(--aqua);padding:0.8rem;border-radius:0 8px 8px 0;margin-top:0.5rem;transition:border-color 0.3s ease}
-
-/* ================= 05 SIMULADOR MACRO ================= */
 #simulador{background:var(--bg)}
 .sim-grid{display:grid;grid-template-columns:340px 1fr;gap:2rem;align-items:start}
 .sim-controls{background:var(--paper);color:var(--ink);border:2px solid var(--line);border-radius:14px;box-shadow:var(--shadow);padding:1.4rem}
@@ -261,12 +228,9 @@ input[type=range].plain{background:var(--paper)}
 .sim-stats div{border:1.5px solid var(--line);border-radius:9px;padding:.7rem;text-align:center}
 .sim-stats b{font-family:var(--f-mono);font-size:1.15rem;color:var(--amber);display:block}
 .sim-stats span{font-size:.72rem;color:var(--ink2)}
-
-/* ================= 06 ACESSIBILIDADE & EQUIPE ================= */
 .check-list{list-style:none;margin-top:1.2rem}
 .check-list li{padding:.75rem 0 .75rem 2.4rem;border-bottom:1px dashed var(--line);position:relative}
 .check-list li::before{content:"✔";position:absolute;left:0;top:.7rem;font-family:var(--f-mono);font-weight:700;color:var(--teal);font-size:1.1rem}
-
 .team{display:flex;flex-wrap:wrap;gap:1.6rem;justify-content:center;margin:2.2rem 0 3.5rem}
 .member{background:var(--paper);border:2px solid var(--line);box-shadow:var(--shadow);padding:.9rem;width:196px;transition:transform .3s;text-align:center}
 .member:nth-child(odd){transform:rotate(-2deg)}
@@ -275,7 +239,6 @@ input[type=range].plain{background:var(--paper)}
 .member img{width:100%;aspect-ratio:1;object-fit:cover;border:2px solid var(--line);filter:saturate(.85)}
 .member h3{font-size:.95rem;margin-top:.7rem}
 .member p{font-family:var(--f-mono);font-size:.66rem;color:var(--orange);letter-spacing:.08em;text-transform:uppercase}
-
 footer{background:var(--paper);color:var(--ink2);padding:3rem 0 2.5rem;border-top:2px solid var(--line)}
 .foot-grid{display:flex;justify-content:space-between;gap:2rem;flex-wrap:wrap;align-items:flex-start}
 footer .brand{color:var(--ink)}
@@ -283,7 +246,6 @@ footer nav{display:flex;flex-direction:column;gap:.35rem}
 footer nav a{color:var(--ink2);font-family:var(--f-mono);font-size:.75rem}
 footer nav a:hover{color:var(--amber)}
 .foot-fim{margin-top:2.4rem;padding-top:1.2rem;border-top:1px dashed var(--line);font-family:var(--f-mono);font-size:.68rem;opacity:.75;display:flex;justify-content:space-between;flex-wrap:wrap;gap:.6rem}
-
 @media(max-width:980px){
   .hero-grid,.desafio-grid,.sim-grid,.bench-pool{grid-template-columns:1fr}
   .desafio-left{position:static}
@@ -296,7 +258,6 @@ footer nav a:hover{color:var(--amber)}
 <a class="skip" href="#conteudo">Pular para o conteúdo principal</a>
 <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
 <div class="noise" aria-hidden="true"></div>
-
 <header class="topbar">
   <a class="brand" href="#topo" aria-label="HÉLIOS CEP — início"><span class="brand-sun" aria-hidden="true"></span>HÉLIOS<em>·CEP</em></a>
   <nav id="mainnav" aria-label="Navegação principal">
@@ -315,9 +276,7 @@ footer nav a:hover{color:var(--amber)}
   </div>
   <button class="hamb" id="hambBtn" aria-expanded="false" aria-controls="mainnav">☰ menu</button>
 </header>
-
 <main id="conteudo">
-
 <section class="hero" aria-label="Apresentação do projeto">
   <div class="wrap hero-grid">
     <div>
@@ -351,7 +310,6 @@ footer nav a:hover{color:var(--amber)}
     </div>
   </div>
 </section>
-
 <section id="desafio">
   <div class="wrap">
     <div class="sec-head rv">
@@ -374,7 +332,6 @@ footer nav a:hover{color:var(--amber)}
     </div>
   </div>
 </section>
-
 <section id="pilares">
   <div class="wrap">
     <div class="sec-head rv">
@@ -422,7 +379,6 @@ footer nav a:hover{color:var(--amber)}
     </div>
   </div>
 </section>
-
 <section id="optica">
   <div class="wrap">
     <div class="sec-head rv">
@@ -430,7 +386,6 @@ footer nav a:hover{color:var(--amber)}
       <h2 class="lm"><span>A Física por trás do Aquecimento</span></h2>
       <p class="lead">Interaja com os fenômenos abaixo para entender como dominamos a luz para aquecer a piscina.</p>
     </div>
-
     <div class="card rv">
       <div class="opt-tabs" role="tablist">
         <button class="opt-tab active" role="tab" aria-selected="true" data-tab="tab1">1. O Espectro</button>
@@ -439,7 +394,6 @@ footer nav a:hover{color:var(--amber)}
         <button class="opt-tab" role="tab" aria-selected="false" data-tab="tab4">4. O Encontro (CD)</button>
         <button class="opt-tab" role="tab" aria-selected="false" data-tab="tab5">5. Simulador da Solução</button>
       </div>
-
       <div id="tab1" class="opt-content active">
         <h3>De onde vêm as cores (e o calor)?</h3>
         <p>A luz branca é uma ilusão. Ela carrega todo o espectro eletromagnético visível, e logo além dele, o <strong>infravermelho</strong> (calor invisível). Arraste para ver:</p>
@@ -454,7 +408,6 @@ footer nav a:hover{color:var(--amber)}
           <p class="mono" id="wlRead" style="font-size:.9rem;text-align:center">λ = 700 nm · 🔴 Vermelho (próximo ao Infravermelho térmico)</p>
         </div>
       </div>
-
       <div id="tab2" class="opt-content">
         <h3>Dispersão: A Chave que Revela o Espectro</h3>
         <p>O prisma separa a luz porque cada cor (comprimento de onda) possui um <strong>índice de refração</strong> diferente no material, desviando em ângulos distintos. Arraste o prisma e ative a dispersão:</p>
@@ -473,20 +426,18 @@ footer nav a:hover{color:var(--amber)}
           <div class="fb" id="p2fb" style="margin-top:1rem">Ative para ver como a luz branca se separa. Isso prova que ela é composta por várias energias diferentes.</div>
         </div>
       </div>
-
       <div id="tab3" class="opt-content">
         <h3>Difração: A Luz Contorna Obstáculos</h3>
-        <p>Quando a luz passa por uma fenda pequena, ela se espalha como uma onda (Princípio de Huygens). O gráfico à direita mostra o padrão de intensidade real ($sinc^2$), com um máximo central brilhante e máximos secundários mais fracos.</p>
+        <p>Quando a luz passa por uma fenda pequena, ela se espalha como uma onda (Princípio de Huygens). O gráfico à direita mostra o padrão de intensidade real (sinc²), com um máximo central brilhante e máximos secundários mais fracos.</p>
         <div class="lab-stage">
           <span class="hint">AJUSTE A FENDA ↕</span>
-          <canvas id="slitCanvas" width="800" height="280" aria-label="Simulação de difração em fenda única mostrando padrão de interferência e gráfico de intensidade" aria-describedby="slitDesc" style="width:100%; height:280px;"></canvas>
+          <canvas id="slitCanvas" width="900" height="320" aria-label="Simulação de difração em fenda única mostrando ondas e gráfico de intensidade" aria-describedby="slitDesc" style="width:100%; height:320px;"></canvas>
           <div id="slitDesc" class="sr-only">Simulação de difração: ondas de luz passando por uma fenda variável, projetando um padrão de intensidade em uma tela à direita. Fendas menores causam maior espalhamento.</div>
           <label class="mono" style="font-size:.72rem;display:block;margin-top:.5rem">FENDA ESTREITA ─────────── FENDA LARGA</label>
           <input type="range" class="plain" id="slitSlider" min="10" max="120" value="40" aria-label="Controle de tamanho da fenda">
           <p class="mono" id="slitRead" style="font-size:.85rem;text-align:center;margin-top:.5rem">Fenda estreita: alto espalhamento (difração forte).</p>
         </div>
       </div>
-
       <div id="tab4" class="opt-content">
         <h3>O Encontro dos Fenômenos: O CD</h3>
         <p>Aqui, difração e dispersão trabalham juntas! Arraste o sol ☀️ e clique no CD para ver a explicação:</p>
@@ -501,16 +452,13 @@ footer nav a:hover{color:var(--amber)}
           <div class="fb" id="cdFb" style="display:none" aria-live="polite"></div>
         </div>
       </div>
-
       <div id="tab5" class="opt-content">
         <h3>Simulador do Coletor HÉLIOS</h3>
         <p style="margin-bottom:1rem;color:var(--ink2)">Veja em tempo real como a escolha do material e a tampa de vidro afetam a captura de energia. Observe o comportamento dos fótons (partículas de luz).</p>
-        
         <div class="lab-stage" style="padding:1rem;">
           <span class="hint">SIMULADOR ÓPTICO-TERMO</span>
           <canvas id="collectorCanvas" width="800" height="300" aria-label="Simulador de interação da luz com a superfície do coletor solar" aria-describedby="collectorDesc" style="width:100%; height:auto; border-radius:8px; background:#050a14;"></canvas>
           <div id="collectorDesc" class="sr-only">Simulação de partículas de luz caindo sobre uma superfície. Superfícies texturizadas e tampas de vidro aumentam a absorção de calor ao prender os fótons.</div>
-          
           <div class="sim-controls-row">
             <div>
               <label class="mono" style="font-size:.72rem">TIPO DE SUPERFÍCIE</label>
@@ -534,11 +482,9 @@ footer nav a:hover{color:var(--amber)}
           </p>
         </div>
       </div>
-
     </div>
   </div>
 </section>
-
 <section id="robotica">
   <div class="wrap">
     <div class="sec-head rv">
@@ -551,31 +497,26 @@ footer nav a:hover{color:var(--amber)}
       <div class="hw"><span class="hw-tag">ATUADOR</span><h3>Bomba de Circulação</h3><p>Só liga quando ΔT ≥ 5 °C. Ligar sem calor disponível desperdiça energia.</p></div>
       <div class="hw"><span class="hw-tag">CÉREBRO</span><h3>Microcontrolador</h3><p>Lê sensores, aplica lógica com histerese e registra dados para este site.</p></div>
     </div>
-
     <div class="card rv">
       <h3 style="margin-bottom:0.5rem">🏊 Bancada Interativa: Lógica de Controle</h3>
       <p style="color:var(--ink2);margin-bottom:1.5rem;font-size:0.95rem">
         O sistema compara a temperatura do coletor (T2) com a da piscina (T1). 
         A bomba só liga se o coletor estiver pelo menos <strong>5 °C mais quente</strong> que a piscina, evitando perder calor à noite.
       </p>
-      
       <div class="bench-pool">
         <div class="system-diagram">
           <svg viewBox="0 0 400 300" role="img" aria-label="Diagrama do sistema de aquecimento solar" aria-describedby="diagramDesc">
             <desc id="diagramDesc">Diagrama mostrando a piscina conectada a um coletor solar por meio de uma bomba. Setas indicam o fluxo de água quando a bomba está ligada.</desc>
             <path d="M 80 200 L 80 150 L 200 150" fill="none" stroke="#3b537f" stroke-width="8" stroke-linecap="round"/>
             <path d="M 280 150 L 320 150 L 320 200" fill="none" stroke="#3b537f" stroke-width="8" stroke-linecap="round"/>
-            
             <path id="flow1" class="pipe-flow" d="M 80 200 L 80 150 L 200 150" fill="none" stroke="var(--aqua)" stroke-width="4" stroke-dasharray="8 8" stroke-linecap="round"/>
             <path id="flow2" class="pipe-flow" d="M 280 150 L 320 150 L 320 200" fill="none" stroke="var(--orange)" stroke-width="4" stroke-dasharray="8 8" stroke-linecap="round"/>
-
             <g transform="translate(40, 180)">
               <rect x="0" y="0" width="80" height="60" rx="8" fill="var(--bg2)" stroke="var(--line)" stroke-width="2"/>
               <rect id="diagPoolWater" x="4" y="4" width="72" height="52" rx="4" fill="var(--pool-c1)" style="transition: fill 0.5s ease"/>
               <text x="40" y="-10" text-anchor="middle" fill="var(--ink)" font-family="Space Mono" font-size="12" font-weight="bold">PISCINA</text>
               <text id="diagT1" x="40" y="35" text-anchor="middle" fill="#fff" font-family="Unbounded" font-size="16" font-weight="900">28°C</text>
             </g>
-
             <g transform="translate(180, 130)">
               <circle cx="20" cy="20" r="20" fill="var(--paper)" stroke="var(--line)" stroke-width="2"/>
               <g id="diagPumpIcon" class="pump-icon-svg">
@@ -583,7 +524,6 @@ footer nav a:hover{color:var(--amber)}
               </g>
               <text x="20" y="55" text-anchor="middle" fill="var(--ink2)" font-family="Space Mono" font-size="10">BOMBA</text>
             </g>
-
             <g transform="translate(280, 80)">
               <rect x="0" y="0" width="80" height="60" rx="4" fill="var(--paper)" stroke="var(--line)" stroke-width="2"/>
               <line x1="10" y1="10" x2="70" y2="10" stroke="var(--orange)" stroke-width="2"/>
@@ -599,16 +539,13 @@ footer nav a:hover{color:var(--amber)}
             </g>
           </svg>
         </div>
-
         <div class="bench-controls">
           <h3 style="margin-bottom:1rem">Painel de Controle</h3>
-          
           <div class="scenario-btns">
             <button class="scenario-btn" data-t1="24" data-t2="26">🌅 Manhã Fria</button>
             <button class="scenario-btn active" data-t1="28" data-t2="41">☀️ Meio-dia</button>
             <button class="scenario-btn" data-t1="30" data-t2="28">🌙 Noite</button>
           </div>
-
           <div class="control-group">
             <label class="mono" style="font-size:.72rem">TEMP. PISCINA (T1)</label>
             <div class="slider-row">
@@ -616,7 +553,6 @@ footer nav a:hover{color:var(--amber)}
               <span class="val-badge" id="bPoolOut">28.0 °C</span>
             </div>
           </div>
-          
           <div class="control-group">
             <label class="mono" style="font-size:.72rem">TEMP. COLETOR (T2)</label>
             <div class="slider-row">
@@ -624,7 +560,6 @@ footer nav a:hover{color:var(--amber)}
               <span class="val-badge" id="bCollOut">41.0 °C</span>
             </div>
           </div>
-
           <div class="delta-display-large">
             <div class="delta-main">
               <span class="label">DIFERENÇA ΔT</span>
@@ -635,11 +570,9 @@ footer nav a:hover{color:var(--amber)}
               <div class="value rule-ok" id="bRule">ΔT ≥ 5 °C (LIGAR)</div>
             </div>
           </div>
-
           <div class="lamp on" id="bLamp" role="status" aria-live="polite">
             <span class="lamp-icon">●</span> BOMBA LIGADA
           </div>
-          
           <p class="logic-explanation" id="logicText" aria-live="polite">
             O coletor está 13.0 °C mais quente que a piscina. Como ΔT ≥ 5 °C, a bomba é acionada para transferir o calor.
           </p>
@@ -648,7 +581,6 @@ footer nav a:hover{color:var(--amber)}
     </div>
   </div>
 </section>
-
 <section id="simulador">
   <div class="wrap">
     <div class="sec-head rv">
@@ -693,7 +625,6 @@ footer nav a:hover{color:var(--amber)}
     </div>
   </div>
 </section>
-
 <section id="acessibilidade">
   <div class="wrap">
     <div class="sec-head rv">
@@ -711,9 +642,7 @@ footer nav a:hover{color:var(--amber)}
     </div>
   </div>
 </section>
-
 </main>
-
 <footer>
   <div class="wrap foot-grid">
     <div>
@@ -730,10 +659,8 @@ footer nav a:hover{color:var(--amber)}
     <span>HTML + CSS + JS puros, ☀ e teimosia.</span>
   </div>
 </footer>
-
 <script>
 document.addEventListener('DOMContentLoaded', () => {
-/* ================= UTILITÁRIOS ================= */
 const $ = s => document.querySelector(s);
 const $$ = s => [...document.querySelectorAll(s)];
 const RM = matchMedia('(prefers-reduced-motion: reduce)');
@@ -742,8 +669,6 @@ if(nomotion){document.body.classList.add('nomotion');$('#motionBtn').setAttribut
 const motionOK = () => !nomotion;
 const fmt = (n,d=1) => n.toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
 const hcOn = () => document.body.classList.contains('hc');
-
-/* ================= ACESSIBILIDADE ================= */
 const scales = [.9, 1, 1.12, 1.28]; let fsIdx = 1;
 function applyFont(){document.documentElement.style.fontSize = (100 * scales[fsIdx]) + '%';}
 $('#fontPlus').addEventListener('click', () => {fsIdx = Math.min(scales.length-1, fsIdx+1); applyFont();});
@@ -761,8 +686,6 @@ hamb.addEventListener('click', () => {
   const open = nav.classList.toggle('open'); hamb.setAttribute('aria-expanded', open);
 });
 nav.addEventListener('click', e => {if(e.target.tagName === 'A'){nav.classList.remove('open');hamb.setAttribute('aria-expanded','false');}});
-
-/* ================= SCRAMBLE TITLE ================= */
 (function(){
   const el = $('#scrambleTitle'), final = el.dataset.text;
   if(!motionOK()){el.textContent = final; return;}
@@ -773,21 +696,16 @@ nav.addEventListener('click', e => {if(e.target.tagName === 'A'){nav.classList.r
     if(f < total) requestAnimationFrame(step); else el.textContent = final;
   })();
 })();
-
-/* ================= SCROLL & REVEAL ================= */
 const bar = $('#progressBar');
 addEventListener('scroll', () => {
   requestAnimationFrame(() => {
     bar.style.width = (scrollY / (document.documentElement.scrollHeight - innerHeight || 1) * 100) + '%';
   });
 }, {passive:true});
-
 const rv = new IntersectionObserver(es => es.forEach(e => {
   if(e.isIntersecting){e.target.classList.add('in'); rv.unobserve(e.target);}
 }), {threshold: .12});
 $$('.rv, .lm').forEach(el => rv.observe(el));
-
-/* ================= TELEMETRIA PAINEL ================= */
 const telem = {pool:30.6, coll:46, irr:812, flow:5.4, pump:true, auto:true, hist:[]};
 const spark = $('#spark'), sctx = spark.getContext('2d');
 function drawSpark(){
@@ -821,8 +739,6 @@ for(let i=0;i<40;i++) telem.hist.push(30 + Math.sin(i/5)*.4);
 setInterval(tickTelem, 2000); tickTelem();
 $('#btnMode').addEventListener('click', () => {telem.auto = !telem.auto;});
 $('#btnPump').addEventListener('click', () => {telem.auto = false; telem.pump = !telem.pump;});
-
-/* ================= TABS DO LABORATÓRIO ================= */
 $$('.opt-tab').forEach(tab => {
   tab.addEventListener('click', () => {
     $$('.opt-tab').forEach(t => {t.classList.remove('active'); t.setAttribute('aria-selected','false');});
@@ -830,12 +746,10 @@ $$('.opt-tab').forEach(tab => {
     tab.classList.add('active'); tab.setAttribute('aria-selected','true');
     const target = $('#'+tab.dataset.tab);
     target.classList.add('active');
-    if(tab.dataset.tab === 'tab3') { drawDiffraction(performance.now()); }
+    if(tab.dataset.tab === 'tab3') { slitAnimId = requestAnimationFrame(drawDiffraction); }
     if(tab.dataset.tab === 'tab5') startCollectorSim(); else stopCollectorSim();
   });
 });
-
-/* ================= 1. ESPECTRO ================= */
 function wl2rgb(w){
   let r,g,b;
   if(w<440){r=(440-w)/60;g=0;b=1}else if(w<490){r=0;g=(w-440)/50;b=1}
@@ -852,8 +766,6 @@ $('#wlSlider').addEventListener('input', e => {
   else if(w<560){nome='Verde';emoji='🟢'}else if(w<620){nome='Amarelo/Laranja';emoji='🟡'}
   $('#wlRead').textContent = `λ = ${w} nm · ${emoji} ${nome}`;
 });
-
-/* ================= 2. DISPERSÃO ================= */
 const prism = {x:400, y:150}; let dispers = false;
 const raysG = $('#raysG'), SVG = $('#prismSvg');
 const RAYC = ['#ff4d3d','#ff9f1c','#ffe14d','#3ddc84','#38a3ff','#b06bff'];
@@ -901,97 +813,101 @@ SVG.addEventListener('pointermove', e => {
 });
 addEventListener('pointerup', () => dragP = false);
 renderPrism();
-
-/* ================= 3. DIFRAÇÃO (CORRIGIDA E MELHORADA) ================= */
 const sc = $('#slitCanvas'), sx = sc.getContext('2d');
+let slitAnimId = null;
 let slitTime = 0;
 
-function drawDiffraction(timestamp) {
-  if (!$('#tab3').classList.contains('active')) return;
-  
-  if (!nomotion) {
-    requestAnimationFrame(drawDiffraction);
+function drawDiffraction() {
+  if (!$('#tab3').classList.contains('active')) {
+    slitAnimId = null;
+    return;
   }
+  
+  slitAnimId = requestAnimationFrame(drawDiffraction);
   
   const w = sc.width;
   const h = sc.height;
-  const cx = w * 0.3; // Posição X da barreira
+  const barrierX = w * 0.35;
   const cy = h / 2;
   
   const slitVal = +$('#slitSlider').value;
-  const gap = 10 + (slitVal / 120) * (h * 0.5); // Tamanho da fenda
+  const gap = 15 + (slitVal / 120) * (h * 0.55);
   
   sx.clearRect(0, 0, w, h);
   
-  // 1. Barreira com fenda
-  sx.fillStyle = '#0f172a';
+  // Fundo
+  sx.fillStyle = '#000';
+  sx.fillRect(0, 0, w, h);
+  
+  // Barreira com fenda
+  sx.fillStyle = '#1a2a4a';
+  sx.fillRect(barrierX - 8, 0, 16, cy - gap/2);
+  sx.fillRect(barrierX - 8, cy + gap/2, 16, h - (cy + gap/2));
+  
   sx.strokeStyle = hcOn() ? '#fff' : '#38a3ff';
-  sx.lineWidth = 3;
-  
-  // Parte superior da barreira
-  sx.fillRect(cx - 5, 0, 10, cy - gap/2);
-  sx.strokeRect(cx - 5, 0, 10, cy - gap/2);
-  // Parte inferior da barreira
-  sx.fillRect(cx - 5, cy + gap/2, 10, h - (cy + gap/2));
-  sx.strokeRect(cx - 5, cy + gap/2, 10, h - (cy + gap/2));
-  
-  // 2. Ondas incidentes (lado esquerdo)
-  if (motionOK()) slitTime += 0.05;
-  sx.strokeStyle = hcOn() ? 'rgba(255,255,255,0.4)' : 'rgba(56,163,255,0.4)';
   sx.lineWidth = 2;
-  const waveSpacing = 30;
-  const offset = (slitTime * 20) % waveSpacing;
-  for (let x = cx - 10 - offset; x > 0; x -= waveSpacing) {
+  sx.strokeRect(barrierX - 8, 0, 16, cy - gap/2);
+  sx.strokeRect(barrierX - 8, cy + gap/2, 16, h - (cy + gap/2));
+  
+  // Ondas incidentes (linhas verticais à esquerda)
+  if (motionOK()) slitTime += 0.03;
+  const waveSpacing = 35;
+  const offset = (slitTime * 30) % waveSpacing;
+  
+  sx.strokeStyle = hcOn() ? 'rgba(255,255,255,0.5)' : 'rgba(56,163,255,0.5)';
+  sx.lineWidth = 2;
+  
+  for (let x = barrierX - 20 - offset; x > 0; x -= waveSpacing) {
     sx.beginPath();
-    sx.moveTo(x, cy - gap/2 - 10);
-    sx.lineTo(x, cy + gap/2 + 10);
+    sx.moveTo(x, cy - gap/2 - 15);
+    sx.lineTo(x, cy + gap/2 + 15);
     sx.stroke();
   }
   
-  // 3. Ondas difratadas (Princípio de Huygens, lado direito)
-  sx.strokeStyle = hcOn() ? 'rgba(255,210,63,0.3)' : 'rgba(255,159,28,0.3)';
-  const maxRadius = w - cx - 20;
-  const numWaves = 6;
-  for (let i = 0; i < numWaves; i++) {
-    const r = ((slitTime * 30 + i * (maxRadius / numWaves)) % maxRadius);
-    const alpha = Math.max(0, 1 - r / maxRadius);
-    sx.strokeStyle = hcOn() ? `rgba(255,255,255,${alpha * 0.5})` : `rgba(56,163,255,${alpha * 0.5})`;
+  // Ondas difratadas (arcos saindo da fenda)
+  const maxRadius = w * 0.5;
+  const numArcs = 8;
+  
+  for (let i = 0; i < numArcs; i++) {
+    const r = ((slitTime * 40 + i * (maxRadius / numArcs)) % maxRadius);
+    const alpha = Math.max(0, 1 - r / maxRadius) * 0.6;
+    
+    sx.strokeStyle = hcOn() ? `rgba(255,255,255,${alpha})` : `rgba(56,163,255,${alpha})`;
+    sx.lineWidth = 2;
     sx.beginPath();
-    // Desenha arco da fenda
-    sx.arc(cx, cy, r, -Math.PI/2 - 0.8, Math.PI/2 + 0.8);
+    sx.arc(barrierX, cy, r, -Math.PI/2 - 0.6, Math.PI/2 + 0.6);
     sx.stroke();
   }
   
-  // 4. Tela de Projeção e Gráfico de Intensidade (sinc^2)
+  // Tela de projeção (linha vertical à direita)
   const screenX = w * 0.85;
-  const lambda = 30; // Comprimento de onda arbitrário para visualização
-  const a = gap; // Largura da fenda
-  
-  // Desenha a tela física
   sx.strokeStyle = hcOn() ? '#fff' : '#93a4c3';
-  sx.lineWidth = 2;
+  sx.lineWidth = 3;
   sx.beginPath();
   sx.moveTo(screenX, 20);
   sx.lineTo(screenX, h - 20);
   sx.stroke();
   
-  // Desenha o gráfico de intensidade
+  // Gráfico de intensidade (sinc²)
+  const lambda = 35;
+  const a = gap;
+  
   sx.beginPath();
   sx.strokeStyle = hcOn() ? '#ffd23f' : '#ffe14d';
-  sx.lineWidth = 3;
+  sx.lineWidth = 4;
   
   for (let y = 20; y <= h - 20; y += 2) {
-    const theta = Math.atan2(y - cy, screenX - cx);
+    const theta = Math.atan2(y - cy, screenX - barrierX);
     const beta = (Math.PI * a * Math.sin(theta)) / lambda;
     let intensity = 0;
+    
     if (Math.abs(beta) < 0.01) {
       intensity = 1;
     } else {
       intensity = Math.pow(Math.sin(beta) / beta, 2);
     }
     
-    // Escala o gráfico para caber na tela
-    const graphWidth = 80;
+    const graphWidth = 100;
     const xVal = screenX + (intensity * graphWidth);
     
     if (y === 20) sx.moveTo(xVal, y);
@@ -999,14 +915,21 @@ function drawDiffraction(timestamp) {
   }
   sx.stroke();
   
-  // Preenche a área sob o gráfico
+  // Preenchimento do gráfico
   sx.lineTo(screenX, h - 20);
   sx.lineTo(screenX, 20);
   sx.closePath();
-  sx.fillStyle = hcOn() ? 'rgba(255,210,63,0.1)' : 'rgba(255,225,77,0.1)';
+  sx.fillStyle = hcOn() ? 'rgba(255,210,63,0.15)' : 'rgba(255,225,77,0.15)';
   sx.fill();
   
-  // Texto explicativo dinâmico
+  // Labels
+  sx.font = '14px Space Mono';
+  sx.fillStyle = hcOn() ? '#fff' : '#93a4c3';
+  sx.fillText('ONDAS INCIDENTES', 20, 30);
+  sx.fillText('DIFRAÇÃO', barrierX + 40, 30);
+  sx.fillText('INTENSIDADE', screenX + 10, 30);
+  
+  // Texto explicativo
   const v = +$('#slitSlider').value;
   const readEl = $('#slitRead');
   if (v < 40) {
@@ -1019,11 +942,12 @@ function drawDiffraction(timestamp) {
 }
 
 $('#slitSlider').addEventListener('input', () => { 
-  slitTime = 0; // Reseta animação para feedback visual imediato
-  drawDiffraction(performance.now()); 
+  slitTime = 0;
+  if (!$('#tab3').classList.contains('active')) {
+    drawDiffraction();
+  }
 });
 
-/* ================= 4. CD ================= */
 const cdArea = $('#cdArea'), cdL = $('#cdLight'); let lx = 0, ly = 0, cdDrag = false;
 function cdPos(x,y){
   const r = cdArea.getBoundingClientRect();
@@ -1047,8 +971,6 @@ function cdWhy(){
 $('#cdDisc').addEventListener('click', cdWhy);
 $('#btnCdWhy').addEventListener('click', cdWhy);
 setTimeout(() => {const r = cdArea.getBoundingClientRect(); cdPos(r.width * 0.12, r.height * 0.18)}, 100);
-
-/* ================= 5. SIMULADOR DO COLETOR ================= */
 let collectorAnimId = null;
 let photons = [], heatParticles = [];
 let simStats = {total: 0, absorbed: 0};
@@ -1155,7 +1077,6 @@ $('#simGlass').addEventListener('click', e => {
   $('#simFeedback').innerHTML = simConfig.glass ? '💡 <strong>Efeito Estufa:</strong> A luz visível entra, mas o calor (infravermelho) refletido pela superfície é bloqueado pelo vidro e devolvido para a placa, aumentando drasticamente a eficiência.' : '💡 <strong>Sem tampa:</strong> O calor irradiado pela placa escapa facilmente para a atmosfera (convecção e radiação).';
 });
 
-/* ================= BANCADA COM PISCINA ================= */
 let pumpBench = true;
 
 function updateBenchVisuals(t1, t2) {
@@ -1230,7 +1151,6 @@ $$('.scenario-btn').forEach(btn => {
 
 benchUpdate();
 
-/* ================= SIMULADOR TÉRMICO MACRO ================= */
 let sim = {T: 24, mins: 360, day: 1, kwh: 0, hist: [], timer: null, playing: false};
 const chart = $('#simChart'), cctx = chart.getContext('2d');
 const irr = m => {const x = (m/60 - 6)/14; return (x < 0 || x > 1) ? 0 : Math.sin(Math.PI * x);};
@@ -1295,7 +1215,6 @@ simTick();
 
 addEventListener('resize', () => {
   drawSpark(); drawChart();
-  if($('#tab3').classList.contains('active')) drawDiffraction(performance.now());
 });
 
 });
