@@ -1,11 +1,3 @@
-Peço desculpas pelo inconveniente! O bug ocorria por dois motivos principais na simulação de difração:
-
-1. **Acúmulo de escala no Canvas**: Ao redimensionar a janela, o comando `sctx.scale()` era aplicado repetidamente sem resetar, fazendo o desenho "explodir" de tamanho, ficar embaçado ou travar o navegador.
-2. **Loop de animação órfão**: Ao trocar de aba, a animação da fenda não era cancelada corretamente, consumindo CPU em segundo plano e podendo gerar conflitos de renderização.
-
-Abaixo está o código **completo e corrigido**, com a simulação de difração agora 100% estável, responsiva e otimizada:
-
-```html
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
@@ -1291,4 +1283,3 @@ resizeSlitCanvas();
 </script>
 </body>
 </html>
-```
